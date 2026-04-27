@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ramigem CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:#FAFAF7;font-family:'Inter',sans-serif;color:#2C2C2C;overflow:hidden;}
+#app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto;position:relative;}
+
+/* HEADER */
+.app-header{background:#FAFAF7;border-bottom:1px solid #E8E3D8;padding:14px 20px 10px;text-align:center;flex-shrink:0;}
+.app-header h1{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;letter-spacing:0.2em;color:#1C3829;}
+.app-header .page-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;letter-spacing:0.1em;color:#1C3829;margin-top:2px;}
+
+/* CONTENT */
+#content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.page{display:none;padding:16px 16px 8px;}
+
+/* NAV */
+#nav{background:#fff;border-top:1px solid #E8E3D8;display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0);}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 4px 8px;border:none;background:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:10px;font-weight:400;color:#999;gap:4px;position:relative;}
+.nav-btn svg{width:20px;height:20px;stroke:#999;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.nav-btn.active{color:#1C3829;}
+.nav-btn.active svg{stroke:#1C3829;}
+.nav-btn.active::after{content:'';position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:#C9A84C;}
+
+/* CARDS & SECTIONS */
+.section-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#999;margin:16px 0 8px;}
+.divider{border:none;border-top:1px solid #E8E3D8;margin:12px 0;}
+.card{border:1px solid #E8E3D8;border-radius:3px;background:#fff;margin-bottom:8px;padding:14px;}
+.row-item{border:1px solid #E8E3D8;border-radius:3px;background:#fff;margin-bottom:6px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;}
+.row-item:active{background:#F5F0E8;}
+
+/* STATUS DOTS */
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-hot{background:#C9A84C;}
+.dot-active{background:#2E7D52;}
+.dot-followup{background:#E8A020;}
+.dot-cold{background:#999;}
+.dot-warm{background:#E8A020;}
+
+/* STATUS BADGES */
+.badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:2px;}
+.badge-hot{background:#FDF4E0;color:#C9A84C;}
+.badge-active{background:#E8F5EE;color:#2E7D52;}
+.badge-followup{background:#FEF3E0;color:#E8A020;}
+.badge-cold{background:#F0F0F0;color:#888;}
+.badge-warm{background:#FEF3E0;color:#E8A020;}
+.badge-replied{background:#E8F5EE;color:#2E7D52;}
+.badge-noreply{background:#F0F0F0;color:#888;}
+.badge-notsent{background:#F0F0F0;color:#888;}
+
+/* DASHBOARD */
+.greeting{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#1C3829;margin-bottom:2px;}
+.today-date{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#999;margin-bottom:16px;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px;}
+.stat-box{border:1px solid #E8E3D8;border-radius:3px;background:#fff;padding:10px 6px;text-align:center;}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:#1C3829;line-height:1;}
+.stat-lbl{font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#999;margin-top:4px;}
+
+/* FOLLOW-UP ROWS */
+.fu-row{border-left:3px solid #C9A84C;background:#fff;border-radius:0 3px 3px 0;border-top:1px solid #E8E3D8;border-right:1px solid #E8E3D8;border-bottom:1px solid #E8E3D8;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.fu-row.overdue{border-left-color:#8B2020;}
+.fu-info{flex:1;min-width:0;}
+.fu-name{font-size:13px;font-weight:500;color:#2C2C2C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fu-company{font-size:11px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fu-days{font-size:11px;color:#888;white-space:nowrap;flex-shrink:0;}
+.call-btn{background:#1C3829;color:#fff;border:none;border-radius:3px;padding:6px 12px;font-size:11px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;display:inline-block;}
+.call-btn:active{background:#152e20;}
+
+/* TASKS */
+.task-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E8E3D8;}
+.task-row:last-child{border-bottom:none;}
+.task-check{width:18px;height:18px;border:1.5px solid #E8E3D8;border-radius:3px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.task-check.checked{background:#1C3829;border-color:#1C3829;}
+.task-check.checked::after{content:'✓';color:#fff;font-size:11px;line-height:1;}
+.task-text{flex:1;font-size:13px;color:#2C2C2C;}
+.task-text.done{text-decoration:line-through;color:#999;}
+.task-del{background:none;border:none;color:#ccc;font-size:16px;cursor:pointer;padding:0 4px;}
+.add-task-row{display:flex;gap:8px;margin-top:10px;}
+.add-task-row input{flex:1;border:1px solid #E8E3D8;border-radius:3px;padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;outline:none;color:#2C2C2C;}
+.add-task-row input:focus{border-color:#C9A84C;}
+.add-task-row button{background:#1C3829;color:#fff;border:none;border-radius:3px;padding:9px 14px;font-size:13px;font-family:'Inter',sans-serif;cursor:pointer;}
+
+/* SEARCH & FILTERS */
+.search-wrap{position:relative;margin-bottom:12px;}
+.search-wrap input{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px 10px 36px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;outline:none;color:#2C2C2C;}
+.search-wrap input:focus{border-color:#C9A84C;}
+.search-wrap::before{content:'⌕';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:16px;color:#ccc;}
+.filter-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.ftab{border:1px solid #E8E3D8;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;font-family:'Inter',sans-serif;background:#fff;color:#888;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.ftab.active{background:#1C3829;color:#fff;border-color:#1C3829;}
+
+/* CLIENT ROW */
+.client-left{flex:1;min-width:0;}
+.client-name{font-size:14px;font-weight:500;color:#2C2C2C;}
+.client-company{font-size:12px;color:#999;margin-top:1px;}
+.client-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.days-txt{font-size:11px;color:#999;}
+
+/* MODAL */
+#modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;}
+#modal-box{position:absolute;bottom:0;left:0;right:0;background:#FAFAF7;border-radius:16px 16px 0 0;max-height:85vh;overflow-y:auto;max-width:480px;margin:0 auto;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid #E8E3D8;position:sticky;top:0;background:#FAFAF7;z-index:1;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#1C3829;}
+.modal-close{background:none;border:none;font-size:22px;color:#999;cursor:pointer;padding:0 4px;line-height:1;}
+.modal-body{padding:16px;}
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid #E8E3D8;gap:12px;}
+.detail-row:last-child{border-bottom:none;}
+.detail-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#999;flex-shrink:0;}
+.detail-value{font-size:13px;color:#2C2C2C;text-align:right;word-break:break-word;}
+.detail-value a{color:#1C3829;text-decoration:none;}
+.notes-area{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;resize:vertical;min-height:80px;outline:none;color:#2C2C2C;margin-top:8px;}
+.notes-area:focus{border-color:#C9A84C;}
+.btn-primary{background:#1C3829;color:#fff;border:none;border-radius:3px;padding:12px 20px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;width:100%;margin-top:10px;}
+.btn-primary:active{background:#152e20;}
+.btn-secondary{background:#fff;color:#1C3829;border:1px solid #1C3829;border-radius:3px;padding:11px 20px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;width:100%;margin-top:8px;}
+.btn-danger{background:#fff;color:#8B2020;border:1px solid #8B2020;border-radius:3px;padding:11px 20px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;width:100%;margin-top:8px;}
+.stage-select{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;color:#2C2C2C;outline:none;margin-top:8px;}
+.stage-select:focus{border-color:#C9A84C;}
+.log-entry{padding:8px 0;border-bottom:1px solid #E8E3D8;font-size:12px;color:#666;}
+.log-entry:last-child{border-bottom:none;}
+.log-date{font-weight:500;color:#1C3829;font-size:11px;}
+
+/* PIPELINE */
+.pipeline-stage{margin-bottom:16px;}
+.pipeline-stage-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.pipeline-stage-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:#1C3829;}
+.pipeline-count{background:#E8E3D8;color:#666;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;}
+.pipeline-item{border:1px solid #E8E3D8;border-radius:3px;background:#fff;padding:10px 14px;margin-bottom:6px;}
+.pipeline-item-name{font-size:13px;font-weight:500;color:#2C2C2C;}
+.pipeline-item-meta{font-size:11px;color:#999;margin-top:2px;}
+.pipeline-item-value{font-size:12px;font-weight:500;color:#C9A84C;margin-top:4px;}
+
+/* SETTINGS */
+.settings-section{margin-bottom:20px;}
+.settings-btn{border:1px solid #E8E3D8;border-radius:3px;background:#fff;padding:14px 16px;width:100%;text-align:left;font-size:14px;font-family:'Inter',sans-serif;color:#2C2C2C;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.settings-btn:active{background:#F5F0E8;}
+.settings-btn.danger{color:#8B2020;border-color:#f0d0d0;}
+.settings-btn span.icon{font-size:18px;}
+.version-text{text-align:center;font-size:11px;color:#ccc;padding:20px 0 8px;letter-spacing:0.05em;}
+
+/* TOAST */
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1C3829;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-family:'Inter',sans-serif;opacity:0;transition:opacity 0.3s;z-index:2000;pointer-events:none;white-space:nowrap;}
+#toast.show{opacity:1;}
+
+/* ADD LEAD FORM */
+.form-group{margin-bottom:12px;}
+.form-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#999;margin-bottom:4px;display:block;}
+.form-input{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;outline:none;color:#2C2C2C;}
+.form-input:focus{border-color:#C9A84C;}
+.form-select{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;color:#2C2C2C;outline:none;}
+.form-select:focus{border-color:#C9A84C;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;color:#bbb;font-size:14px;}
+
+/* PIPELINE LINE */
+.pipeline-connector{width:2px;height:16px;background:#E8E3D8;margin:0 auto 0 19px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="app-header">
+    <h1>RAMIGEM</h1>
+  </div>
+
+  <div id="content">
+    <!-- DASHBOARD -->
+    <div class="page" id="page-dashboard"></div>
+
+    <!-- CLIENTS -->
+    <div class="page" id="page-clients"></div>
+
+    <!-- LEADS -->
+    <div class="page" id="page-leads"></div>
+
+    <!-- PIPELINE -->
+    <div class="page" id="page-pipeline"></div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings"></div>
+  </div>
+
+  <nav id="nav">
+    <button class="nav-btn" data-page="dashboard" onclick="goTo('dashboard')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-btn" data-page="clients" onclick="goTo('clients')">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Clients
+    </button>
+    <button class="nav-btn" data-page="leads" onclick="goTo('leads')">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Leads
+    </button>
+    <button class="nav-btn" data-page="pipeline" onclick="goTo('pipeline')">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Pipeline
+    </button>
+    <button class="nav-btn" data-page="settings" onclick="goTo('settings')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </button>
+  </nav>
+</div>
+
+<!-- MODAL -->
+<div id="modal-bg" onclick="closeModal()">
+  <div id="modal-box" onclick="event.stopPropagation()">
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ============================================================
+// DATA DEFAULTS
+// ============================================================
+const DEFAULT_CLIENTS = [
+  {id:"c1",name:"James Al-Rashid",company:"Al-Rashid Jewels",role:"Owner",email:"james@alrashidjewels.com",phone:"+971 50 123 4567",city:"Dubai",country:"UAE",status:"hot",pipelineStage:"negotiation",lastContact:"2026-04-20",notes:"Interested in 5ct+ Muzo stones. Budget $200k+",source:"Dubai Show 2025",dealValue:200000},
+  {id:"c2",name:"Sofia Marchetti",company:"Gioielli Marchetti",role:"Director",email:"sofia@marchetti.it",phone:"+39 02 1234567",city:"Milan",country:"Italy",status:"hot",pipelineStage:"discussion",lastContact:"2026-04-22",notes:"Wants exclusive supply agreement for Italian market",source:"Hong Kong Show 2025",dealValue:150000},
+  {id:"c3",name:"Chen Wei",company:"Wei Fine Gems",role:"CEO",email:"chen@weifinegems.com",phone:"+852 2123 4567",city:"Hong Kong",country:"China",status:"hot",pipelineStage:"negotiation",lastContact:"2026-04-19",notes:"Auction house buyer. Interested in certified lots",source:"Hong Kong Show 2025",dealValue:350000},
+  {id:"c4",name:"Priya Nair",company:"Nair & Sons Jewellers",role:"Head Buyer",email:"priya@nairandsons.com",phone:"+91 22 1234 5678",city:"Mumbai",country:"India",status:"active",pipelineStage:"discussion",lastContact:"2026-04-18",notes:"Regular buyer, prefers 2-4ct stones",source:"Referral",dealValue:75000},
+  {id:"c5",name:"Marco Dubois",company:"Maison Dubois",role:"Gemologist",email:"marco@maisondubois.fr",phone:"+33 1 4567 8901",city:"Paris",country:"France",status:"active",pipelineStage:"contacted",lastContact:"2026-04-15",notes:"Boutique designer, uses emeralds in bespoke pieces",source:"Hong Kong Show 2025",dealValue:45000},
+  {id:"c6",name:"Yuki Tanaka",company:"Tanaka Jewelry",role:"President",email:"yuki@tanakajewelry.jp",phone:"+81 3 1234 5678",city:"Tokyo",country:"Japan",status:"active",pipelineStage:"contacted",lastContact:"2026-04-10",notes:"High-end retailer, interested in matching pairs",source:"Hong Kong Show 2025",dealValue:60000},
+  {id:"c7",name:"Ahmed Hassan",company:"Hassan Gems",role:"Owner",email:"ahmed@hassangems.ae",phone:"+971 4 234 5678",city:"Abu Dhabi",country:"UAE",status:"active",pipelineStage:"new",lastContact:"2026-04-08",notes:"Wholesale buyer, needs volume pricing",source:"Dubai Show 2025",dealValue:30000},
+  {id:"c8",name:"Isabella Ferreira",company:"Gemas Brasil",role:"Director",email:"isabella@gemasbrasil.com",phone:"+55 11 9876 5432",city:"São Paulo",country:"Brazil",status:"followUp",pipelineStage:"new",lastContact:"2026-03-28",notes:"Met at Dubai show. Follow up needed.",source:"Dubai Show 2025",dealValue:20000},
+  {id:"c9",name:"David Cohen",company:"Cohen Diamond Exchange",role:"Partner",email:"david@cohendiamonds.com",phone:"+1 212 555 0123",city:"New York",country:"USA",status:"followUp",pipelineStage:"new",lastContact:"2026-03-20",notes:"47th St dealer. Open to colored stones",source:"NYC Show",dealValue:25000},
+  {id:"c10",name:"Li Wei",company:"Shanghai Luxury Gems",role:"Buyer",email:"li.wei@shanghailuxury.com",phone:"+86 21 5555 6666",city:"Shanghai",country:"China",status:"cold",pipelineStage:"new",lastContact:"2026-02-15",notes:"Initial contact only. No follow-up yet.",source:"Hong Kong Show 2025",dealValue:0}
+];
+
+const DEFAULT_LEADS = [
+  {id:"l1",name:"Artcurial Paris",company:"Artcurial SAS",email:"bijoux@artcurial.com",phone:"+33 1 4249 1900",city:"Paris",country:"France",priority:"hot",pipelineStage:"discussion",emailStatus:"Replied",lastContact:"2026-04-09",notes:"Interested in SET/finished jewelry. Follow up with finished jewelry angle.",source:"Campaign 1",dealValue:50000},
+  {id:"l2",name:"Anita Ko",company:"Anita Ko Jewelry",email:"info@anitako.com",phone:"",city:"Los Angeles",country:"USA",priority:"warm",pipelineStage:"contacted",emailStatus:"No Reply",lastContact:"2026-04-12",notes:"Reached out via paul@ramigem.com.",source:"Referral",dealValue:25000},
+  {id:"l3",name:"Dianne Batista",company:"DB Fine Jewelry",email:"dianne@dbfinejewelry.com",phone:"+1 305 555 0199",city:"Miami",country:"USA",priority:"warm",pipelineStage:"contacted",emailStatus:"Replied",lastContact:"2026-04-14",notes:"Interested in earring stones, 1-2ct range.",source:"Cold Outreach",dealValue:15000},
+  {id:"l4",name:"Target Designer A",company:"Independent Studio",email:"studio@designer.com",phone:"",city:"New York",country:"USA",priority:"warm",pipelineStage:"new",emailStatus:"Not Sent",lastContact:"2026-04-01",notes:"Research lead — independent jewelry designer.",source:"Research",dealValue:10000},
+  {id:"l5",name:"47th St Dealer",company:"Diamond District Gems",email:"info@47thgems.com",phone:"+1 212 555 0147",city:"New York",country:"USA",priority:"hot",pipelineStage:"new",emailStatus:"Not Sent",lastContact:"2026-04-25",notes:"Walk-in target for Week 2. Colored stone specialist.",source:"Research",dealValue:50000}
+];
+
+// ============================================================
+// STORAGE
+// ============================================================
+function load(key, def) {
+  try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch(e) { return def; }
+}
+function save(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+// ============================================================
+// STATE
+// ============================================================
+var clients = load('rc_clients', null);
+if (!clients) { clients = JSON.parse(JSON.stringify(DEFAULT_CLIENTS)); save('rc_clients', clients); }
+
+var leads = load('rc_leads', null);
+if (!leads) { leads = JSON.parse(JSON.stringify(DEFAULT_LEADS)); save('rc_leads', leads); }
+
+var tasks = load('rc_tasks', [
+  {id:'t1',text:'Follow up Artcurial Paris — finished jewelry angle',done:false,priority:'high'},
+  {id:'t2',text:'Call hottest contacts this week',done:false,priority:'high'}
+]);
+
+var convLogs = load('rc_conv', {});
+var meetings = load('rc_meetings', 3);
+
+// Filter state
+var clientFilter = 'all';
+var clientSearch = '';
+var leadFilter = 'all';
+
+// ============================================================
+// HELPERS
+// ============================================================
+function daysSince(d) {
+  if (!d) return 999;
+  return Math.floor((Date.now() - new Date(d)) / 86400000);
+}
+
+function todayISO() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function fmtMoney(v) {
+  if (!v) return '—';
+  return '$' + Number(v).toLocaleString();
+}
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  var d = new Date(iso);
+  return d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
+}
+
+function greetingWord() {
+  var h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
+function todayFmt() {
+  return new Date().toLocaleDateString('en-US', {weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();
+}
+
+function statusDotClass(status) {
+  if (status === 'hot') return 'dot-hot';
+  if (status === 'active') return 'dot-active';
+  if (status === 'followUp') return 'dot-followup';
+  if (status === 'cold') return 'dot-cold';
+  if (status === 'warm') return 'dot-warm';
+  return 'dot-cold';
+}
+
+function statusBadge(status) {
+  var map = {
+    hot: ['badge-hot','HOT'],
+    active: ['badge-active','ACTIVE'],
+    followUp: ['badge-followup','FOLLOW UP'],
+    cold: ['badge-cold','COLD'],
+    warm: ['badge-warm','WARM']
+  };
+  var m = map[status] || ['badge-cold', status];
+  return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
+}
+
+function priorityBadge(p) {
+  var map = {hot:['badge-hot','HOT'],warm:['badge-warm','WARM'],cold:['badge-cold','COLD']};
+  var m = map[p] || ['badge-cold',p];
+  return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
+}
+
+function emailBadge(s) {
+  if (s === 'Replied') return '<span class="badge badge-replied">REPLIED</span>';
+  if (s === 'No Reply') return '<span class="badge badge-noreply">NO REPLY</span>';
+  return '<span class="badge badge-notsent">NOT SENT</span>';
+}
+
+function stageName(s) {
+  var map = {
+    new: 'New Lead',
+    contacted: 'Contacted',
+    discussion: 'In Discussion',
+    negotiation: 'Negotiation',
+    won: 'Closed Won',
+    lost: 'Closed Lost'
+  };
+  return map[s] || s;
+}
+
+function uniqueId(prefix) {
+  return prefix + Date.now() + Math.random().toString(36).substr(2,5);
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function showModal(html) {
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-bg').style.display = 'block';
+}
+
+function closeModal() {
+  document.getElementById('modal-bg').style.display = 'none';
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+var currentPage = 'dashboard';
+
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(function(p) { p.style.display = 'none'; });
+  document.getElementById('page-' + page).style.display = 'block';
+  document.querySelectorAll('.nav-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.page === page);
+  });
+  currentPage = page;
+  if (page === 'dashboard') renderDashboard();
+  else if (page === 'clients') renderClients();
+  else if (page === 'leads') renderLeads();
+  else if (page === 'pipeline') renderPipeline();
+  else if (page === 'settings') renderSettings();
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function renderDashboard() {
+  var el = document.getElementById('page-dashboard');
+
+  // Follow-up alerts: clients + leads where daysSince >= 5
+  var allContacts = clients.map(function(c) { return {name:c.name,company:c.company,phone:c.phone,lastContact:c.lastContact,type:'client'}; })
+    .concat(leads.map(function(l) { return {name:l.name,company:l.company,phone:l.phone,lastContact:l.lastContact,type:'lead'}; }));
+
+  var alerts = allContacts.filter(function(c) { return daysSince(c.lastContact) >= 5; })
+    .sort(function(a,b) { return daysSince(b.lastContact) - daysSince(a.lastContact); });
+
+  var alertsHtml = '';
+  if (alerts.length === 0) {
+    alertsHtml = '<div style="padding:12px 0;color:#bbb;font-size:13px;text-align:center;">All contacts up to date</div>';
+  } else {
+    alerts.forEach(function(c) {
+      var ds = daysSince(c.lastContact);
+      var overdue = ds > 7;
+      var phoneLink = c.phone ? '<a href="tel:' + esc(c.phone) + '" class="call-btn">Call</a>' : '<span style="font-size:11px;color:#ccc;">No phone</span>';
+      alertsHtml += '<div class="fu-row' + (overdue ? ' overdue' : '') + '">' +
+        '<div class="fu-info"><div class="fu-name">' + esc(c.name) + '</div><div class="fu-company">' + esc(c.company) + '</div></div>' +
+        '<div class="fu-days">' + ds + 'd ago</div>' +
+        phoneLink +
+        '</div>';
+    });
+  }
+
+  // Stats
+  var hotCount = clients.filter(function(c) { return c.status === 'hot'; }).length;
+  var inPipeline = clients.filter(function(c) { return c.pipelineStage === 'discussion' || c.pipelineStage === 'negotiation'; }).length;
+
+  // Tasks HTML
+  var tasksHtml = '';
+  if (tasks.length === 0) {
+    tasksHtml = '<div style="color:#bbb;font-size:13px;padding:12px 0;">No tasks yet</div>';
+  } else {
+    tasks.forEach(function(t) {
+      tasksHtml += '<div class="task-row">' +
+        '<div class="task-check' + (t.done ? ' checked' : '') + '" onclick="toggleTask(\'' + esc(t.id) + '\')"></div>' +
+        '<span class="task-text' + (t.done ? ' done' : '') + '">' + esc(t.text) + '</span>' +
+        '<button class="task-del" onclick="deleteTask(\'' + esc(t.id) + '\')">×</button>' +
+        '</div>';
+    });
+  }
+
+  el.innerHTML =
+    '<div style="padding-top:4px;">' +
+    '<div class="greeting">' + greetingWord() + ', Meir</div>' +
+    '<div class="today-date">' + todayFmt() + '</div>' +
+
+    '<div class="section-label">Follow-Up Alerts</div>' +
+    alertsHtml +
+
+    '<div class="section-label" style="margin-top:20px;">Quick Stats</div>' +
+    '<div class="stats-row">' +
+    '<div class="stat-box"><div class="stat-num">' + clients.length + '</div><div class="stat-lbl">Clients</div></div>' +
+    '<div class="stat-box"><div class="stat-num">' + hotCount + '</div><div class="stat-lbl">Hot</div></div>' +
+    '<div class="stat-box"><div class="stat-num">' + inPipeline + '</div><div class="stat-lbl">Pipeline</div></div>' +
+    '<div class="stat-box"><div class="stat-num">' + meetings + '</div><div class="stat-lbl">Meetings</div></div>' +
+    '</div>' +
+
+    '<div class="section-label" style="margin-top:20px;">Tasks</div>' +
+    '<div id="tasks-list" style="background:#fff;border:1px solid #E8E3D8;border-radius:3px;padding:0 14px;">' +
+    tasksHtml +
+    '</div>' +
+    '<div class="add-task-row">' +
+    '<input type="text" id="new-task-input" placeholder="Add a task..." onkeydown="if(event.key===\'Enter\')addTask()">' +
+    '<button onclick="addTask()">Add</button>' +
+    '</div>' +
+    '</div>';
+}
+
+function toggleTask(id) {
+  tasks.forEach(function(t) { if (t.id === id) t.done = !t.done; });
+  save('rc_tasks', tasks);
+  renderDashboard();
+}
+
+function deleteTask(id) {
+  tasks = tasks.filter(function(t) { return t.id !== id; });
+  save('rc_tasks', tasks);
+  renderDashboard();
+}
+
+function addTask() {
+  var inp = document.getElementById('new-task-input');
+  if (!inp) return;
+  var text = inp.value.trim();
+  if (!text) return;
+  tasks.push({id: uniqueId('t'), text: text, done: false, priority: 'normal'});
+  save('rc_tasks', tasks);
+  renderDashboard();
+}
+
+// ============================================================
+// CLIENTS
+// ============================================================
+function renderClients() {
+  var el = document.getElementById('page-clients');
+
+  var filtered = clients.filter(function(c) {
+    if (clientFilter !== 'all' && c.status !== clientFilter) return false;
+    if (clientSearch) {
+      var q = clientSearch.toLowerCase();
+      return c.name.toLowerCase().indexOf(q) > -1 || c.company.toLowerCase().indexOf(q) > -1 || (c.country && c.country.toLowerCase().indexOf(q) > -1);
+    }
+    return true;
+  });
+
+  var filters = ['all','hot','active','followUp','cold'];
+  var filterLabels = {all:'All',hot:'Hot',active:'Active',followUp:'Follow Up',cold:'Cold'};
+
+  var ftabs = filters.map(function(f) {
+    return '<button class="ftab' + (clientFilter === f ? ' active' : '') + '" onclick="setClientFilter(\'' + f + '\')">' + filterLabels[f] + '</button>';
+  }).join('');
+
+  var rows = '';
+  if (filtered.length === 0) {
+    rows = '<div class="empty-state">No clients found</div>';
+  } else {
+    filtered.forEach(function(c) {
+      var ds = daysSince(c.lastContact);
+      var daysStr = ds === 999 ? 'Never' : ds + 'd ago';
+      rows += '<div class="row-item" onclick="openClientModal(\'' + esc(c.id) + '\')">' +
+        '<div class="dot ' + statusDotClass(c.status) + '"></div>' +
+        '<div class="client-left">' +
+        '<div class="client-name">' + esc(c.name) + '</div>' +
+        '<div class="client-company">' + esc(c.company) + ' · ' + esc(c.city) + '</div>' +
+        '</div>' +
+        '<div class="client-right">' +
+        '<div class="days-txt">' + daysStr + '</div>' +
+        statusBadge(c.status) +
+        '</div>' +
+        '</div>';
+    });
+  }
+
+  el.innerHTML =
+    '<div class="search-wrap"><input type="text" placeholder="Search clients..." value="' + esc(clientSearch) + '" oninput="setClientSearch(this.value)"></div>' +
+    '<div class="filter-tabs">' + ftabs + '</div>' +
+    rows;
+}
+
+function setClientFilter(f) {
+  clientFilter = f;
+  renderClients();
+}
+
+function setClientSearch(v) {
+  clientSearch = v;
+  renderClients();
+}
+
+function openClientModal(id) {
+  var c = clients.find(function(x) { return x.id === id; });
+  if (!c) return;
+
+  var logs = convLogs[id] || [];
+  var logsHtml = '';
+  if (logs.length === 0) {
+    logsHtml = '<div style="color:#bbb;font-size:12px;padding:8px 0;">No contact logged yet</div>';
+  } else {
+    var recent = logs.slice(-5).reverse();
+    recent.forEach(function(l) {
+      logsHtml += '<div class="log-entry"><span class="log-date">' + esc(l.date) + '</span> — ' + esc(l.note) + '</div>';
+    });
+  }
+
+  var html =
+    '<div class="modal-header">' +
+    '<div>' +
+    '<div class="modal-title">' + esc(c.name) + '</div>' +
+    '<div style="font-size:12px;color:#999;margin-top:2px;">' + esc(c.company) + '</div>' +
+    '</div>' +
+    '<button class="modal-close" onclick="closeModal()">×</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+
+    statusBadge(c.status) + '&nbsp;' +
+    '<span class="badge" style="background:#F0F0F0;color:#666;">' + stageName(c.pipelineStage) + '</span>' +
+
+    '<div style="margin-top:14px;">' +
+    '<div class="detail-row"><span class="detail-label">Role</span><span class="detail-value">' + esc(c.role) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Email</span><span class="detail-value"><a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a></span></div>' +
+    '<div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value"><a href="tel:' + esc(c.phone) + '">' + esc(c.phone || '—') + '</a></span></div>' +
+    '<div class="detail-row"><span class="detail-label">Location</span><span class="detail-value">' + esc(c.city) + ', ' + esc(c.country) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Source</span><span class="detail-value">' + esc(c.source) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Deal Value</span><span class="detail-value" style="color:#C9A84C;font-weight:500;">' + fmtMoney(c.dealValue) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Last Contact</span><span class="detail-value">' + fmtDate(c.lastContact) + ' (' + daysSince(c.lastContact) + 'd ago)</span></div>' +
+    '</div>' +
+
+    '<div class="section-label">Notes</div>' +
+    '<textarea class="notes-area" id="modal-notes-' + esc(c.id) + '" placeholder="Add notes...">' + esc(c.notes) + '</textarea>' +
+
+    '<div class="section-label" style="margin-top:14px;">Pipeline Stage</div>' +
+    '<select class="stage-select" id="modal-stage-' + esc(c.id) + '">' +
+    ['new','contacted','discussion','negotiation','won','lost'].map(function(s) {
+      return '<option value="' + s + '"' + (c.pipelineStage === s ? ' selected' : '') + '>' + stageName(s) + '</option>';
+    }).join('') +
+    '</select>' +
+
+    '<button class="btn-primary" onclick="logContactAndSave(\'' + esc(c.id) + '\',\'client\')">✓ Log Contact Today</button>' +
+
+    '<div class="section-label" style="margin-top:14px;">Contact History</div>' +
+    '<div style="background:#fff;border:1px solid #E8E3D8;border-radius:3px;padding:0 14px;">' + logsHtml + '</div>' +
+
+    '</div>';
+
+  showModal(html);
+}
+
+function logContactAndSave(id, type) {
+  var noteEl, stageEl, notesVal, stageVal;
+  if (type === 'client') {
+    noteEl = document.getElementById('modal-notes-' + id);
+    stageEl = document.getElementById('modal-stage-' + id);
+    notesVal = noteEl ? noteEl.value : '';
+    stageVal = stageEl ? stageEl.value : '';
+
+    clients.forEach(function(c) {
+      if (c.id === id) {
+        c.lastContact = todayISO();
+        c.notes = notesVal;
+        c.pipelineStage = stageVal;
+      }
+    });
+    save('rc_clients', clients);
+
+    if (!convLogs[id]) convLogs[id] = [];
+    convLogs[id].push({date: todayISO(), note: 'Contact logged'});
+    save('rc_conv', convLogs);
+
+  } else if (type === 'lead') {
+    noteEl = document.getElementById('modal-notes-' + id);
+    stageEl = document.getElementById('modal-stage-' + id);
+    var emailEl = document.getElementById('modal-email-status-' + id);
+    notesVal = noteEl ? noteEl.value : '';
+    stageVal = stageEl ? stageEl.value : '';
+    var emailVal = emailEl ? emailEl.value : '';
+
+    leads.forEach(function(l) {
+      if (l.id === id) {
+        l.lastContact = todayISO();
+        l.notes = notesVal;
+        l.pipelineStage = stageVal;
+        if (emailVal) l.emailStatus = emailVal;
+      }
+    });
+    save('rc_leads', leads);
+
+    if (!convLogs[id]) convLogs[id] = [];
+    convLogs[id].push({date: todayISO(), note: 'Contact logged'});
+    save('rc_conv', convLogs);
+  }
+
+  closeModal();
+  toast('Contact logged!');
+
+  if (currentPage === 'clients') renderClients();
+  else if (currentPage === 'leads') renderLeads();
+  else if (currentPage === 'dashboard') renderDashboard();
+}
+
+// ============================================================
+// LEADS
+// ============================================================
+function renderLeads() {
+  var el = document.getElementById('page-leads');
+
+  var filtered = leads.filter(function(l) {
+    if (leadFilter === 'all') return true;
+    return l.priority === leadFilter;
+  });
+
+  var filters = ['all','hot','warm','cold'];
+  var filterLabels = {all:'All',hot:'Hot',warm:'Warm',cold:'Cold'};
+
+  var ftabs = filters.map(function(f) {
+    return '<button class="ftab' + (leadFilter === f ? ' active' : '') + '" onclick="setLeadFilter(\'' + f + '\')">' + filterLabels[f] + '</button>';
+  }).join('');
+
+  var rows = '';
+  if (filtered.length === 0) {
+    rows = '<div class="empty-state">No leads found</div>';
+  } else {
+    filtered.forEach(function(l) {
+      var ds = daysSince(l.lastContact);
+      var daysStr = ds === 999 ? 'Never' : ds + 'd ago';
+      rows += '<div class="row-item" onclick="openLeadModal(\'' + esc(l.id) + '\')">' +
+        '<div class="dot ' + statusDotClass(l.priority) + '"></div>' +
+        '<div class="client-left">' +
+        '<div class="client-name">' + esc(l.name) + '</div>' +
+        '<div class="client-company">' + esc(l.company) + ' · ' + esc(stageName(l.pipelineStage)) + '</div>' +
+        '</div>' +
+        '<div class="client-right">' +
+        '<div class="days-txt">' + daysStr + '</div>' +
+        emailBadge(l.emailStatus) +
+        '</div>' +
+        '</div>';
+    });
+  }
+
+  el.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">' +
+    '<div class="filter-tabs" style="margin-bottom:0;flex:1;">' + ftabs + '</div>' +
+    '<button style="background:#1C3829;color:#fff;border:none;border-radius:3px;padding:8px 12px;font-size:12px;font-family:Inter,sans-serif;cursor:pointer;flex-shrink:0;margin-left:8px;" onclick="openAddLeadModal()">+ Lead</button>' +
+    '</div>' +
+    rows;
+}
+
+function setLeadFilter(f) {
+  leadFilter = f;
+  renderLeads();
+}
+
+function openLeadModal(id) {
+  var l = leads.find(function(x) { return x.id === id; });
+  if (!l) return;
+
+  var logs = convLogs[id] || [];
+  var logsHtml = '';
+  if (logs.length === 0) {
+    logsHtml = '<div style="color:#bbb;font-size:12px;padding:8px 0;">No contact logged yet</div>';
+  } else {
+    var recent = logs.slice(-5).reverse();
+    recent.forEach(function(entry) {
+      logsHtml += '<div class="log-entry"><span class="log-date">' + esc(entry.date) + '</span> — ' + esc(entry.note) + '</div>';
+    });
+  }
+
+  var html =
+    '<div class="modal-header">' +
+    '<div>' +
+    '<div class="modal-title">' + esc(l.name) + '</div>' +
+    '<div style="font-size:12px;color:#999;margin-top:2px;">' + esc(l.company) + '</div>' +
+    '</div>' +
+    '<button class="modal-close" onclick="closeModal()">×</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+
+    priorityBadge(l.priority) + '&nbsp;' + emailBadge(l.emailStatus) +
+
+    '<div style="margin-top:14px;">' +
+    '<div class="detail-row"><span class="detail-label">Email</span><span class="detail-value"><a href="mailto:' + esc(l.email) + '">' + esc(l.email || '—') + '</a></span></div>' +
+    '<div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value"><a href="tel:' + esc(l.phone) + '">' + esc(l.phone || '—') + '</a></span></div>' +
+    '<div class="detail-row"><span class="detail-label">Location</span><span class="detail-value">' + esc(l.city) + ', ' + esc(l.country) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Source</span><span class="detail-value">' + esc(l.source) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Deal Value</span><span class="detail-value" style="color:#C9A84C;font-weight:500;">' + fmtMoney(l.dealValue) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Last Contact</span><span class="detail-value">' + fmtDate(l.lastContact) + ' (' + daysSince(l.lastContact) + 'd ago)</span></div>' +
+    '</div>' +
+
+    '<div class="section-label">Notes</div>' +
+    '<textarea class="notes-area" id="modal-notes-' + esc(l.id) + '" placeholder="Add notes...">' + esc(l.notes) + '</textarea>' +
+
+    '<div class="section-label" style="margin-top:14px;">Pipeline Stage</div>' +
+    '<select class="stage-select" id="modal-stage-' + esc(l.id) + '">' +
+    ['new','contacted','discussion','negotiation','won','lost'].map(function(s) {
+      return '<option value="' + s + '"' + (l.pipelineStage === s ? ' selected' : '') + '>' + stageName(s) + '</option>';
+    }).join('') +
+    '</select>' +
+
+    '<div class="section-label" style="margin-top:14px;">Email Status</div>' +
+    '<select class="stage-select" id="modal-email-status-' + esc(l.id) + '">' +
+    ['Not Sent','Replied','No Reply'].map(function(s) {
+      return '<option value="' + s + '"' + (l.emailStatus === s ? ' selected' : '') + '>' + s + '</option>';
+    }).join('') +
+    '</select>' +
+
+    '<button class="btn-primary" onclick="logContactAndSave(\'' + esc(l.id) + '\',\'lead\')">✓ Log Contact Today</button>' +
+
+    '<div class="section-label" style="margin-top:14px;">Contact History</div>' +
+    '<div style="background:#fff;border:1px solid #E8E3D8;border-radius:3px;padding:0 14px;">' + logsHtml + '</div>' +
+
+    '<button class="btn-danger" onclick="deleteLead(\'' + esc(l.id) + '\')">Delete Lead</button>' +
+
+    '</div>';
+
+  showModal(html);
+}
+
+function openAddLeadModal() {
+  var html =
+    '<div class="modal-header">' +
+    '<div class="modal-title">New Lead</div>' +
+    '<button class="modal-close" onclick="closeModal()">×</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+    '<div class="form-group"><label class="form-label">Name *</label><input class="form-input" id="nl-name" placeholder="Contact name"></div>' +
+    '<div class="form-group"><label class="form-label">Company</label><input class="form-input" id="nl-company" placeholder="Company name"></div>' +
+    '<div class="form-group"><label class="form-label">Email</label><input class="form-input" id="nl-email" type="email" placeholder="email@company.com"></div>' +
+    '<div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="nl-phone" type="tel" placeholder="+1 ..."></div>' +
+    '<div class="form-group"><label class="form-label">City</label><input class="form-input" id="nl-city" placeholder="City"></div>' +
+    '<div class="form-group"><label class="form-label">Country</label><input class="form-input" id="nl-country" placeholder="Country"></div>' +
+    '<div class="form-group"><label class="form-label">Priority</label><select class="form-select" id="nl-priority"><option value="hot">Hot</option><option value="warm" selected>Warm</option><option value="cold">Cold</option></select></div>' +
+    '<div class="form-group"><label class="form-label">Source</label><input class="form-input" id="nl-source" placeholder="Campaign 1, Referral..."></div>' +
+    '<div class="form-group"><label class="form-label">Deal Value ($)</label><input class="form-input" id="nl-value" type="number" placeholder="0"></div>' +
+    '<div class="form-group"><label class="form-label">Notes</label><textarea class="notes-area" id="nl-notes" placeholder="Initial notes..."></textarea></div>' +
+    '<button class="btn-primary" onclick="saveNewLead()">Add Lead</button>' +
+    '</div>';
+  showModal(html);
+}
+
+function saveNewLead() {
+  var name = document.getElementById('nl-name').value.trim();
+  if (!name) { toast('Name is required'); return; }
+  var lead = {
+    id: uniqueId('l'),
+    name: name,
+    company: document.getElementById('nl-company').value.trim(),
+    email: document.getElementById('nl-email').value.trim(),
+    phone: document.getElementById('nl-phone').value.trim(),
+    city: document.getElementById('nl-city').value.trim(),
+    country: document.getElementById('nl-country').value.trim(),
+    priority: document.getElementById('nl-priority').value,
+    pipelineStage: 'new',
+    emailStatus: 'Not Sent',
+    lastContact: todayISO(),
+    notes: document.getElementById('nl-notes').value.trim(),
+    source: document.getElementById('nl-source').value.trim(),
+    dealValue: parseInt(document.getElementById('nl-value').value) || 0
+  };
+  leads.push(lead);
+  save('rc_leads', leads);
+  closeModal();
+  toast('Lead added!');
+  renderLeads();
+}
+
+function deleteLead(id) {
+  if (!confirm('Delete this lead?')) return;
+  leads = leads.filter(function(l) { return l.id !== id; });
+  save('rc_leads', leads);
+  closeModal();
+  toast('Lead deleted');
+  renderLeads();
+}
+
+// ============================================================
+// PIPELINE
+// ============================================================
+function renderPipeline() {
+  var el = document.getElementById('page-pipeline');
+
+  var stages = ['new','contacted','discussion','negotiation','won','lost'];
+  var allItems = clients.map(function(c) { return {name:c.name,company:c.company,stage:c.pipelineStage,value:c.dealValue,type:'client'}; })
+    .concat(leads.map(function(l) { return {name:l.name,company:l.company,stage:l.pipelineStage,value:l.dealValue,type:'lead'}; }));
+
+  var html = '';
+  stages.forEach(function(stage, idx) {
+    var items = allItems.filter(function(x) { return x.stage === stage; });
+    var stageColor = stage === 'won' ? '#2E7D52' : stage === 'lost' ? '#8B2020' : '#1C3829';
+
+    html += '<div class="pipeline-stage">';
+    html += '<div class="pipeline-stage-header">';
+    html += '<div class="pipeline-stage-name" style="color:' + stageColor + ';">' + stageName(stage) + '</div>';
+    html += '<div class="pipeline-count">' + items.length + '</div>';
+    html += '</div>';
+
+    if (items.length === 0) {
+      html += '<div style="color:#bbb;font-size:12px;padding:6px 0 4px;">—</div>';
+    } else {
+      items.forEach(function(item) {
+        html += '<div class="pipeline-item">' +
+          '<div class="pipeline-item-name">' + esc(item.name) + '</div>' +
+          '<div class="pipeline-item-meta">' + esc(item.company) + ' · ' + (item.type === 'lead' ? 'Lead' : 'Client') + '</div>' +
+          (item.value ? '<div class="pipeline-item-value">' + fmtMoney(item.value) + '</div>' : '') +
+          '</div>';
+      });
+    }
+
+    html += '</div>';
+    if (idx < stages.length - 1) {
+      html += '<div class="pipeline-connector"></div>';
+    }
+  });
+
+  // Total pipeline value
+  var totalVal = allItems.filter(function(x) { return x.stage !== 'lost'; }).reduce(function(sum, x) { return sum + (x.value || 0); }, 0);
+  html += '<hr class="divider"><div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0 8px;">' +
+    '<span style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#999;">Total Pipeline</span>' +
+    '<span style="font-size:16px;font-weight:500;color:#C9A84C;">' + fmtMoney(totalVal) + '</span>' +
+    '</div>';
+
+  el.innerHTML = html;
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function renderSettings() {
+  var el = document.getElementById('page-settings');
+  el.innerHTML =
+    '<div style="padding-top:8px;">' +
+    '<div class="section-label">Data</div>' +
+    '<div class="settings-section">' +
+    '<button class="settings-btn" onclick="exportData()"><span class="icon">📤</span>Export All Data (JSON)</button>' +
+    '<button class="settings-btn" onclick="importData()"><span class="icon">📥</span>Import Data (JSON)</button>' +
+    '<button class="settings-btn danger" onclick="clearData()"><span class="icon">🗑️</span>Clear All Data</button>' +
+    '</div>' +
+
+    '<div class="section-label">About</div>' +
+    '<div class="card">' +
+    '<div class="detail-row"><span class="detail-label">App</span><span class="detail-value">Ramigem CRM</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Version</span><span class="detail-value">3.0</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Built for</span><span class="detail-value">Meir Harush</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Clients</span><span class="detail-value">' + clients.length + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Leads</span><span class="detail-value">' + leads.length + '</span></div>' +
+    '</div>' +
+
+    '<div class="version-text">RAMIGEM · COLOMBIAN EMERALDS · NYC</div>' +
+    '</div>';
+}
+
+function exportData() {
+  var data = {
+    version: 3,
+    exported: new Date().toISOString(),
+    clients: clients,
+    leads: leads,
+    tasks: tasks,
+    convLogs: convLogs
+  };
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'ramigem-crm-backup-' + todayISO() + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Data exported!');
+}
+
+function importData() {
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        var data = JSON.parse(ev.target.result);
+        if (data.clients) { clients = data.clients; save('rc_clients', clients); }
+        if (data.leads) { leads = data.leads; save('rc_leads', leads); }
+        if (data.tasks) { tasks = data.tasks; save('rc_tasks', tasks); }
+        if (data.convLogs) { convLogs = data.convLogs; save('rc_conv', convLogs); }
+        toast('Data imported!');
+        renderSettings();
+      } catch(err) {
+        toast('Invalid file');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function clearData() {
+  if (!confirm('Clear ALL data? This cannot be undone.')) return;
+  clients = JSON.parse(JSON.stringify(DEFAULT_CLIENTS));
+  leads = JSON.parse(JSON.stringify(DEFAULT_LEADS));
+  tasks = [{id:'t1',text:'Follow up Artcurial Paris — finished jewelry angle',done:false,priority:'high'},{id:'t2',text:'Call hottest contacts this week',done:false,priority:'high'}];
+  convLogs = {};
+  meetings = 3;
+  save('rc_clients', clients);
+  save('rc_leads', leads);
+  save('rc_tasks', tasks);
+  save('rc_conv', convLogs);
+  save('rc_meetings', meetings);
+  toast('Data reset to defaults');
+  renderSettings();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  goTo('dashboard');
+});
+</script>
+</body>
+</html>

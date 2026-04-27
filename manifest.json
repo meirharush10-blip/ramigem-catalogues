@@ -1,0 +1,25 @@
+{
+  "name": "RAMIGEM Collections",
+  "short_name": "RAMIGEM",
+  "description": "Ramigem Colombian Emerald Collections",
+  "start_url": "/ramigem-catalogues/",
+  "scope": "/ramigem-catalogues/",
+  "display": "standalone",
+  "background_color": "#ede5db",
+  "theme_color": "#2b2118",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

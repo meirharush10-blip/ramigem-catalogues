@@ -507,6 +507,13 @@
   .pass-error { color: #8a2020; font-size: 11px; margin-top: 6px; display: none; }
 
 </style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2b2118">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RAMIGEM">
+  <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 
@@ -870,5 +877,15 @@ function closePassModal() {
   </div>
 </div>
 
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/ramigem-catalogues/sw.js')
+      .then(r => console.log('SW registered'))
+      .catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
 </body>
 </html>

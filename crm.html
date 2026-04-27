@@ -3,1335 +3,219 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Ramigem CRM">
-<meta name="theme-color" content="#FFFFFF">
-<meta name="description" content="Ramigem Emerald CRM — Meir Harush">
-<link rel="manifest" id="pwa-manifest">
+<title>Ramigem CRM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<title>Ramigem CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════
-   DESIGN TOKENS — GRAFF.COM AESTHETIC
-═══════════════════════════════════════════════════ */
-:root {
-  --white:       #FFFFFF;
-  --bg:          #FAFAF8;
-  --bg2:         #F5F5F3;
-  --border:      #E8E8E6;
-  --border-light:#F0F0EE;
-  --text:        #0A0A0A;
-  --text-mid:    #4A4A4A;
-  --text-muted:  #9A9A9A;
-  --champagne:   #C4A882;
-  --champ-dark:  #A8916A;
-  --champ-light: #EAD9C4;
-  --dot-hot:     #8B1C1C;
-  --dot-active:  #1C5230;
-  --dot-followup:#7A5C1E;
-  --dot-cold:    #3D5268;
-  --nav-h:       64px;
-  --top-h:       56px;
-  --hero-h:      72vh;
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:#FAFAF7;font-family:'Inter',sans-serif;color:#2C2C2C;overflow:hidden;}
+#app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto;position:relative;}
 
-  /* Image URLs — GitHub Pages base */
-  --img-base: 'https://meirharush10-blip.github.io/ramigem-catalogues/media';
-}
+/* HEADER */
+.app-header{background:#FAFAF7;border-bottom:1px solid #E8E3D8;padding:14px 20px 10px;text-align:center;flex-shrink:0;}
+.app-header h1{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;letter-spacing:0.2em;color:#1C3829;}
+.app-header .page-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;letter-spacing:0.1em;color:#1C3829;margin-top:2px;}
 
-/* ── RESET ── */
-*, *::before, *::after {
-  margin: 0; padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-html, body {
-  height: 100%;
-  background: var(--white);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  font-weight: 300;
-  font-size: 14px;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+/* CONTENT */
+#content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.page{display:none;padding:16px 16px 8px;}
 
-/* ── APP SHELL ── */
-#app {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  max-width: 430px;
-  margin: 0 auto;
-  position: relative;
-  background: var(--white);
-}
+/* NAV */
+#nav{background:#fff;border-top:1px solid #E8E3D8;display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0);}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 4px 8px;border:none;background:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:10px;font-weight:400;color:#999;gap:4px;position:relative;}
+.nav-btn svg{width:20px;height:20px;stroke:#999;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.nav-btn.active{color:#1C3829;}
+.nav-btn.active svg{stroke:#1C3829;}
+.nav-btn.active::after{content:'';position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:#C9A84C;}
 
-/* ═══════════════════════════════════════════════════
-   TOP BAR — GRAFF STYLE
-═══════════════════════════════════════════════════ */
-#top-bar {
-  height: var(--top-h);
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 50;
-}
-.top-logo {
-  font-family: 'Inter', sans-serif;
-  font-weight: 300;
-  font-size: 15px;
-  letter-spacing: 0.28em;
-  color: var(--text);
-  text-transform: uppercase;
-  user-select: none;
-}
-.top-logo span {
-  color: var(--champagne);
-  font-weight: 400;
-}
-.top-icons {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-.top-icon {
-  width: 20px;
-  height: 20px;
-  color: var(--text);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.top-icon svg {
-  width: 18px;
-  height: 18px;
-  stroke: var(--text);
-  stroke-width: 1.2;
-  fill: none;
-}
+/* CARDS & SECTIONS */
+.section-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#999;margin:16px 0 8px;}
+.divider{border:none;border-top:1px solid #E8E3D8;margin:12px 0;}
+.card{border:1px solid #E8E3D8;border-radius:3px;background:#fff;margin-bottom:8px;padding:14px;}
+.row-item{border:1px solid #E8E3D8;border-radius:3px;background:#fff;margin-bottom:6px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;}
+.row-item:active{background:#F5F0E8;}
 
-/* ═══════════════════════════════════════════════════
-   PAGES
-═══════════════════════════════════════════════════ */
-.page {
-  display: none;
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-bottom: calc(var(--nav-h) + 8px);
-  opacity: 0;
-  transition: opacity 0.22s ease;
-  -webkit-overflow-scrolling: touch;
-  background: var(--white);
-}
-.page.active  { display: block; }
-.page.visible { opacity: 1; }
+/* STATUS DOTS */
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-hot{background:#C9A84C;}
+.dot-active{background:#2E7D52;}
+.dot-followup{background:#E8A020;}
+.dot-cold{background:#999;}
+.dot-warm{background:#E8A020;}
 
-/* ═══════════════════════════════════════════════════
-   HERO — FULL BLEED GRAFF STYLE
-═══════════════════════════════════════════════════ */
-.hero {
-  position: relative;
-  width: 100%;
-  height: var(--hero-h);
-  min-height: 420px;
-  max-height: 600px;
-  overflow: hidden;
-  background-color: #1A1A1A;
-}
-.hero-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-/* Dark gradient overlay — only bottom 50% */
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 35%,
-    rgba(0,0,0,0.15) 60%,
-    rgba(0,0,0,0.65) 100%
-  );
-  z-index: 1;
-}
-.hero-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0 24px 32px;
-  z-index: 2;
-}
-.hero-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.78);
-  margin-bottom: 10px;
-}
-.hero-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 34px;
-  font-weight: 300;
-  font-style: italic;
-  color: #FFFFFF;
-  line-height: 1.15;
-  letter-spacing: 0.01em;
-  margin-bottom: 20px;
-}
-.hero-cta {
-  display: inline-block;
-  background: var(--champagne);
-  color: #FFFFFF;
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  padding: 12px 28px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  text-align: center;
-  transition: background 0.2s;
-}
-.hero-cta:active { background: var(--champ-dark); }
+/* STATUS BADGES */
+.badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:2px;}
+.badge-hot{background:#FDF4E0;color:#C9A84C;}
+.badge-active{background:#E8F5EE;color:#2E7D52;}
+.badge-followup{background:#FEF3E0;color:#E8A020;}
+.badge-cold{background:#F0F0F0;color:#888;}
+.badge-warm{background:#FEF3E0;color:#E8A020;}
+.badge-replied{background:#E8F5EE;color:#2E7D52;}
+.badge-noreply{background:#F0F0F0;color:#888;}
+.badge-notsent{background:#F0F0F0;color:#888;}
 
-/* ═══════════════════════════════════════════════════
-   SECTION HEADERS (editorial magazine style)
-═══════════════════════════════════════════════════ */
-.section-head {
-  padding: 28px 24px 16px;
-  border-bottom: 1px solid var(--border-light);
-}
-.section-eyebrow {
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-.section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 26px;
-  font-weight: 300;
-  color: var(--text);
-  letter-spacing: 0.01em;
-  line-height: 1.2;
-}
-.section-count {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 300;
-  color: var(--text-muted);
-  margin-top: 4px;
-  letter-spacing: 0.05em;
-}
+/* DASHBOARD */
+.greeting{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#1C3829;margin-bottom:2px;}
+.today-date{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#999;margin-bottom:16px;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px;}
+.stat-box{border:1px solid #E8E3D8;border-radius:3px;background:#fff;padding:10px 6px;text-align:center;}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:#1C3829;line-height:1;}
+.stat-lbl{font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#999;margin-top:4px;}
 
-/* ═══════════════════════════════════════════════════
-   STATS ROW — editorial numerals
-═══════════════════════════════════════════════════ */
-.stats-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-bottom: 1px solid var(--border);
-}
-.stat-cell {
-  padding: 20px 0;
-  text-align: center;
-  border-right: 1px solid var(--border);
-}
-.stat-cell:last-child { border-right: none; }
-.stat-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px;
-  font-weight: 300;
-  color: var(--text);
-  line-height: 1;
-  letter-spacing: -0.01em;
-}
-.stat-lbl {
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-top: 5px;
-}
+/* FOLLOW-UP ROWS */
+.fu-row{border-left:3px solid #C9A84C;background:#fff;border-radius:0 3px 3px 0;border-top:1px solid #E8E3D8;border-right:1px solid #E8E3D8;border-bottom:1px solid #E8E3D8;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.fu-row.overdue{border-left-color:#8B2020;}
+.fu-info{flex:1;min-width:0;}
+.fu-name{font-size:13px;font-weight:500;color:#2C2C2C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fu-company{font-size:11px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fu-days{font-size:11px;color:#888;white-space:nowrap;flex-shrink:0;}
+.call-btn{background:#1C3829;color:#fff;border:none;border-radius:3px;padding:6px 12px;font-size:11px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;display:inline-block;}
+.call-btn:active{background:#152e20;}
 
-/* ═══════════════════════════════════════════════════
-   LIST ROWS — no card boxes, just thin borders
-═══════════════════════════════════════════════════ */
-.list-row {
-  display: flex;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--border-light);
-  cursor: pointer;
-  transition: background 0.15s;
-  background: var(--white);
-  gap: 14px;
-}
-.list-row:active { background: var(--bg2); }
-.list-row:last-child { border-bottom: none; }
+/* TASKS */
+.task-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E8E3D8;}
+.task-row:last-child{border-bottom:none;}
+.task-check{width:18px;height:18px;border:1.5px solid #E8E3D8;border-radius:3px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.task-check.checked{background:#1C3829;border-color:#1C3829;}
+.task-check.checked::after{content:'✓';color:#fff;font-size:11px;line-height:1;}
+.task-text{flex:1;font-size:13px;color:#2C2C2C;}
+.task-text.done{text-decoration:line-through;color:#999;}
+.task-del{background:none;border:none;color:#ccc;font-size:16px;cursor:pointer;padding:0 4px;}
+.add-task-row{display:flex;gap:8px;margin-top:10px;}
+.add-task-row input{flex:1;border:1px solid #E8E3D8;border-radius:3px;padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;outline:none;color:#2C2C2C;}
+.add-task-row input:focus{border-color:#C9A84C;}
+.add-task-row button{background:#1C3829;color:#fff;border:none;border-radius:3px;padding:9px 14px;font-size:13px;font-family:'Inter',sans-serif;cursor:pointer;}
 
-/* Status dot */
-.status-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.dot-hot      { background: var(--dot-hot); }
-.dot-active   { background: var(--dot-active); }
-.dot-followup { background: var(--dot-followup); }
-.dot-cold     { background: var(--dot-cold); }
-.dot-warm     { background: var(--dot-followup); }
-.dot-bounced  { background: #999; }
-.dot-replied  { background: var(--dot-active); }
-.dot-sent     { background: #4A6A8A; }
-.dot-noreply  { background: var(--dot-cold); }
-.dot-notsent  { background: #CCC; }
+/* SEARCH & FILTERS */
+.search-wrap{position:relative;margin-bottom:12px;}
+.search-wrap input{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px 10px 36px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;outline:none;color:#2C2C2C;}
+.search-wrap input:focus{border-color:#C9A84C;}
+.search-wrap::before{content:'⌕';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:16px;color:#ccc;}
+.filter-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.ftab{border:1px solid #E8E3D8;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;font-family:'Inter',sans-serif;background:#fff;color:#888;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.ftab.active{background:#1C3829;color:#fff;border-color:#1C3829;}
 
-.row-main { flex: 1; min-width: 0; }
-.row-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-  font-weight: 400;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
-}
-.row-sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-top: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.row-meta {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-.row-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  flex-shrink: 0;
-}
-.row-value {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text);
-}
-.row-date {
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 300;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-}
-.row-arrow {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: var(--text-muted);
-  font-weight: 300;
-}
+/* CLIENT ROW */
+.client-left{flex:1;min-width:0;}
+.client-name{font-size:14px;font-weight:500;color:#2C2C2C;}
+.client-company{font-size:12px;color:#999;margin-top:1px;}
+.client-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.days-txt{font-size:11px;color:#999;}
 
-/* ═══════════════════════════════════════════════════
-   TABS — minimal underline style
-═══════════════════════════════════════════════════ */
-.tabs-bar {
-  display: flex;
-  overflow-x: auto;
-  scrollbar-width: none;
-  border-bottom: 1px solid var(--border);
-  padding: 0 20px;
-  background: var(--white);
-  flex-shrink: 0;
-}
-.tabs-bar::-webkit-scrollbar { display: none; }
-.tab-item {
-  flex-shrink: 0;
-  padding: 13px 16px 11px;
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  cursor: pointer;
-  border-bottom: 1.5px solid transparent;
-  margin-bottom: -1px;
-  transition: all 0.18s;
-  white-space: nowrap;
-  background: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-}
-.tab-item.active {
-  color: var(--text);
-  border-bottom-color: var(--text);
-}
+/* MODAL */
+#modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;}
+#modal-box{position:absolute;bottom:0;left:0;right:0;background:#FAFAF7;border-radius:16px 16px 0 0;max-height:85vh;overflow-y:auto;max-width:480px;margin:0 auto;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid #E8E3D8;position:sticky;top:0;background:#FAFAF7;z-index:1;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#1C3829;}
+.modal-close{background:none;border:none;font-size:22px;color:#999;cursor:pointer;padding:0 4px;line-height:1;}
+.modal-body{padding:16px;}
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid #E8E3D8;gap:12px;}
+.detail-row:last-child{border-bottom:none;}
+.detail-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#999;flex-shrink:0;}
+.detail-value{font-size:13px;color:#2C2C2C;text-align:right;word-break:break-word;}
+.detail-value a{color:#1C3829;text-decoration:none;}
+.notes-area{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;resize:vertical;min-height:80px;outline:none;color:#2C2C2C;margin-top:8px;}
+.notes-area:focus{border-color:#C9A84C;}
+.btn-primary{background:#1C3829;color:#fff;border:none;border-radius:3px;padding:12px 20px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;width:100%;margin-top:10px;}
+.btn-primary:active{background:#152e20;}
+.btn-secondary{background:#fff;color:#1C3829;border:1px solid #1C3829;border-radius:3px;padding:11px 20px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;width:100%;margin-top:8px;}
+.btn-danger{background:#fff;color:#8B2020;border:1px solid #8B2020;border-radius:3px;padding:11px 20px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;width:100%;margin-top:8px;}
+.stage-select{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;color:#2C2C2C;outline:none;margin-top:8px;}
+.stage-select:focus{border-color:#C9A84C;}
+.log-entry{padding:8px 0;border-bottom:1px solid #E8E3D8;font-size:12px;color:#666;}
+.log-entry:last-child{border-bottom:none;}
+.log-date{font-weight:500;color:#1C3829;font-size:11px;}
 
-/* ═══════════════════════════════════════════════════
-   SEARCH — minimal bottom-border style
-═══════════════════════════════════════════════════ */
-.search-wrap {
-  padding: 0 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--white);
-}
-.search-wrap svg {
-  width: 14px;
-  height: 14px;
-  stroke: var(--text-muted);
-  stroke-width: 1.5;
-  fill: none;
-  flex-shrink: 0;
-}
-.search-input {
-  flex: 1;
-  height: 44px;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--text);
-  letter-spacing: 0.02em;
-}
-.search-input::placeholder {
-  color: var(--text-muted);
-  font-weight: 300;
-}
+/* PIPELINE */
+.pipeline-stage{margin-bottom:16px;}
+.pipeline-stage-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.pipeline-stage-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:#1C3829;}
+.pipeline-count{background:#E8E3D8;color:#666;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;}
+.pipeline-item{border:1px solid #E8E3D8;border-radius:3px;background:#fff;padding:10px 14px;margin-bottom:6px;}
+.pipeline-item-name{font-size:13px;font-weight:500;color:#2C2C2C;}
+.pipeline-item-meta{font-size:11px;color:#999;margin-top:2px;}
+.pipeline-item-value{font-size:12px;font-weight:500;color:#C9A84C;margin-top:4px;}
 
-/* ═══════════════════════════════════════════════════
-   ALERT ROWS — editorial follow-up list
-═══════════════════════════════════════════════════ */
-.alert-section {
-  padding: 0;
-}
-.alert-row {
-  display: flex;
-  align-items: flex-start;
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border-light);
-  gap: 14px;
-  background: var(--white);
-}
-.alert-accent {
-  width: 2px;
-  min-height: 44px;
-  border-radius: 1px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-.accent-overdue { background: var(--dot-hot); }
-.accent-today   { background: var(--dot-followup); }
-.accent-week    { background: var(--dot-active); }
-.alert-body { flex: 1; min-width: 0; }
-.alert-eyebrow {
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-.alert-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
-  font-weight: 400;
-  color: var(--text);
-  line-height: 1.2;
-}
-.alert-company {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--text-muted);
-  margin-top: 2px;
-  letter-spacing: 0.05em;
-}
-.alert-days-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--text-muted);
-  margin-top: 6px;
-}
-.alert-btns {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
+/* SETTINGS */
+.settings-section{margin-bottom:20px;}
+.settings-btn{border:1px solid #E8E3D8;border-radius:3px;background:#fff;padding:14px 16px;width:100%;text-align:left;font-size:14px;font-family:'Inter',sans-serif;color:#2C2C2C;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.settings-btn:active{background:#F5F0E8;}
+.settings-btn.danger{color:#8B2020;border-color:#f0d0d0;}
+.settings-btn span.icon{font-size:18px;}
+.version-text{text-align:center;font-size:11px;color:#ccc;padding:20px 0 8px;letter-spacing:0.05em;}
 
-/* ═══════════════════════════════════════════════════
-   BUTTONS — champagne filled or ghost underline
-═══════════════════════════════════════════════════ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.18s;
-  border: none;
-  outline: none;
-}
-.btn-primary {
-  background: var(--champagne);
-  color: #FFFFFF;
-  padding: 10px 18px;
-}
-.btn-primary:active { background: var(--champ-dark); }
-.btn-ghost {
-  background: transparent;
-  color: var(--text-mid);
-  padding: 10px 18px;
-  border: 1px solid var(--border);
-}
-.btn-ghost:active { background: var(--bg2); }
-.btn-link {
-  background: transparent;
-  color: var(--text-muted);
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-  letter-spacing: 0.12em;
-  font-size: 9px;
-}
-.btn-full { width: 100%; }
-.btn-danger {
-  background: transparent;
-  color: #8B1C1C;
-  border: 1px solid rgba(139,28,28,0.25);
-  padding: 10px 18px;
-}
-.btn-danger:active { background: rgba(139,28,28,0.05); }
+/* TOAST */
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1C3829;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-family:'Inter',sans-serif;opacity:0;transition:opacity 0.3s;z-index:2000;pointer-events:none;white-space:nowrap;}
+#toast.show{opacity:1;}
 
-/* ═══════════════════════════════════════════════════
-   TASKS — clean list inside a section
-═══════════════════════════════════════════════════ */
-.task-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 24px;
-  border-bottom: 1px solid var(--border-light);
-}
-.task-row:last-of-type { border-bottom: none; }
-.task-check {
-  width: 16px; height: 16px;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  flex-shrink: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.18s;
-}
-.task-check.done {
-  background: var(--champagne);
-  border-color: var(--champagne);
-}
-.task-check.done::after {
-  content: '';
-  width: 5px; height: 3px;
-  border-left: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  transform: rotate(-45deg) translateY(-1px);
-}
-.task-text-wrap { flex: 1; min-width: 0; }
-.task-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--text);
-  transition: all 0.18s;
-}
-.task-label.done {
-  text-decoration: line-through;
-  color: var(--text-muted);
-}
-.task-priority {
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-.task-del {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 4px;
-  line-height: 1;
-}
+/* ADD LEAD FORM */
+.form-group{margin-bottom:12px;}
+.form-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#999;margin-bottom:4px;display:block;}
+.form-input{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;outline:none;color:#2C2C2C;}
+.form-input:focus{border-color:#C9A84C;}
+.form-select{width:100%;border:1px solid #E8E3D8;border-radius:3px;padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;color:#2C2C2C;outline:none;}
+.form-select:focus{border-color:#C9A84C;}
 
-.add-task-wrap {
-  padding: 14px 24px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  border-top: 1px solid var(--border-light);
-}
-.add-task-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border);
-  padding: 6px 0;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--text);
-  outline: none;
-}
-.add-task-input::placeholder { color: var(--text-muted); }
-.priority-select {
-  background: transparent;
-  border: 1px solid var(--border);
-  padding: 6px 8px;
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--text-mid);
-  outline: none;
-  cursor: pointer;
-}
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;color:#bbb;font-size:14px;}
 
-/* ═══════════════════════════════════════════════════
-   CAMPAIGN BLOCK
-═══════════════════════════════════════════════════ */
-.campaign-block {
-  padding: 24px 24px 0;
-}
-.campaign-toggle-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border-light);
-}
-.campaign-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
-  font-weight: 400;
-  color: var(--text);
-}
-.campaign-chevron {
-  font-size: 10px;
-  color: var(--text-muted);
-  transition: transform 0.2s;
-}
-.campaign-chevron.open { transform: rotate(180deg); }
-.campaign-body {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s ease;
-}
-.campaign-body.open { max-height: 300px; }
-.campaign-metrics {
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border-light);
-  gap: 0;
-}
-.c-metric { text-align: center; border-right: 1px solid var(--border-light); }
-.c-metric:last-child { border-right: none; }
-.c-metric-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px;
-  font-weight: 300;
-  color: var(--text);
-  line-height: 1;
-}
-.c-metric-lbl {
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-.campaign-note {
-  padding: 16px 0 24px;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  color: var(--text-mid);
-  line-height: 1.6;
-  border-bottom: 1px solid var(--border-light);
-}
-.campaign-note strong {
-  font-weight: 500;
-  color: var(--text);
-}
-
-/* ═══════════════════════════════════════════════════
-   PIPELINE — Kanban columns
-═══════════════════════════════════════════════════ */
-.pipeline-wrap {
-  display: flex;
-  gap: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding: 0;
-  min-height: 50vh;
-}
-.pipeline-wrap::-webkit-scrollbar { display: none; }
-.pipeline-col {
-  flex-shrink: 0;
-  width: 180px;
-  border-right: 1px solid var(--border);
-}
-.pipeline-col:last-child { border-right: none; }
-.pipeline-col-head {
-  padding: 16px 16px 12px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  background: var(--white);
-  z-index: 2;
-}
-.pipeline-col-name {
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.pipeline-count {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 16px;
-  font-weight: 300;
-  color: var(--text);
-}
-.pipeline-cards { padding: 8px; }
-.p-card {
-  padding: 12px;
-  border: 1px solid var(--border-light);
-  margin-bottom: 6px;
-  cursor: pointer;
-  transition: border-color 0.15s;
-  background: var(--white);
-}
-.p-card:active { border-color: var(--champagne); }
-.p-card-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text);
-  line-height: 1.2;
-}
-.p-card-co {
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 300;
-  color: var(--text-muted);
-  margin-top: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-.p-card-val {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--champagne);
-  margin-top: 4px;
-}
-.p-card-type {
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 300;
-  color: var(--text-muted);
-  margin-top: 3px;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-}
-.p-col-empty {
-  text-align: center;
-  padding: 24px 8px;
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 300;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-/* Pipeline stage colors — col name accent */
-.pipeline-col[data-stage="New Lead"]      .pipeline-col-name { color: var(--dot-cold); }
-.pipeline-col[data-stage="Contacted"]     .pipeline-col-name { color: var(--dot-followup); }
-.pipeline-col[data-stage="In Discussion"] .pipeline-col-name { color: var(--champagne); }
-.pipeline-col[data-stage="Negotiation"]   .pipeline-col-name { color: var(--dot-active); }
-.pipeline-col[data-stage="Closed Won"]    .pipeline-col-name { color: var(--dot-active); }
-.pipeline-col[data-stage="Closed Lost"]   .pipeline-col-name { color: var(--dot-hot); }
-
-/* ═══════════════════════════════════════════════════
-   SETTINGS
-═══════════════════════════════════════════════════ */
-.settings-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border-light);
-  cursor: pointer;
-  background: var(--white);
-  transition: background 0.15s;
-}
-.settings-row:active { background: var(--bg2); }
-.settings-row-left { flex: 1; }
-.settings-row-title {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--text);
-}
-.settings-row-desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--text-muted);
-  margin-top: 2px;
-  letter-spacing: 0.03em;
-}
-.settings-chevron {
-  color: var(--text-muted);
-  font-size: 14px;
-  font-weight: 300;
-}
-.version-block {
-  padding: 40px 24px;
-  text-align: center;
-  border-top: 1px solid var(--border-light);
-}
-.version-mark {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-.version-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
-  font-weight: 300;
-  font-style: italic;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-.version-line {
-  width: 40px;
-  height: 1px;
-  background: var(--champagne);
-  margin: 0 auto 16px;
-}
-.version-info {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-
-/* ═══════════════════════════════════════════════════
-   MODALS — slide up, editorial
-═══════════════════════════════════════════════════ */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 200;
-  align-items: flex-end;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: var(--white);
-  width: 100%;
-  max-width: 430px;
-  margin: 0 auto;
-  max-height: 91vh;
-  overflow-y: auto;
-  animation: slideUp 0.28s ease;
-  border-top: 1px solid var(--border);
-}
-@keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
-}
-.modal-handle {
-  width: 32px; height: 2px;
-  background: var(--border);
-  margin: 14px auto 0;
-  border-radius: 1px;
-}
-.modal-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px 14px;
-  border-bottom: 1px solid var(--border);
-}
-.modal-heading {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
-  font-weight: 300;
-  color: var(--text);
-}
-.modal-close {
-  width: 28px; height: 28px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  line-height: 1;
-}
-.modal-body { padding: 20px 24px 32px; }
-
-/* ── FIELD groups in modal ── */
-.field-group { margin-bottom: 18px; }
-.field-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-.field-value {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--text);
-}
-.field-input, .field-select, .field-textarea {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border);
-  padding: 8px 0;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.18s;
-  border-radius: 0;
-}
-.field-input:focus,
-.field-select:focus,
-.field-textarea:focus { border-bottom-color: var(--champagne); }
-.field-textarea { min-height: 72px; resize: vertical; }
-.field-select option { background: var(--white); }
-.field-link {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  color: var(--champagne);
-  text-decoration: none;
-  border-bottom: 1px solid var(--champ-light);
-  padding-bottom: 1px;
-}
-
-/* modal avatar block */
-.modal-person {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 24px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border-light);
-}
-.modal-avatar {
-  width: 48px; height: 48px;
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--text-muted);
-  flex-shrink: 0;
-  background: var(--bg2);
-}
-.modal-person-info { flex: 1; min-width: 0; }
-.modal-person-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px;
-  font-weight: 400;
-  color: var(--text);
-  line-height: 1.2;
-}
-.modal-person-role {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--text-muted);
-  margin-top: 3px;
-  letter-spacing: 0.06em;
-}
-.modal-person-status { margin-top: 6px; }
-
-/* Grid helpers */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-/* Conversation log */
-.conv-log {
-  max-height: 180px;
-  overflow-y: auto;
-  margin: 8px 0;
-}
-.conv-entry {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border-light);
-}
-.conv-entry:last-child { border-bottom: none; }
-.conv-date {
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--champagne);
-  margin-bottom: 3px;
-}
-.conv-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  color: var(--text-mid);
-  line-height: 1.5;
-}
-
-/* Stage picker */
-.stage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-.stage-btn {
-  padding: 12px 8px;
-  border: 1px solid var(--border);
-  background: var(--white);
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-mid);
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.18s;
-}
-.stage-btn.current {
-  border-color: var(--champagne);
-  color: var(--champagne);
-  background: rgba(196,168,130,0.06);
-}
-.stage-btn:active { background: var(--bg2); }
-
-/* Quick-action row */
-.quick-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 4px 0 8px;
-}
-
-/* ═══════════════════════════════════════════════════
-   BOTTOM NAV — white, black icons, champagne dot
-═══════════════════════════════════════════════════ */
-#bottom-nav {
-  height: var(--nav-h);
-  background: var(--white);
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: stretch;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 100;
-}
-.nav-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  cursor: pointer;
-  border: none;
-  background: none;
-  color: var(--text-muted);
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 8px 4px;
-  transition: color 0.18s;
-  position: relative;
-  min-height: 44px;
-}
-.nav-item svg {
-  width: 20px; height: 20px;
-  stroke: currentColor;
-  stroke-width: 1.2;
-  fill: none;
-  transition: stroke 0.18s;
-}
-.nav-item.active { color: var(--text); }
-/* Active indicator — champagne dot above icon */
-.nav-item.active::before {
-  content: '';
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px; height: 3px;
-  background: var(--champagne);
-  border-radius: 50%;
-}
-
-/* ═══════════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════════ */
-#toast {
-  position: fixed;
-  bottom: calc(var(--nav-h) + 16px);
-  left: 50%;
-  transform: translateX(-50%) translateY(12px);
-  background: var(--text);
-  color: var(--white);
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 0.08em;
-  padding: 10px 22px;
-  z-index: 999;
-  opacity: 0;
-  transition: all 0.25s;
-  white-space: nowrap;
-  max-width: 90vw;
-}
-#toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* ═══════════════════════════════════════════════════
-   EMPTY / NO RESULTS
-═══════════════════════════════════════════════════ */
-.empty {
-  text-align: center;
-  padding: 48px 24px;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-/* ═══════════════════════════════════════════════════
-   SMALL UTILITIES
-═══════════════════════════════════════════════════ */
-.spacer-sm { height: 16px; }
-.spacer-md { height: 28px; }
-.section-divider {
-  height: 1px;
-  background: var(--border-light);
-  margin: 0 24px;
-}
-
-/* inline status badge — just the dot + label */
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-family: 'Inter', sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-/* scrollbar */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+/* PIPELINE LINE */
+.pipeline-connector{width:2px;height:16px;background:#E8E3D8;margin:0 auto 0 19px;}
 </style>
 </head>
 <body>
 <div id="app">
-
-  <!-- TOP BAR -->
-  <div id="top-bar">
-    <div class="top-logo">R A M I<span>·</span>G E M</div>
-    <div class="top-icons">
-      <!-- Search icon -->
-      <div class="top-icon" onclick="focusSearch()">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
-      </div>
-      <!-- Menu / page indicator -->
-      <div class="top-icon">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </div>
-    </div>
+  <div class="app-header">
+    <h1>RAMIGEM</h1>
   </div>
 
-  <!-- PAGES -->
-  <div id="page-dashboard" class="page"></div>
-  <div id="page-clients"   class="page"></div>
-  <div id="page-leads"     class="page"></div>
-  <div id="page-pipeline"  class="page"></div>
-  <div id="page-settings"  class="page"></div>
+  <div id="content">
+    <!-- DASHBOARD -->
+    <div class="page" id="page-dashboard"></div>
 
-  <!-- BOTTOM NAV -->
-  <nav id="bottom-nav">
-    <button class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="0.5"/><rect x="14" y="3" width="7" height="7" rx="0.5"/><rect x="3" y="14" width="7" height="7" rx="0.5"/><rect x="14" y="14" width="7" height="7" rx="0.5"/></svg>
-      Home
+    <!-- CLIENTS -->
+    <div class="page" id="page-clients"></div>
+
+    <!-- LEADS -->
+    <div class="page" id="page-leads"></div>
+
+    <!-- PIPELINE -->
+    <div class="page" id="page-pipeline"></div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings"></div>
+  </div>
+
+  <nav id="nav">
+    <button class="nav-btn" data-page="dashboard" onclick="goTo('dashboard')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
     </button>
-    <button class="nav-item" data-page="clients" onclick="navigate('clients')">
+    <button class="nav-btn" data-page="clients" onclick="goTo('clients')">
       <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       Clients
     </button>
-    <button class="nav-item" data-page="leads" onclick="navigate('leads')">
-      <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+    <button class="nav-btn" data-page="leads" onclick="goTo('leads')">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Leads
     </button>
-    <button class="nav-item" data-page="pipeline" onclick="navigate('pipeline')">
+    <button class="nav-btn" data-page="pipeline" onclick="goTo('pipeline')">
       <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       Pipeline
     </button>
-    <button class="nav-item" data-page="settings" onclick="navigate('settings')">
+    <button class="nav-btn" data-page="settings" onclick="goTo('settings')">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       Settings
     </button>
   </nav>
 </div>
 
-<!-- MODAL: Client Detail -->
-<div id="modal-client" class="modal-overlay" onclick="handleOverlayClick(event,'modal-client')">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-top">
-      <span class="modal-heading" id="modal-client-title">Client</span>
-      <button class="modal-close" onclick="closeModal('modal-client')">✕</button>
-    </div>
-    <div class="modal-body" id="modal-client-body"></div>
-  </div>
-</div>
-
-<!-- MODAL: Lead Detail -->
-<div id="modal-newlead" class="modal-overlay" onclick="handleOverlayClick(event,'modal-newlead')">
-  <div class="modal-sheet">
-    <div class="modal-header">
-      <span class="modal-heading">New Lead</span>
-      <button class="modal-close" onclick="closeModal('modal-newlead')">&#x2715;</button>
-    </div>
-    <div class="modal-body" id="modal-newlead-body"></div>
-  </div>
-</div>
-
-<div id="modal-lead" class="modal-overlay" onclick="handleOverlayClick(event,'modal-lead')">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-top">
-      <span class="modal-heading" id="modal-lead-title">Lead</span>
-      <button class="modal-close" onclick="closeModal('modal-lead')">✕</button>
-    </div>
-    <div class="modal-body" id="modal-lead-body"></div>
-  </div>
-</div>
-
-<!-- MODAL: Pipeline Move -->
-<div id="modal-pipeline" class="modal-overlay" onclick="handleOverlayClick(event,'modal-pipeline')">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-top">
-      <span class="modal-heading" id="modal-pipeline-title">Move Stage</span>
-      <button class="modal-close" onclick="closeModal('modal-pipeline')">✕</button>
-    </div>
-    <div class="modal-body" id="modal-pipeline-body"></div>
+<!-- MODAL -->
+<div id="modal-bg" onclick="closeModal()">
+  <div id="modal-box" onclick="event.stopPropagation()">
+    <div id="modal-content"></div>
   </div>
 </div>
 
@@ -1339,979 +223,776 @@ html, body {
 <div id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-// PWA MANIFEST & SERVICE WORKER
-// ═══════════════════════════════════════════════════════════
-(function setupPWA() {
-  const manifest = {
-    name: "Ramigem CRM",
-    short_name: "Ramigem",
-    description: "Luxury Emerald CRM for Meir Harush",
-    start_url: "./",
-    display: "standalone",
-    background_color: "#FFFFFF",
-    theme_color: "#FFFFFF",
-    orientation: "portrait",
-    icons: [
-      { src: "data:image/svg+xml;base64," + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" fill="#FFFFFF"/><text x="96" y="120" font-family="serif" font-size="72" text-anchor="middle" fill="#0A0A0A" font-weight="100" letter-spacing="8">R</text></svg>'), sizes: "192x192", type: "image/svg+xml" },
-      { src: "data:image/svg+xml;base64," + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#FFFFFF"/><text x="256" y="320" font-family="serif" font-size="192" text-anchor="middle" fill="#0A0A0A" font-weight="100" letter-spacing="8">R</text></svg>'), sizes: "512x512", type: "image/svg+xml" }
-    ]
-  };
-  const blob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
-  document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
-
-  if ('serviceWorker' in navigator) {
-    // Unregister ALL old service workers to clear stale cache
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      regs.forEach(r => r.unregister());
-    });
-    // Clear all caches
-    if ('caches' in window) {
-      caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
-    }
-    const swCode = `
-      const CACHE = 'ramigem-crm-v5';
-      self.addEventListener('install', e => { self.skipWaiting(); });
-      self.addEventListener('activate', e => e.waitUntil(
-        caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).then(() => clients.claim())
-      ));
-      self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
-    `;
-    navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], {type:'application/javascript'}))).catch(()=>{});
-  }
-})();
-
-// ═══════════════════════════════════════════════════════════
-// IMAGE BASE URL
-// ═══════════════════════════════════════════════════════════
-const IMG = 'https://meirharush10-blip.github.io/ramigem-catalogues/media';
-
-// ═══════════════════════════════════════════════════════════
-// DATA — 68 CLIENTS
-// ═══════════════════════════════════════════════════════════
+// ============================================================
+// DATA DEFAULTS
+// ============================================================
 const DEFAULT_CLIENTS = [
-  // ── HOT (7) ──
-  { id:"c1", name:"Sofia Marchetti", company:"Marchetti Fine Jewels", role:"Owner & Head Designer", email:"sofia@marchettijewels.com", phone:"+39 02 8765 4321", city:"Milan", country:"Italy", status:"hot", pipelineStage:"Negotiation", lastContact:"2026-04-25", notes:"Interested in 5ct+ unheated Colombian emeralds. Looking for parcel of 10-15 stones.", source:"Hong Kong Show 2025", dealValue:285000 },
-  { id:"c2", name:"James Al-Rashid", company:"Al-Rashid Luxury Trading", role:"Director", email:"james@alrashidluxury.com", phone:"+971 50 123 4567", city:"Dubai", country:"UAE", status:"hot", pipelineStage:"Negotiation", lastContact:"2026-04-24", notes:"Wants exclusive right of first refusal on Muzo mine lots. Very serious buyer.", source:"Dubai Show 2025", dealValue:480000 },
-  { id:"c3", name:"Chen Wei", company:"Imperial Gem Gallery", role:"CEO", email:"wei.chen@imperialgem.hk", phone:"+852 2345 6789", city:"Hong Kong", country:"Hong Kong", status:"hot", pipelineStage:"In Discussion", lastContact:"2026-04-22", notes:"Seeking certified 3-5ct stones for auction catalogues. Price-sensitive but volume buyer.", source:"Hong Kong Show 2025", dealValue:175000 },
-  { id:"c4", name:"Valentina Cruz", company:"Casa Cruz Joyería", role:"Purchasing Director", email:"v.cruz@casacruz.com.mx", phone:"+52 55 8765 1234", city:"Mexico City", country:"Mexico", status:"hot", pipelineStage:"Negotiation", lastContact:"2026-04-23", notes:"Interested in emerald and gold jewelry sets. Has boutiques in 3 cities.", source:"NYC Show", dealValue:120000 },
-  { id:"c5", name:"Alexander Petrov", company:"Petrov Gemological House", role:"Principal Gemologist", email:"a.petrov@petrovgems.ru", phone:"+7 495 123 4567", city:"Moscow", country:"Russia", status:"hot", pipelineStage:"Negotiation", lastContact:"2026-04-21", notes:"Regular buyer, needs GIA certs. Looking for 2-3ct vivid green.", source:"Referral", dealValue:95000 },
-  { id:"c6", name:"Priya Nair", company:"Nair Jewellery Pvt Ltd", role:"Managing Director", email:"priya@nairjewellery.in", phone:"+91 98765 43210", city:"Mumbai", country:"India", status:"hot", pipelineStage:"In Discussion", lastContact:"2026-04-20", notes:"Wants to source directly from Muzo mine. Interested in rough and cut stones.", source:"Dubai Show 2025", dealValue:210000 },
-  { id:"c7", name:"David Kaufmann", company:"Kaufmann & Sons", role:"Senior Partner", email:"david@kaufmannsons.com", phone:"+41 44 123 4567", city:"Zurich", country:"Switzerland", status:"hot", pipelineStage:"Negotiation", lastContact:"2026-04-26", notes:"Looking for investment-grade emeralds 5ct+. Has private client for specific stone.", source:"Referral", dealValue:350000 },
-
-  // ── ACTIVE (24) ──
-  { id:"c8", name:"Marie Fontaine", company:"Fontaine Atelier", role:"Creative Director", email:"marie@fontaineatelier.fr", phone:"+33 1 4321 5678", city:"Paris", country:"France", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-15", notes:"Boutique designer, uses emeralds in bespoke commissions. Orders 2-3x/year.", source:"Cold Outreach", dealValue:45000 },
-  { id:"c9", name:"Robert Chang", company:"Pacific Gem Traders", role:"President", email:"r.chang@pacificgem.sg", phone:"+65 9123 4567", city:"Singapore", country:"Singapore", status:"active", pipelineStage:"In Discussion", lastContact:"2026-04-18", notes:"Wholesale buyer for SE Asian market. Wants calibrated stones.", source:"Hong Kong Show 2025", dealValue:78000 },
-  { id:"c10", name:"Fatima Al-Mansoori", company:"Al-Mansoori Jewellery LLC", role:"Owner", email:"fatima@almansoori.ae", phone:"+971 4 234 5678", city:"Abu Dhabi", country:"UAE", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-12", notes:"High-end retail, prefers certified stones with custom cutting.", source:"Dubai Show 2025", dealValue:62000 },
-  { id:"c11", name:"Thomas Weber", company:"Weber Edelsteine GmbH", role:"Geschäftsführer", email:"t.weber@weberedelsteine.de", phone:"+49 89 456 7890", city:"Munich", country:"Germany", status:"active", pipelineStage:"In Discussion", lastContact:"2026-04-10", notes:"Gem dealer, supplies major German jewelry manufacturers.", source:"Cold Outreach", dealValue:88000 },
-  { id:"c12", name:"Yuki Tanaka", company:"Tanaka Fine Gems KK", role:"Director", email:"y.tanaka@tanakafine.jp", phone:"+81 3 4567 8901", city:"Tokyo", country:"Japan", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-08", notes:"Japanese market. Prefers clean stones, very quality-conscious.", source:"Hong Kong Show 2025", dealValue:55000 },
-  { id:"c13", name:"Isabella Romano", company:"Romano Gioielli", role:"Purchasing Manager", email:"i.romano@romanogioielli.it", phone:"+39 06 234 5678", city:"Rome", country:"Italy", status:"active", pipelineStage:"In Discussion", lastContact:"2026-04-14", notes:"Mid-size Italian jeweler, wants 3 parcels per quarter.", source:"Referral", dealValue:95000 },
-  { id:"c14", name:"Carlos Mendoza", company:"Mendoza Gems Miami", role:"Owner", email:"carlos@mendozagems.com", phone:"+1 305 234 5678", city:"Miami", country:"USA", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-17", notes:"Florida-based wholesale, good volume. Looking for holiday inventory.", source:"NYC Show", dealValue:35000 },
-  { id:"c15", name:"Nora Lindqvist", company:"Lindqvist Jewellers", role:"CEO", email:"nora@lindqvistjewellers.se", phone:"+46 8 234 5678", city:"Stockholm", country:"Sweden", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-11", notes:"Scandinavian boutique chain. Interested in ethical sourcing story.", source:"Cold Outreach", dealValue:42000 },
-  { id:"c16", name:"Ahmed Hassan", company:"Hassan Brothers Trading", role:"Partner", email:"ahmed@hassanbrothers.sa", phone:"+966 50 234 5678", city:"Riyadh", country:"Saudi Arabia", status:"active", pipelineStage:"In Discussion", lastContact:"2026-04-09", notes:"Large family business, wants high-quality emeralds for bridal jewelry.", source:"Dubai Show 2025", dealValue:105000 },
-  { id:"c17", name:"Elena Volkov", company:"Volkov Antiques & Gems", role:"Director", email:"e.volkov@volkovantiques.com", phone:"+7 812 345 6789", city:"St. Petersburg", country:"Russia", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-16", notes:"Specializes in antique jewelry with gemstone replacement/restoration.", source:"Referral", dealValue:28000 },
-  { id:"c18", name:"Park Ji-Soo", company:"Sunrise Gems Korea", role:"President", email:"jisoo@sunrisegems.kr", phone:"+82 2 3456 7890", city:"Seoul", country:"South Korea", status:"active", pipelineStage:"In Discussion", lastContact:"2026-04-13", notes:"Korean market, wants matching pairs and sets. Very detail-oriented.", source:"Hong Kong Show 2025", dealValue:67000 },
-  { id:"c19", name:"Gabriel Santos", company:"Santos Joalheria", role:"Owner", email:"gabriel@santosjoias.com.br", phone:"+55 11 3456 7890", city:"São Paulo", country:"Brazil", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-07", notes:"Brazilian jewelry house, interested in rough-cut artistic pieces.", source:"Cold Outreach", dealValue:38000 },
-  { id:"c20", name:"Amira Benzara", company:"Benzara Fine Gems", role:"Director", email:"amira@benzaragems.ma", phone:"+212 6 1234 5678", city:"Casablanca", country:"Morocco", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-19", notes:"North African distributor, supplies regional jewelry market.", source:"Dubai Show 2025", dealValue:22000 },
-  { id:"c21", name:"Richard Blackwood", company:"Blackwood & Associates", role:"President", email:"r.blackwood@blackwoodgems.com", phone:"+1 212 345 6789", city:"New York", country:"USA", status:"active", pipelineStage:"In Discussion", lastContact:"2026-04-06", notes:"NYC gem dealer, well-connected. Supply chain for multiple designers.", source:"NYC Show", dealValue:72000 },
-  { id:"c22", name:"Mei Ling Wu", company:"Wu Jade & Gems Ltd", role:"CEO", email:"mei@wujadegems.hk", phone:"+852 3456 7890", city:"Hong Kong", country:"Hong Kong", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-05", notes:"Expanding from jade to colored stones. Good potential for large orders.", source:"Hong Kong Show 2025", dealValue:48000 },
-  { id:"c23", name:"Hans Bergmann", company:"Bergmann Edelstein AG", role:"Inhaber", email:"hans@bergmannedelstein.ch", phone:"+41 31 234 5678", city:"Bern", country:"Switzerland", status:"active", pipelineStage:"In Discussion", lastContact:"2026-04-03", notes:"Precision gem dealer for Swiss watchmakers. Needs calibrated stones.", source:"Referral", dealValue:85000 },
-  { id:"c24", name:"Leila Mansour", company:"Mansour Gem Arts", role:"Curator", email:"leila@mansourgemarts.ae", phone:"+971 55 345 6789", city:"Dubai", country:"UAE", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-04", notes:"Art collector background, interested in extraordinary one-of-a-kind pieces.", source:"Dubai Show 2025", dealValue:95000 },
-  { id:"c25", name:"Nikolaos Papadimitriou", company:"Papadimitriou Gems", role:"Owner", email:"niko@papadgems.gr", phone:"+30 21 234 5678", city:"Athens", country:"Greece", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-02", notes:"Mediterranean gem trader. Good network across Italy, Greece, Cyprus.", source:"Cold Outreach", dealValue:31000 },
-  { id:"c26", name:"Sandra Okonkwo", company:"Okonkwo Luxury Lagos", role:"CEO", email:"sandra@okonkwoluxury.ng", phone:"+234 80 1234 5678", city:"Lagos", country:"Nigeria", status:"active", pipelineStage:"Contacted", lastContact:"2026-04-01", notes:"Emerging market luxury buyer. Strong demand for high-status pieces.", source:"Cold Outreach", dealValue:55000 },
-  { id:"c27", name:"Ravi Sharma", company:"Sharma Gems International", role:"Managing Director", email:"ravi@sharmagems.in", phone:"+91 22 3456 7890", city:"Jaipur", country:"India", status:"active", pipelineStage:"In Discussion", lastContact:"2026-03-30", notes:"Jaipur cutting house, wants consistent rough supply for processing.", source:"Dubai Show 2025", dealValue:100000 },
-  { id:"c28", name:"Claire Dupont", company:"Dupont Haute Joaillerie", role:"Lead Designer", email:"claire@dupont-hj.fr", phone:"+33 4 5678 9012", city:"Lyon", country:"France", status:"active", pipelineStage:"Contacted", lastContact:"2026-03-28", notes:"Artisan designer, commissions custom cuts. Loyal repeat customer.", source:"Referral", dealValue:38000 },
-  { id:"c29", name:"Michael Stern", company:"Stern Collection LLC", role:"Principal", email:"michael@sterncollection.com", phone:"+1 310 456 7890", city:"Los Angeles", country:"USA", status:"active", pipelineStage:"In Discussion", lastContact:"2026-03-26", notes:"Beverly Hills jeweler, celebrity clientele. High price point, quality-driven.", source:"Referral", dealValue:88000 },
-  { id:"c30", name:"Fatou Diallo", company:"Diallo Gold & Gems", role:"Founder", email:"fatou@diallogold.sn", phone:"+221 77 1234 567", city:"Dakar", country:"Senegal", status:"active", pipelineStage:"Contacted", lastContact:"2026-03-25", notes:"West Africa distributor, growing luxury market. First order pending.", source:"Cold Outreach", dealValue:18000 },
-  { id:"c31", name:"Lin Xiao", company:"Shanghai Gem Exchange", role:"General Manager", email:"lin.xiao@sge.cn", phone:"+86 21 3456 7890", city:"Shanghai", country:"China", status:"active", pipelineStage:"In Discussion", lastContact:"2026-03-22", notes:"State-backed gem exchange. Wants certified stones for investment portfolio program.", source:"Hong Kong Show 2025", dealValue:95000 },
-
-  // ── FOLLOW UP (12) ──
-  { id:"c32", name:"Sarah Mitchell", company:"Mitchell Gems & Antiques", role:"Proprietor", email:"sarah@mitchellgems.co.uk", phone:"+44 20 7890 1234", city:"London", country:"UK", status:"followup", pipelineStage:"Contacted", lastContact:"2026-03-10", notes:"British gem dealer. Interested in Victorian-era style stones. Need to follow up on quote sent.", source:"Cold Outreach", dealValue:42000 },
-  { id:"c33", name:"Hamid Karimi", company:"Karimi Fine Gems", role:"Owner", email:"hamid@karimigems.ir", phone:"+98 21 3456 7890", city:"Tehran", country:"Iran", status:"followup", pipelineStage:"Contacted", lastContact:"2026-03-08", notes:"Good buyer, payment logistics complex. Awaiting response to last email.", source:"Referral", dealValue:75000 },
-  { id:"c34", name:"Sophia Kim", company:"K-Luxury Gems", role:"Director", email:"sophia@kluxurygems.kr", phone:"+82 10 3456 7890", city:"Busan", country:"South Korea", status:"followup", pipelineStage:"New Lead", lastContact:"2026-03-05", notes:"New contact from Hong Kong show. Sent catalog, no reply yet.", source:"Hong Kong Show 2025", dealValue:25000 },
-  { id:"c35", name:"Marco Bienvenu", company:"Bienvenu Gems SAS", role:"Director Commercial", email:"marco@bienvenugems.fr", phone:"+33 6 7890 1234", city:"Bordeaux", country:"France", status:"followup", pipelineStage:"Contacted", lastContact:"2026-03-15", notes:"Regional French market. Promised to follow up after trade show. Haven't heard back.", source:"Cold Outreach", dealValue:20000 },
-  { id:"c36", name:"Anna Kowalski", company:"Kowalski Biżuteria", role:"Owner", email:"anna@kowalskibiz.pl", phone:"+48 22 345 6789", city:"Warsaw", country:"Poland", status:"followup", pipelineStage:"Contacted", lastContact:"2026-03-12", notes:"Polish jewelry boutique, interested in smaller parcels. Needs a callback.", source:"Cold Outreach", dealValue:15000 },
-  { id:"c37", name:"Omar Shaikh", company:"Shaikh Gems Dubai", role:"Proprietor", email:"omar@shaikhgems.ae", phone:"+971 52 456 7890", city:"Sharjah", country:"UAE", status:"followup", pipelineStage:"In Discussion", lastContact:"2026-03-20", notes:"Was negotiating price on 2ct parcel. Went quiet. Push for close.", source:"Dubai Show 2025", dealValue:38000 },
-  { id:"c38", name:"Ingrid Haugen", company:"Haugen Edelstein AS", role:"CEO", email:"ingrid@haugenedelstein.no", phone:"+47 91 234 567", city:"Oslo", country:"Norway", status:"followup", pipelineStage:"Contacted", lastContact:"2026-03-18", notes:"Scandinavian designer, environmentally focused. Interested in responsible sourcing certs.", source:"Cold Outreach", dealValue:28000 },
-  { id:"c39", name:"Viktor Horváth", company:"Horváth Gems Hungary", role:"Director", email:"viktor@horvathgems.hu", phone:"+36 1 234 5678", city:"Budapest", country:"Hungary", status:"followup", pipelineStage:"Contacted", lastContact:"2026-03-03", notes:"Eastern European gem trader. Has network across Czech, Slovakia, Hungary.", source:"Cold Outreach", dealValue:22000 },
-  { id:"c40", name:"Amalia Ferreira", company:"Ferreira Joias", role:"Sócia-Gerente", email:"amalia@ferreirajoias.pt", phone:"+351 21 234 5678", city:"Lisbon", country:"Portugal", status:"followup", pipelineStage:"New Lead", lastContact:"2026-03-01", notes:"Portuguese jeweler expanding to luxury market. Intro meeting done, proposal pending.", source:"Referral", dealValue:18000 },
-  { id:"c41", name:"Kevin Oduya", company:"Oduya Precious Stones", role:"Founder", email:"kevin@oduyagems.ke", phone:"+254 70 1234 567", city:"Nairobi", country:"Kenya", status:"followup", pipelineStage:"Contacted", lastContact:"2026-02-28", notes:"East African buyer, expanding market. Good for medium-grade stones.", source:"Cold Outreach", dealValue:12000 },
-  { id:"c42", name:"Tara Johansson", company:"Nordic Gem Studio", role:"Creative Lead", email:"tara@nordicgemstudio.dk", phone:"+45 20 1234 567", city:"Copenhagen", country:"Denmark", status:"followup", pipelineStage:"New Lead", lastContact:"2026-03-22", notes:"Danish designer studio, boutique orders. Met at online gem fair.", source:"Cold Outreach", dealValue:14000 },
-  { id:"c43", name:"Bulent Arslan", company:"Istanbul Gem House", role:"Owner", email:"bulent@istanbulgemhouse.com", phone:"+90 212 345 6789", city:"Istanbul", country:"Turkey", status:"followup", pipelineStage:"Contacted", lastContact:"2026-03-07", notes:"Turkish bazaar trader turning to certified fine gems. Promising contact.", source:"Dubai Show 2025", dealValue:32000 },
-
-  // ── COLD (25) ──
-  { id:"c44", name:"Pierre Aumont", company:"Aumont Maison", role:"Directeur", email:"pierre@automtmaison.fr", phone:"+33 1 9012 3456", city:"Paris", country:"France", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-01", notes:"French maison, tried to connect. No real interest shown.", source:"Cold Outreach", dealValue:0 },
-  { id:"c45", name:"Zhang Wei", company:"Beijing Jade Palace", role:"General Manager", email:"zhang@beijingjadepalace.cn", phone:"+86 10 8765 4321", city:"Beijing", country:"China", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-20", notes:"Traditional jade focus, cold to colored stones switch.", source:"Hong Kong Show 2025", dealValue:0 },
-  { id:"c46", name:"Lucia Palmieri", company:"Palmieri Gioielli", role:"Titolare", email:"lucia@palmierigioi.it", phone:"+39 081 234 5678", city:"Naples", country:"Italy", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-15", notes:"Small Neapolitan jeweler, budget constrained.", source:"Cold Outreach", dealValue:0 },
-  { id:"c47", name:"Boris Nikitin", company:"Nikitin Gems SPb", role:"Owner", email:"boris@nikitingems.ru", phone:"+7 921 234 5678", city:"St. Petersburg", country:"Russia", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-10", notes:"Low engagement since initial contact.", source:"Cold Outreach", dealValue:0 },
-  { id:"c48", name:"Maria Santos", company:"Santos Gemas Finas", role:"CEO", email:"maria@santosgemas.br", phone:"+55 21 3456 7890", city:"Rio de Janeiro", country:"Brazil", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-25", notes:"Interested initially, then went quiet after pricing.", source:"Cold Outreach", dealValue:0 },
-  { id:"c49", name:"Ali Hassan Mohammed", company:"Mohammed Trading Est.", role:"Partner", email:"ali@mohammedtrading.sa", phone:"+966 55 123 4567", city:"Jeddah", country:"Saudi Arabia", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-10", notes:"Referral that didn't pan out. Different price bracket.", source:"Referral", dealValue:0 },
-  { id:"c50", name:"Hana Nováková", company:"Nováková Šperky", role:"Majitelka", email:"hana@novakova-sperky.cz", phone:"+420 2 1234 5678", city:"Prague", country:"Czech Republic", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-08", notes:"Czech boutique, interested but very small order size.", source:"Cold Outreach", dealValue:0 },
-  { id:"c51", name:"Jose Reyes", company:"Reyes Gems Panama", role:"Owner", email:"jose@reyesgems.pa", phone:"+507 6123 4567", city:"Panama City", country:"Panama", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-14", notes:"Regional buyer, no follow-through on interest expressed.", source:"Cold Outreach", dealValue:0 },
-  { id:"c52", name:"Mia Johanssen", company:"Gothenburg Gems", role:"Owner", email:"mia@gothenburgems.se", phone:"+46 31 123 4567", city:"Gothenburg", country:"Sweden", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-30", notes:"Small Swedish retailer. No budget for our price points.", source:"Cold Outreach", dealValue:0 },
-  { id:"c53", name:"Takeshi Yamamoto", company:"Yamamoto Gems Osaka", role:"Manager", email:"takeshi@yamamotogems.jp", phone:"+81 6 5678 9012", city:"Osaka", country:"Japan", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-05", notes:"Second Yamamoto contact, different city. Low engagement.", source:"Hong Kong Show 2025", dealValue:0 },
-  { id:"c54", name:"Katarzyna Wiśniewska", company:"Wiśniewska Biżuteria", role:"Właścicielka", email:"k.wisniewska@wisnbiz.pl", phone:"+48 12 345 6789", city:"Kraków", country:"Poland", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-18", notes:"Polish artisan, small volumes only.", source:"Cold Outreach", dealValue:0 },
-  { id:"c55", name:"Marcus Williams", company:"Williams Gem Trading", role:"Proprietor", email:"marcus@williamsgems.com", phone:"+1 404 567 8901", city:"Atlanta", country:"USA", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-20", notes:"US market, didn't connect after show.", source:"NYC Show", dealValue:0 },
-  { id:"c56", name:"Elif Çelik", company:"Çelik Mücevher", role:"Kurucu", email:"elif@celikmucevher.com", phone:"+90 312 456 7890", city:"Ankara", country:"Turkey", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-08", notes:"Turkish market, different stone preferences (rubies/sapphires).", source:"Cold Outreach", dealValue:0 },
-  { id:"c57", name:"Joachim Müller", company:"Müller Juwelen", role:"Inhaber", email:"joachim@mullerjuwelen.de", phone:"+49 221 234 5678", city:"Cologne", country:"Germany", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-22", notes:"Traditional German jeweler, resistant to non-European stones.", source:"Cold Outreach", dealValue:0 },
-  { id:"c58", name:"Nadia Ait Baba", company:"Ait Baba Bijoux", role:"Directrice", email:"nadia@aitbababijoux.ma", phone:"+212 5 1234 5678", city:"Marrakech", country:"Morocco", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-18", notes:"Tourist-focused boutique, very low margin product.", source:"Cold Outreach", dealValue:0 },
-  { id:"c59", name:"Vitor Almeida", company:"Almeida Gemas Belo", role:"Sócio", email:"vitor@almeidagemas.br", phone:"+55 31 3456 7890", city:"Belo Horizonte", country:"Brazil", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-12", notes:"Brazilian mining background, competitive rather than buyer.", source:"Cold Outreach", dealValue:0 },
-  { id:"c60", name:"Sun Li", company:"Shenzhen Gem City", role:"CEO", email:"sun.li@szgemcity.cn", phone:"+86 755 3456 7890", city:"Shenzhen", country:"China", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-25", notes:"Price driven, not quality driven. Not our segment.", source:"Hong Kong Show 2025", dealValue:0 },
-  { id:"c61", name:"Alicia Moreno", company:"Moreno Joyas Madrid", role:"Dueña", email:"alicia@morenojoyas.es", phone:"+34 91 234 5678", city:"Madrid", country:"Spain", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-28", notes:"Spanish boutique, interested in smaller sizes only.", source:"Cold Outreach", dealValue:0 },
-  { id:"c62", name:"Kwame Asante", company:"Asante Gold & Gems", role:"Director", email:"kwame@asantegg.gh", phone:"+233 20 1234 567", city:"Accra", country:"Ghana", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-02", notes:"Gold specialist, limited emerald interest.", source:"Cold Outreach", dealValue:0 },
-  { id:"c63", name:"Petra Svoboda", company:"Svoboda Fine Gems Prague", role:"Director", email:"petra@svobodagems.cz", phone:"+420 2 8765 4321", city:"Prague", country:"Czech Republic", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-05", notes:"Met briefly at show, no follow-up interest.", source:"Hong Kong Show 2025", dealValue:0 },
-  { id:"c64", name:"Lena Bergström", company:"Bergström Jewels AB", role:"VD", email:"lena@bergstromjewels.se", phone:"+46 8 9012 3456", city:"Malmö", country:"Sweden", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-12", notes:"Third Scandinavian contact, no real engagement.", source:"Cold Outreach", dealValue:0 },
-  { id:"c65", name:"Marcelo Guzmán", company:"Guzmán Joyería Bogotá", role:"Propietario", email:"marcelo@guzmanjoyeria.co", phone:"+57 1 234 5678", city:"Bogotá", country:"Colombia", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-14", notes:"Colombian jeweler, different supply chain.", source:"Cold Outreach", dealValue:0 },
-  { id:"c66", name:"Dong-Ho Park", company:"Park Gems Seoul", role:"Representative", email:"dongho@parkgems.kr", phone:"+82 10 8765 4321", city:"Seoul", country:"South Korea", status:"cold", pipelineStage:"New Lead", lastContact:"2026-02-22", notes:"Small Korean gem shop, not in our price range.", source:"Hong Kong Show 2025", dealValue:0 },
-  { id:"c67", name:"Anastasia Petrova", company:"Petrova Art Jewels", role:"Artist-Owner", email:"anastasia@petrovaart.ru", phone:"+7 999 876 5432", city:"Ekaterinburg", country:"Russia", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-06", notes:"Art jeweler, very small purchases. Not core client.", source:"Cold Outreach", dealValue:0 },
-  { id:"c68", name:"William Chen", company:"Chen Diamond House", role:"Director", email:"w.chen@chendiamonds.com", phone:"+1 650 234 5678", city:"San Francisco", country:"USA", status:"cold", pipelineStage:"New Lead", lastContact:"2026-01-02", notes:"Diamond-focused, low interest in colored stones.", source:"NYC Show", dealValue:0 }
+  {id:"c1",name:"James Al-Rashid",company:"Al-Rashid Jewels",role:"Owner",email:"james@alrashidjewels.com",phone:"+971 50 123 4567",city:"Dubai",country:"UAE",status:"hot",pipelineStage:"negotiation",lastContact:"2026-04-20",notes:"Interested in 5ct+ Muzo stones. Budget $200k+",source:"Dubai Show 2025",dealValue:200000},
+  {id:"c2",name:"Sofia Marchetti",company:"Gioielli Marchetti",role:"Director",email:"sofia@marchetti.it",phone:"+39 02 1234567",city:"Milan",country:"Italy",status:"hot",pipelineStage:"discussion",lastContact:"2026-04-22",notes:"Wants exclusive supply agreement for Italian market",source:"Hong Kong Show 2025",dealValue:150000},
+  {id:"c3",name:"Chen Wei",company:"Wei Fine Gems",role:"CEO",email:"chen@weifinegems.com",phone:"+852 2123 4567",city:"Hong Kong",country:"China",status:"hot",pipelineStage:"negotiation",lastContact:"2026-04-19",notes:"Auction house buyer. Interested in certified lots",source:"Hong Kong Show 2025",dealValue:350000},
+  {id:"c4",name:"Priya Nair",company:"Nair & Sons Jewellers",role:"Head Buyer",email:"priya@nairandsons.com",phone:"+91 22 1234 5678",city:"Mumbai",country:"India",status:"active",pipelineStage:"discussion",lastContact:"2026-04-18",notes:"Regular buyer, prefers 2-4ct stones",source:"Referral",dealValue:75000},
+  {id:"c5",name:"Marco Dubois",company:"Maison Dubois",role:"Gemologist",email:"marco@maisondubois.fr",phone:"+33 1 4567 8901",city:"Paris",country:"France",status:"active",pipelineStage:"contacted",lastContact:"2026-04-15",notes:"Boutique designer, uses emeralds in bespoke pieces",source:"Hong Kong Show 2025",dealValue:45000},
+  {id:"c6",name:"Yuki Tanaka",company:"Tanaka Jewelry",role:"President",email:"yuki@tanakajewelry.jp",phone:"+81 3 1234 5678",city:"Tokyo",country:"Japan",status:"active",pipelineStage:"contacted",lastContact:"2026-04-10",notes:"High-end retailer, interested in matching pairs",source:"Hong Kong Show 2025",dealValue:60000},
+  {id:"c7",name:"Ahmed Hassan",company:"Hassan Gems",role:"Owner",email:"ahmed@hassangems.ae",phone:"+971 4 234 5678",city:"Abu Dhabi",country:"UAE",status:"active",pipelineStage:"new",lastContact:"2026-04-08",notes:"Wholesale buyer, needs volume pricing",source:"Dubai Show 2025",dealValue:30000},
+  {id:"c8",name:"Isabella Ferreira",company:"Gemas Brasil",role:"Director",email:"isabella@gemasbrasil.com",phone:"+55 11 9876 5432",city:"São Paulo",country:"Brazil",status:"followUp",pipelineStage:"new",lastContact:"2026-03-28",notes:"Met at Dubai show. Follow up needed.",source:"Dubai Show 2025",dealValue:20000},
+  {id:"c9",name:"David Cohen",company:"Cohen Diamond Exchange",role:"Partner",email:"david@cohendiamonds.com",phone:"+1 212 555 0123",city:"New York",country:"USA",status:"followUp",pipelineStage:"new",lastContact:"2026-03-20",notes:"47th St dealer. Open to colored stones",source:"NYC Show",dealValue:25000},
+  {id:"c10",name:"Li Wei",company:"Shanghai Luxury Gems",role:"Buyer",email:"li.wei@shanghailuxury.com",phone:"+86 21 5555 6666",city:"Shanghai",country:"China",status:"cold",pipelineStage:"new",lastContact:"2026-02-15",notes:"Initial contact only. No follow-up yet.",source:"Hong Kong Show 2025",dealValue:0}
 ];
 
 const DEFAULT_LEADS = [
-  { id:"l1", name:"Artcurial Paris", company:"Artcurial SAS", email:"bijoux@artcurial.com", phone:"+33 1 4249 1900", role:"Bijoux Department", city:"Paris", country:"France", priority:"hot", pipelineStage:"In Discussion", emailStatus:"Replied", lastContact:"2026-04-09", notes:"Interested in SET/finished jewelry. Does not sell loose stones (EU regs). Follow up with finished jewelry angle — bracelets, necklaces, earrings.", source:"Campaign 1", dealValue:50000 },
-  { id:"l2", name:"Brent Neale Studio", company:"Brent Neale Inc", email:"hello@brentneale.com", phone:"", role:"Studio Contact", city:"New York", country:"USA", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l3", name:"Bergdorf Goodman", company:"Bergdorf Goodman", email:"info@bergdorfgoodman.com", phone:"", role:"Jewelry Buyer", city:"New York", country:"USA", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l4", name:"Cadar", company:"Cadar Fine Jewelers", email:"concierge@cadar.com", phone:"", role:"Concierge", city:"New York", country:"USA", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l5", name:"The Rare Gemstone Company", company:"The Rare Gemstone Company", email:"info@theraregemstonecompany.com", phone:"", role:"Info Contact", city:"London", country:"UK", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l6", name:"Noor Fares", company:"Noor Fares Jewels", email:"sales@noorfares.com", phone:"", role:"Sales", city:"London", country:"UK", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l7", name:"Ippolita", company:"Ippolita Inc", email:"shop@ippolita.com", phone:"", role:"E-commerce", city:"New York", country:"USA", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l8", name:"Sotheby's Bijoux", company:"Sotheby's", email:"Catharine.Becket@sothebys.com", phone:"", role:"Specialist", city:"London", country:"UK", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l9", name:"Rau Antiques", company:"S.J. Phillips / Rau Antiques", email:"brau@rauantiques.com", phone:"", role:"Contact", city:"New Orleans", country:"USA", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l10", name:"Marina B Gems", company:"Marina B", email:"gbedarida@marinab.com", phone:"", role:"G. Bedarida", city:"Geneva", country:"Switzerland", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l11", name:"IRSA Argentina", company:"IRSA S.A.", email:"info@irsa.com.ar", phone:"", role:"Info", city:"Buenos Aires", country:"Argentina", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l12", name:"Irene Neuwirth", company:"Irene Neuwirth LLC", email:"info@ireneneuwirth.com", phone:"", role:"Info Contact", city:"Los Angeles", country:"USA", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l13", name:"Marie-Hélène de Taillac", company:"Marie-Hélène de Taillac", email:"shop@mariehelenedetaillac.com", phone:"", role:"Shop", city:"Paris", country:"France", priority:"cold", pipelineStage:"Closed Lost", emailStatus:"Bounced", lastContact:"2026-04-09", notes:"Email bounced — Campaign 1.", source:"Campaign 1", dealValue:0 },
-  { id:"l14", name:"Anita Ko", company:"Anita Ko Jewelry", email:"info@anitako.com", phone:"+1 310 777 0000", role:"Studio Director", city:"Los Angeles", country:"USA", priority:"warm", pipelineStage:"Contacted", emailStatus:"No Reply", lastContact:"2026-04-12", notes:"Reached out via paul@ramigem.com. Potential interest in fine emeralds for signature designs.", source:"Referral", dealValue:25000 },
-  { id:"l15", name:"Harry Winston", company:"Harry Winston Inc", email:"gemacquisitions@harrywinston.com", phone:"+1 212 245 2000", role:"Gem Acquisitions", city:"New York", country:"USA", priority:"warm", pipelineStage:"Contacted", emailStatus:"No Reply", lastContact:"2026-04-11", notes:"Forwarded by Rami. Major opportunity if they engage. Keep warm.", source:"Referral", dealValue:500000 },
-  { id:"l16", name:"Van Cleef & Arpels", company:"Van Cleef & Arpels", email:"gembuying@vca-corp.com", phone:"+1 212 644 9500", role:"Gem Sourcing", city:"New York", country:"USA", priority:"warm", pipelineStage:"New Lead", emailStatus:"Sent", lastContact:"2026-04-15", notes:"Sent initial outreach. Major maison, long shot but worth pursuing.", source:"Cold Outreach", dealValue:200000 }
+  {id:"l1",name:"Artcurial Paris",company:"Artcurial SAS",email:"bijoux@artcurial.com",phone:"+33 1 4249 1900",city:"Paris",country:"France",priority:"hot",pipelineStage:"discussion",emailStatus:"Replied",lastContact:"2026-04-09",notes:"Interested in SET/finished jewelry. Follow up with finished jewelry angle.",source:"Campaign 1",dealValue:50000},
+  {id:"l2",name:"Anita Ko",company:"Anita Ko Jewelry",email:"info@anitako.com",phone:"",city:"Los Angeles",country:"USA",priority:"warm",pipelineStage:"contacted",emailStatus:"No Reply",lastContact:"2026-04-12",notes:"Reached out via paul@ramigem.com.",source:"Referral",dealValue:25000},
+  {id:"l3",name:"Dianne Batista",company:"DB Fine Jewelry",email:"dianne@dbfinejewelry.com",phone:"+1 305 555 0199",city:"Miami",country:"USA",priority:"warm",pipelineStage:"contacted",emailStatus:"Replied",lastContact:"2026-04-14",notes:"Interested in earring stones, 1-2ct range.",source:"Cold Outreach",dealValue:15000},
+  {id:"l4",name:"Target Designer A",company:"Independent Studio",email:"studio@designer.com",phone:"",city:"New York",country:"USA",priority:"warm",pipelineStage:"new",emailStatus:"Not Sent",lastContact:"2026-04-01",notes:"Research lead — independent jewelry designer.",source:"Research",dealValue:10000},
+  {id:"l5",name:"47th St Dealer",company:"Diamond District Gems",email:"info@47thgems.com",phone:"+1 212 555 0147",city:"New York",country:"USA",priority:"hot",pipelineStage:"new",emailStatus:"Not Sent",lastContact:"2026-04-25",notes:"Walk-in target for Week 2. Colored stone specialist.",source:"Research",dealValue:50000}
 ];
 
-const DEFAULT_TASKS = [
-  { id:"t1", text:"Call James Al-Rashid about Muzo lot pricing", priority:"high", done:false },
-  { id:"t2", text:"Send updated GIA certificates to Sofia Marchetti", priority:"high", done:false },
-  { id:"t3", text:"Follow up with Artcurial Paris — finished jewelry angle", priority:"high", done:false },
-  { id:"t4", text:"Prepare parcel selection for Chen Wei auction", priority:"med", done:false },
-  { id:"t5", text:"Schedule call with Priya Nair this week", priority:"med", done:false }
-];
-
-// ═══════════════════════════════════════════════════════════
+// ============================================================
 // STORAGE
-// ═══════════════════════════════════════════════════════════
+// ============================================================
 function load(key, def) {
-  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch(e) { return def; }
+  try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch(e) { return def; }
 }
 function save(key, val) {
   try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
 }
 
-let clients = load('rami_clients', null);
-if (!clients || clients.length < 68) {
-  clients = JSON.parse(JSON.stringify(DEFAULT_CLIENTS));
-  save('rami_clients', clients);
-}
-let leads = load('rami_leads', null);
-if (!leads || leads.length < 13) {
-  leads = JSON.parse(JSON.stringify(DEFAULT_LEADS));
-  save('rami_leads', leads);
-}
-let tasks    = load('rami_tasks', DEFAULT_TASKS);
-let convLogs = load('rami_conv', {});
-let meetings = load('rami_meetings', 3);
+// ============================================================
+// STATE
+// ============================================================
+var clients = load('rc_clients', null);
+if (!clients) { clients = JSON.parse(JSON.stringify(DEFAULT_CLIENTS)); save('rc_clients', clients); }
 
-// ═══════════════════════════════════════════════════════════
+var leads = load('rc_leads', null);
+if (!leads) { leads = JSON.parse(JSON.stringify(DEFAULT_LEADS)); save('rc_leads', leads); }
+
+var tasks = load('rc_tasks', [
+  {id:'t1',text:'Follow up Artcurial Paris — finished jewelry angle',done:false,priority:'high'},
+  {id:'t2',text:'Call hottest contacts this week',done:false,priority:'high'}
+]);
+
+var convLogs = load('rc_conv', {});
+var meetings = load('rc_meetings', 3);
+
+// Filter state
+var clientFilter = 'all';
+var clientSearch = '';
+var leadFilter = 'all';
+
+// ============================================================
 // HELPERS
-// ═══════════════════════════════════════════════════════════
-function saveAll() {
-  save('rami_clients', clients);
-  save('rami_leads', leads);
-  save('rami_tasks', tasks);
-  save('rami_conv', convLogs);
+// ============================================================
+function daysSince(d) {
+  if (!d) return 999;
+  return Math.floor((Date.now() - new Date(d)) / 86400000);
 }
 
-function daysSince(isoDate) {
-  if (!isoDate) return 999;
-  return Math.floor((new Date() - new Date(isoDate)) / 86400000);
-}
-
-function formatDate(isoDate) {
-  if (!isoDate) return '—';
-  return new Date(isoDate).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
-}
-
-function todayISO() { return new Date().toISOString().split('T')[0]; }
-
-function greetingTime() {
-  const h = new Date().getHours();
-  return h < 12 ? 'Good Morning' : h < 17 ? 'Good Afternoon' : 'Good Evening';
-}
-
-function todayDate() {
-  return new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-}
-
-function initials(name) {
-  return name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+function todayISO() {
+  return new Date().toISOString().split('T')[0];
 }
 
 function fmtMoney(v) {
-  if (!v) return '';
-  if (v >= 1000000) return '$' + (v/1000000).toFixed(1) + 'M';
-  if (v >= 1000) return '$' + (v/1000).toFixed(0) + 'K';
-  return '$' + v;
+  if (!v) return '—';
+  return '$' + Number(v).toLocaleString();
 }
 
 function toast(msg) {
-  const t = document.getElementById('toast');
+  var t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
 }
 
-function openModal(id) {
-  document.getElementById(id).classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-  document.body.style.overflow = '';
-}
-function handleOverlayClick(e, id) {
-  if (e.target === document.getElementById(id)) closeModal(id);
+function esc(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
-function focusSearch() {
-  const s = document.querySelector('.page.active .search-input');
-  if (s) { s.focus(); s.select(); }
+function fmtDate(iso) {
+  if (!iso) return '—';
+  var d = new Date(iso);
+  return d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
 }
 
-/* Status dot HTML */
-function dotHTML(status) {
-  const map = {
-    hot:'dot-hot', active:'dot-active', followup:'dot-followup', cold:'dot-cold',
-    warm:'dot-warm', bounced:'dot-bounced', replied:'dot-replied',
-    sent:'dot-sent', 'no reply':'dot-noreply', 'not sent':'dot-notsent'
+function greetingWord() {
+  var h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
+function todayFmt() {
+  return new Date().toLocaleDateString('en-US', {weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();
+}
+
+function statusDotClass(status) {
+  if (status === 'hot') return 'dot-hot';
+  if (status === 'active') return 'dot-active';
+  if (status === 'followUp') return 'dot-followup';
+  if (status === 'cold') return 'dot-cold';
+  if (status === 'warm') return 'dot-warm';
+  return 'dot-cold';
+}
+
+function statusBadge(status) {
+  var map = {
+    hot: ['badge-hot','HOT'],
+    active: ['badge-active','ACTIVE'],
+    followUp: ['badge-followup','FOLLOW UP'],
+    cold: ['badge-cold','COLD'],
+    warm: ['badge-warm','WARM']
   };
-  return `<span class="status-dot ${map[(status||'cold').toLowerCase()] || 'dot-cold'}"></span>`;
+  var m = map[status] || ['badge-cold', status];
+  return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
 }
 
-function statusLabel(status) {
-  const labels = {
-    hot:'Hot', active:'Active', followup:'Follow Up', cold:'Cold',
-    warm:'Warm', bounced:'Bounced', replied:'Replied',
-    sent:'Sent', 'no reply':'No Reply', 'not sent':'Not Sent'
+function priorityBadge(p) {
+  var map = {hot:['badge-hot','HOT'],warm:['badge-warm','WARM'],cold:['badge-cold','COLD']};
+  var m = map[p] || ['badge-cold',p];
+  return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
+}
+
+function emailBadge(s) {
+  if (s === 'Replied') return '<span class="badge badge-replied">REPLIED</span>';
+  if (s === 'No Reply') return '<span class="badge badge-noreply">NO REPLY</span>';
+  return '<span class="badge badge-notsent">NOT SENT</span>';
+}
+
+function stageName(s) {
+  var map = {
+    new: 'New Lead',
+    contacted: 'Contacted',
+    discussion: 'In Discussion',
+    negotiation: 'Negotiation',
+    won: 'Closed Won',
+    lost: 'Closed Lost'
   };
-  return labels[(status||'').toLowerCase()] || status;
+  return map[s] || s;
 }
 
-function statusPillHTML(status) {
-  return `<span class="status-pill">${dotHTML(status)}<span>${statusLabel(status)}</span></span>`;
+function uniqueId(prefix) {
+  return prefix + Date.now() + Math.random().toString(36).substr(2,5);
 }
 
-// ═══════════════════════════════════════════════════════════
+// ============================================================
+// MODAL
+// ============================================================
+function showModal(html) {
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-bg').style.display = 'block';
+}
+
+function closeModal() {
+  document.getElementById('modal-bg').style.display = 'none';
+}
+
+// ============================================================
 // NAVIGATION
-// ═══════════════════════════════════════════════════════════
-let currentPage = 'dashboard';
+// ============================================================
+var currentPage = 'dashboard';
 
-function navigate(page) {
-  if (currentPage === page) return;
-  const oldEl = document.getElementById('page-' + currentPage);
-  oldEl.classList.remove('visible');
-  setTimeout(() => oldEl.classList.remove('active'), 220);
-
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(function(p) { p.style.display = 'none'; });
+  document.getElementById('page-' + page).style.display = 'block';
+  document.querySelectorAll('.nav-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.page === page);
+  });
   currentPage = page;
-  const newEl = document.getElementById('page-' + page);
-  newEl.classList.add('active');
-  requestAnimationFrame(() => requestAnimationFrame(() => newEl.classList.add('visible')));
-
-  document.querySelectorAll('.nav-item').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.page === page);
-  });
-  renderPage(page);
-  newEl.scrollTop = 0;
+  if (page === 'dashboard') renderDashboard();
+  else if (page === 'clients') renderClients();
+  else if (page === 'leads') renderLeads();
+  else if (page === 'pipeline') renderPipeline();
+  else if (page === 'settings') renderSettings();
 }
 
-function renderPage(page) {
-  ({ dashboard:renderDashboard, clients:renderClients, leads:renderLeads,
-     pipeline:renderPipeline, settings:renderSettings })[page]?.();
-}
-
-// ═══════════════════════════════════════════════════════════
+// ============================================================
 // DASHBOARD
-// ═══════════════════════════════════════════════════════════
+// ============================================================
 function renderDashboard() {
-  const el = document.getElementById('page-dashboard');
-  const allContacts = [
-    ...clients.map(c => ({...c, _type:'client'})),
-    ...leads.filter(l => l.pipelineStage !== 'Closed Lost' && l.pipelineStage !== 'Closed Won')
-            .map(l => ({...l, _type:'lead', status: l.priority === 'hot' ? 'hot' : (l.priority === 'warm' ? 'active' : 'cold')}))
-  ];
-  const overdue  = allContacts.filter(c => daysSince(c.lastContact) > 7).sort((a,b) => daysSince(b.lastContact)-daysSince(a.lastContact)).slice(0,5);
-  const dueToday = allContacts.filter(c => { const d=daysSince(c.lastContact); return d>=5&&d<=7; }).slice(0,3);
-  const thisWeek = allContacts.filter(c => { const d=daysSince(c.lastContact); return d>=3&&d<5; }).slice(0,3);
+  var el = document.getElementById('page-dashboard');
 
-  const hotCount      = clients.filter(c=>c.status==='hot').length + leads.filter(l=>l.priority==='hot'&&l.pipelineStage!=='Closed Lost').length;
-  const pipelineCount = [...clients,...leads].filter(x=>['In Discussion','Negotiation','Contacted'].includes(x.pipelineStage)).length;
+  // Follow-up alerts: clients + leads where daysSince >= 5
+  var allContacts = clients.map(function(c) { return {name:c.name,company:c.company,phone:c.phone,lastContact:c.lastContact,type:'client'}; })
+    .concat(leads.map(function(l) { return {name:l.name,company:l.company,phone:l.phone,lastContact:l.lastContact,type:'lead'}; }));
 
-  // Hero image — dashboard: ring image 1, fallback dark gradient
-  const heroStyle = `background-image:url('${IMG}/ring_images/img_r3_c2.jpeg'),linear-gradient(160deg,#2A2018 0%,#1A150E 100%);`;
+  var alerts = allContacts.filter(function(c) { return daysSince(c.lastContact) >= 5; })
+    .sort(function(a,b) { return daysSince(b.lastContact) - daysSince(a.lastContact); });
 
-  let html = `
-  <!-- HERO -->
-  <div class="hero" style="${heroStyle}background-size:cover;background-position:center;">
-    <div class="hero-content">
-      <div class="hero-label">Ramigem · Colombian Emeralds</div>
-      <div class="hero-title">${greetingTime()},<br>Meir</div>
-      <div style="font-family:'Inter',sans-serif;font-size:9px;font-weight:300;letter-spacing:0.14em;color:rgba(255,255,255,0.6);margin-bottom:20px;text-transform:uppercase">${todayDate()}</div>
-      <button class="hero-cta" onclick="navigate('clients')">View Clients</button>
-    </div>
-  </div>
-
-  <!-- STATS -->
-  <div class="stats-strip">
-    <div class="stat-cell"><div class="stat-num">${clients.length}</div><div class="stat-lbl">Clients</div></div>
-    <div class="stat-cell"><div class="stat-num">${hotCount}</div><div class="stat-lbl">Hot</div></div>
-    <div class="stat-cell"><div class="stat-num">${pipelineCount}</div><div class="stat-lbl">Pipeline</div></div>
-    <div class="stat-cell"><div class="stat-num">${meetings}</div><div class="stat-lbl">Meetings</div></div>
-  </div>
-
-  <!-- FOLLOW-UP SECTION -->
-  <div class="section-head">
-    <div class="section-eyebrow">Priority</div>
-    <div class="section-title">Follow-Up Required</div>
-  </div>`;
-
-  const noAlerts = overdue.length === 0 && dueToday.length === 0 && thisWeek.length === 0;
-  if (noAlerts) {
-    html += `<div class="empty">All contacts up to date</div>`;
-  }
-
-  function alertRow(c, accentClass, eyebrow) {
-    const d = daysSince(c.lastContact);
-    return `<div class="alert-row">
-      <div class="alert-accent ${accentClass}"></div>
-      <div class="alert-body">
-        <div class="alert-eyebrow">${eyebrow}</div>
-        <div class="alert-name">${c.name}</div>
-        <div class="alert-company">${c.company}${c.city?' · '+c.city:''}</div>
-        <div class="alert-days-text">${d} day${d!==1?'s':''} since last contact</div>
-        <div class="alert-btns">
-          <button class="btn btn-primary" onclick="logContactQuick('${c.id}','${c._type}')">Log Contact</button>
-          ${c.phone?`<a href="tel:${c.phone}" style="text-decoration:none"><button class="btn btn-ghost">Call</button></a>`:''}
-          <button class="btn btn-ghost" onclick="${c._type==='client'?'openClientModal':'openLeadModal'}('${c.id}')">View</button>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  overdue.forEach(c  => { html += alertRow(c,'accent-overdue', 'Overdue — '+daysSince(c.lastContact)+' days'); });
-  dueToday.forEach(c => { html += alertRow(c,'accent-today',   'Due Now'); });
-  thisWeek.forEach(c => { html += alertRow(c,'accent-week',    'This Week'); });
-
-  // TASKS
-  html += `
-  <div class="section-head">
-    <div class="section-eyebrow">Today</div>
-    <div class="section-title">Tasks</div>
-  </div>
-  <div id="tasks-wrap">${renderTasksHTML()}</div>
-
-  <!-- CAMPAIGN -->
-  <div class="section-head">
-    <div class="section-eyebrow">Outreach</div>
-    <div class="section-title">Campaign History</div>
-  </div>
-  <div class="campaign-block">
-    <div class="campaign-toggle-row" onclick="toggleCampaign()">
-      <span class="campaign-name">Campaign 1 · April 9, 2026</span>
-      <span class="campaign-chevron" id="c-toggle">▾</span>
-    </div>
-    <div class="campaign-body" id="campaign-body">
-      <div class="campaign-metrics">
-        <div class="c-metric"><div class="c-metric-num">200</div><div class="c-metric-lbl">Sent</div></div>
-        <div class="c-metric"><div class="c-metric-num">88</div><div class="c-metric-lbl">Bounced</div></div>
-        <div class="c-metric"><div class="c-metric-num">111</div><div class="c-metric-lbl">Delivered</div></div>
-        <div class="c-metric"><div class="c-metric-num">1</div><div class="c-metric-lbl">Replies</div></div>
-      </div>
-      <div class="campaign-note">
-        <strong>Only reply:</strong> Artcurial Paris (bijoux@artcurial.com) — interested in finished jewelry. EU regulations prevent selling loose stones. <strong>Strategy:</strong> Re-engage with jewelry angle — bracelets, necklaces, earrings.
-      </div>
-    </div>
-  </div>
-  <div class="spacer-md"></div>`;
-
-  el.innerHTML = html;
-}
-
-function renderTasksHTML() {
-  let html = '';
-  tasks.forEach((t, i) => {
-    html += `<div class="task-row">
-      <div class="task-check ${t.done?'done':''}" onclick="toggleTask(${i})"></div>
-      <div class="task-text-wrap">
-        <div class="task-label ${t.done?'done':''}">${t.text}</div>
-        <div class="task-priority">${t.priority.toUpperCase()}</div>
-      </div>
-      <button class="task-del" onclick="deleteTask(${i})">×</button>
-    </div>`;
-  });
-  html += `<div class="add-task-wrap">
-    <input class="add-task-input" id="new-task-input" placeholder="Add a task…" onkeydown="if(event.key==='Enter')addTask()">
-    <select class="priority-select" id="new-task-priority">
-      <option value="high">High</option>
-      <option value="med" selected>Med</option>
-      <option value="low">Low</option>
-    </select>
-    <button class="btn btn-primary" style="padding:8px 14px" onclick="addTask()">+</button>
-  </div>`;
-  return html;
-}
-
-function toggleTask(i) {
-  tasks[i].done = !tasks[i].done;
-  save('rami_tasks', tasks);
-  const el = document.getElementById('tasks-wrap');
-  if (el) el.innerHTML = renderTasksHTML();
-}
-function deleteTask(i) {
-  tasks.splice(i,1);
-  save('rami_tasks', tasks);
-  const el = document.getElementById('tasks-wrap');
-  if (el) el.innerHTML = renderTasksHTML();
-}
-function addTask() {
-  const inp = document.getElementById('new-task-input');
-  const pri = document.getElementById('new-task-priority');
-  if (!inp||!inp.value.trim()) return;
-  tasks.push({id:'t'+Date.now(), text:inp.value.trim(), priority:pri.value, done:false});
-  save('rami_tasks', tasks);
-  const el = document.getElementById('tasks-wrap');
-  if (el) el.innerHTML = renderTasksHTML();
-}
-function toggleCampaign() {
-  document.getElementById('campaign-body')?.classList.toggle('open');
-  document.getElementById('c-toggle')?.classList.toggle('open');
-}
-function logContactQuick(id, type) {
-  const today = todayISO();
-  if (type==='client') {
-    const c=clients.find(x=>x.id===id);
-    if(c){c.lastContact=today;if(c.status==='cold')c.status='followup';addConvLog(id,'Logged contact via dashboard');save('rami_clients',clients);}
+  var alertsHtml = '';
+  if (alerts.length === 0) {
+    alertsHtml = '<div style="padding:12px 0;color:#bbb;font-size:13px;text-align:center;">All contacts up to date</div>';
   } else {
-    const l=leads.find(x=>x.id===id);
-    if(l){l.lastContact=today;addConvLog(id,'Logged contact via dashboard');save('rami_leads',leads);}
+    alerts.forEach(function(c) {
+      var ds = daysSince(c.lastContact);
+      var overdue = ds > 7;
+      var phoneLink = c.phone ? '<a href="tel:' + esc(c.phone) + '" class="call-btn">Call</a>' : '<span style="font-size:11px;color:#ccc;">No phone</span>';
+      alertsHtml += '<div class="fu-row' + (overdue ? ' overdue' : '') + '">' +
+        '<div class="fu-info"><div class="fu-name">' + esc(c.name) + '</div><div class="fu-company">' + esc(c.company) + '</div></div>' +
+        '<div class="fu-days">' + ds + 'd ago</div>' +
+        phoneLink +
+        '</div>';
+    });
   }
-  toast('Contact logged');
+
+  // Stats
+  var hotCount = clients.filter(function(c) { return c.status === 'hot'; }).length;
+  var inPipeline = clients.filter(function(c) { return c.pipelineStage === 'discussion' || c.pipelineStage === 'negotiation'; }).length;
+
+  // Tasks HTML
+  var tasksHtml = '';
+  if (tasks.length === 0) {
+    tasksHtml = '<div style="color:#bbb;font-size:13px;padding:12px 0;">No tasks yet</div>';
+  } else {
+    tasks.forEach(function(t) {
+      tasksHtml += '<div class="task-row">' +
+        '<div class="task-check' + (t.done ? ' checked' : '') + '" onclick="toggleTask(\'' + esc(t.id) + '\')"></div>' +
+        '<span class="task-text' + (t.done ? ' done' : '') + '">' + esc(t.text) + '</span>' +
+        '<button class="task-del" onclick="deleteTask(\'' + esc(t.id) + '\')">×</button>' +
+        '</div>';
+    });
+  }
+
+  el.innerHTML =
+    '<div style="padding-top:4px;">' +
+    '<div class="greeting">' + greetingWord() + ', Meir</div>' +
+    '<div class="today-date">' + todayFmt() + '</div>' +
+
+    '<div class="section-label">Follow-Up Alerts</div>' +
+    alertsHtml +
+
+    '<div class="section-label" style="margin-top:20px;">Quick Stats</div>' +
+    '<div class="stats-row">' +
+    '<div class="stat-box"><div class="stat-num">' + clients.length + '</div><div class="stat-lbl">Clients</div></div>' +
+    '<div class="stat-box"><div class="stat-num">' + hotCount + '</div><div class="stat-lbl">Hot</div></div>' +
+    '<div class="stat-box"><div class="stat-num">' + inPipeline + '</div><div class="stat-lbl">Pipeline</div></div>' +
+    '<div class="stat-box"><div class="stat-num">' + meetings + '</div><div class="stat-lbl">Meetings</div></div>' +
+    '</div>' +
+
+    '<div class="section-label" style="margin-top:20px;">Tasks</div>' +
+    '<div id="tasks-list" style="background:#fff;border:1px solid #E8E3D8;border-radius:3px;padding:0 14px;">' +
+    tasksHtml +
+    '</div>' +
+    '<div class="add-task-row">' +
+    '<input type="text" id="new-task-input" placeholder="Add a task..." onkeydown="if(event.key===\'Enter\')addTask()">' +
+    '<button onclick="addTask()">Add</button>' +
+    '</div>' +
+    '</div>';
+}
+
+function toggleTask(id) {
+  tasks.forEach(function(t) { if (t.id === id) t.done = !t.done; });
+  save('rc_tasks', tasks);
   renderDashboard();
 }
 
-// ═══════════════════════════════════════════════════════════
-// CLIENTS
-// ═══════════════════════════════════════════════════════════
-let clientFilter = 'all';
-let clientSearch = '';
+function deleteTask(id) {
+  tasks = tasks.filter(function(t) { return t.id !== id; });
+  save('rc_tasks', tasks);
+  renderDashboard();
+}
 
+function addTask() {
+  var inp = document.getElementById('new-task-input');
+  if (!inp) return;
+  var text = inp.value.trim();
+  if (!text) return;
+  tasks.push({id: uniqueId('t'), text: text, done: false, priority: 'normal'});
+  save('rc_tasks', tasks);
+  renderDashboard();
+}
+
+// ============================================================
+// CLIENTS
+// ============================================================
 function renderClients() {
-  const el = document.getElementById('page-clients');
-  const counts = {
-    all: clients.length,
-    hot: clients.filter(c=>c.status==='hot').length,
-    active: clients.filter(c=>c.status==='active').length,
-    followup: clients.filter(c=>c.status==='followup').length,
-    cold: clients.filter(c=>c.status==='cold').length
-  };
-  let filtered = clients.filter(c => {
-    if (clientFilter!=='all' && c.status!==clientFilter) return false;
+  var el = document.getElementById('page-clients');
+
+  var filtered = clients.filter(function(c) {
+    if (clientFilter !== 'all' && c.status !== clientFilter) return false;
     if (clientSearch) {
-      const q=clientSearch.toLowerCase();
-      return c.name.toLowerCase().includes(q)||c.company.toLowerCase().includes(q)||(c.city||'').toLowerCase().includes(q)||(c.country||'').toLowerCase().includes(q);
+      var q = clientSearch.toLowerCase();
+      return c.name.toLowerCase().indexOf(q) > -1 || c.company.toLowerCase().indexOf(q) > -1 || (c.country && c.country.toLowerCase().indexOf(q) > -1);
     }
     return true;
   });
 
-  const heroStyle = `background-image:url('${IMG}/ring_images/img_r5_c2.jpeg'),linear-gradient(160deg,#1A1210 0%,#0D0A06 100%);background-size:cover;background-position:center;`;
+  var filters = ['all','hot','active','followUp','cold'];
+  var filterLabels = {all:'All',hot:'Hot',active:'Active',followUp:'Follow Up',cold:'Cold'};
 
-  let html = `
-  <div class="hero" style="${heroStyle}">
-    <div class="hero-content">
-      <div class="hero-label">Portfolio</div>
-      <div class="hero-title">Client<br>Relations</div>
-      <button class="hero-cta" onclick=""><!-- spacer --></button>
-    </div>
-  </div>
+  var ftabs = filters.map(function(f) {
+    return '<button class="ftab' + (clientFilter === f ? ' active' : '') + '" onclick="setClientFilter(\'' + f + '\')">' + filterLabels[f] + '</button>';
+  }).join('');
 
-  <div class="section-head">
-    <div class="section-eyebrow">Directory</div>
-    <div class="section-title">Clients</div>
-    <div class="section-count">${clients.length} contacts · ${counts.hot} priority</div>
-  </div>
-
-  <div class="tabs-bar">
-    <button class="tab-item ${clientFilter==='all'?'active':''}" onclick="setClientFilter('all')">All ${counts.all}</button>
-    <button class="tab-item ${clientFilter==='hot'?'active':''}" onclick="setClientFilter('hot')">Hot ${counts.hot}</button>
-    <button class="tab-item ${clientFilter==='active'?'active':''}" onclick="setClientFilter('active')">Active ${counts.active}</button>
-    <button class="tab-item ${clientFilter==='followup'?'active':''}" onclick="setClientFilter('followup')">Follow Up ${counts.followup}</button>
-    <button class="tab-item ${clientFilter==='cold'?'active':''}" onclick="setClientFilter('cold')">Cold ${counts.cold}</button>
-  </div>
-
-  <div class="search-wrap">
-    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
-    <input class="search-input" id="client-search" placeholder="Search…" value="${clientSearch}" oninput="clientSearch=this.value;renderClients()">
-  </div>`;
-
-  if (filtered.length===0) {
-    html += `<div class="empty">No clients found</div>`;
+  var rows = '';
+  if (filtered.length === 0) {
+    rows = '<div class="empty-state">No clients found</div>';
   } else {
-    filtered.forEach(c => {
-      const d = daysSince(c.lastContact);
-      html += `<div class="list-row" onclick="openClientModal('${c.id}')">
-        ${dotHTML(c.status)}
-        <div class="row-main">
-          <div class="row-name">${c.name}</div>
-          <div class="row-sub">${c.company}</div>
-          <div class="row-meta">${c.city||''}, ${c.country||''}</div>
-        </div>
-        <div class="row-right">
-          ${c.dealValue?`<div class="row-value">${fmtMoney(c.dealValue)}</div>`:''}
-          <div class="row-date">${formatDate(c.lastContact)}</div>
-          <div class="row-arrow">›</div>
-        </div>
-      </div>`;
+    filtered.forEach(function(c) {
+      var ds = daysSince(c.lastContact);
+      var daysStr = ds === 999 ? 'Never' : ds + 'd ago';
+      rows += '<div class="row-item" onclick="openClientModal(\'' + esc(c.id) + '\')">' +
+        '<div class="dot ' + statusDotClass(c.status) + '"></div>' +
+        '<div class="client-left">' +
+        '<div class="client-name">' + esc(c.name) + '</div>' +
+        '<div class="client-company">' + esc(c.company) + ' · ' + esc(c.city) + '</div>' +
+        '</div>' +
+        '<div class="client-right">' +
+        '<div class="days-txt">' + daysStr + '</div>' +
+        statusBadge(c.status) +
+        '</div>' +
+        '</div>';
     });
   }
-  el.innerHTML = html;
-  const s = document.getElementById('client-search');
-  if (s&&clientSearch) { s.focus(); s.setSelectionRange(s.value.length,s.value.length); }
+
+  el.innerHTML =
+    '<div class="search-wrap"><input type="text" placeholder="Search clients..." value="' + esc(clientSearch) + '" oninput="setClientSearch(this.value)"></div>' +
+    '<div class="filter-tabs">' + ftabs + '</div>' +
+    rows;
 }
 
-function setClientFilter(f) { clientFilter=f; renderClients(); }
+function setClientFilter(f) {
+  clientFilter = f;
+  renderClients();
+}
+
+function setClientSearch(v) {
+  clientSearch = v;
+  renderClients();
+}
 
 function openClientModal(id) {
-  const c = clients.find(x=>x.id===id);
+  var c = clients.find(function(x) { return x.id === id; });
   if (!c) return;
-  document.getElementById('modal-client-title').textContent = c.name;
-  const logs = convLogs[id]||[];
 
-  let html = `
-  <div class="modal-person">
-    <div class="modal-avatar">${initials(c.name)}</div>
-    <div class="modal-person-info">
-      <div class="modal-person-name">${c.name}</div>
-      <div class="modal-person-role">${c.role||''} · ${c.company}</div>
-      <div class="modal-person-status">${statusPillHTML(c.status)}</div>
-    </div>
-  </div>
+  var logs = convLogs[id] || [];
+  var logsHtml = '';
+  if (logs.length === 0) {
+    logsHtml = '<div style="color:#bbb;font-size:12px;padding:8px 0;">No contact logged yet</div>';
+  } else {
+    var recent = logs.slice(-5).reverse();
+    recent.forEach(function(l) {
+      logsHtml += '<div class="log-entry"><span class="log-date">' + esc(l.date) + '</span> — ' + esc(l.note) + '</div>';
+    });
+  }
 
-  <div class="field-group">
-    <div class="field-label">Status</div>
-    <select class="field-select" onchange="updateClient('${id}','status',this.value)">
-      ${['hot','active','followup','cold'].map(s=>`<option value="${s}" ${c.status===s?'selected':''}>${statusLabel(s)}</option>`).join('')}
-    </select>
-  </div>
+  var html =
+    '<div class="modal-header">' +
+    '<div>' +
+    '<div class="modal-title">' + esc(c.name) + '</div>' +
+    '<div style="font-size:12px;color:#999;margin-top:2px;">' + esc(c.company) + '</div>' +
+    '</div>' +
+    '<button class="modal-close" onclick="closeModal()">×</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
 
-  <div class="field-group">
-    <div class="field-label">Pipeline Stage</div>
-    <select class="field-select" onchange="updateClient('${id}','pipelineStage',this.value)">
-      ${['New Lead','Contacted','In Discussion','Negotiation','Closed Won','Closed Lost'].map(s=>`<option value="${s}" ${c.pipelineStage===s?'selected':''}>${s}</option>`).join('')}
-    </select>
-  </div>
+    statusBadge(c.status) + '&nbsp;' +
+    '<span class="badge" style="background:#F0F0F0;color:#666;">' + stageName(c.pipelineStage) + '</span>' +
 
-  <div class="grid-2">
-    <div class="field-group">
-      <div class="field-label">Email</div>
-      <a href="mailto:${c.email}" class="field-link">${c.email}</a>
-    </div>
-    <div class="field-group">
-      <div class="field-label">Phone</div>
-      <a href="tel:${c.phone}" class="field-link">${c.phone||'—'}</a>
-    </div>
-  </div>
+    '<div style="margin-top:14px;">' +
+    '<div class="detail-row"><span class="detail-label">Role</span><span class="detail-value">' + esc(c.role) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Email</span><span class="detail-value"><a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a></span></div>' +
+    '<div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value"><a href="tel:' + esc(c.phone) + '">' + esc(c.phone || '—') + '</a></span></div>' +
+    '<div class="detail-row"><span class="detail-label">Location</span><span class="detail-value">' + esc(c.city) + ', ' + esc(c.country) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Source</span><span class="detail-value">' + esc(c.source) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Deal Value</span><span class="detail-value" style="color:#C9A84C;font-weight:500;">' + fmtMoney(c.dealValue) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Last Contact</span><span class="detail-value">' + fmtDate(c.lastContact) + ' (' + daysSince(c.lastContact) + 'd ago)</span></div>' +
+    '</div>' +
 
-  <div class="grid-2">
-    <div class="field-group">
-      <div class="field-label">Location</div>
-      <div class="field-value">${c.city}, ${c.country}</div>
-    </div>
-    <div class="field-group">
-      <div class="field-label">Deal Value</div>
-      <div class="field-value" style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300">${fmtMoney(c.dealValue)||'—'}</div>
-    </div>
-  </div>
+    '<div class="section-label">Notes</div>' +
+    '<textarea class="notes-area" id="modal-notes-' + esc(c.id) + '" placeholder="Add notes...">' + esc(c.notes) + '</textarea>' +
 
-  <div class="field-group">
-    <div class="field-label">Source</div>
-    <div class="field-value">${c.source||'—'}</div>
-  </div>
+    '<div class="section-label" style="margin-top:14px;">Pipeline Stage</div>' +
+    '<select class="stage-select" id="modal-stage-' + esc(c.id) + '">' +
+    ['new','contacted','discussion','negotiation','won','lost'].map(function(s) {
+      return '<option value="' + s + '"' + (c.pipelineStage === s ? ' selected' : '') + '>' + stageName(s) + '</option>';
+    }).join('') +
+    '</select>' +
 
-  <div class="field-group">
-    <div class="field-label">Last Contact</div>
-    <input type="date" class="field-input" value="${c.lastContact||''}" onchange="updateClient('${id}','lastContact',this.value)">
-  </div>
+    '<button class="btn-primary" onclick="logContactAndSave(\'' + esc(c.id) + '\',\'client\')">✓ Log Contact Today</button>' +
 
-  <div class="field-group">
-    <div class="field-label">Notes</div>
-    <textarea class="field-textarea" onchange="updateClient('${id}','notes',this.value)">${c.notes||''}</textarea>
-  </div>
+    '<div class="section-label" style="margin-top:14px;">Contact History</div>' +
+    '<div style="background:#fff;border:1px solid #E8E3D8;border-radius:3px;padding:0 14px;">' + logsHtml + '</div>' +
 
-  <div class="field-group">
-    <div class="field-label">Conversation Log</div>
-    <div class="conv-log" id="conv-log-${id}">
-      ${logs.length===0
-        ? '<div class="conv-text" style="color:var(--text-muted);padding:8px 0">No entries yet</div>'
-        : logs.map(e=>`<div class="conv-entry"><div class="conv-date">${e.date}</div><div class="conv-text">${e.text}</div></div>`).join('')}
-    </div>
-    <textarea class="field-textarea" id="new-log-${id}" placeholder="Add a note…" style="margin-top:10px;min-height:56px"></textarea>
-    <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="addLog('${id}','client')">Add Entry</button>
-  </div>
+    '</div>';
 
-  <div style="margin-top:16px">
-    <button class="btn btn-primary btn-full" onclick="logContactFull('${id}','client')">Log Contact Today</button>
-  </div>`;
-
-  document.getElementById('modal-client-body').innerHTML = html;
-  openModal('modal-client');
+  showModal(html);
 }
 
-function updateClient(id, field, value) {
-  const c=clients.find(x=>x.id===id);
-  if(c){c[field]=value;save('rami_clients',clients);}
+function logContactAndSave(id, type) {
+  var noteEl, stageEl, notesVal, stageVal;
+  if (type === 'client') {
+    noteEl = document.getElementById('modal-notes-' + id);
+    stageEl = document.getElementById('modal-stage-' + id);
+    notesVal = noteEl ? noteEl.value : '';
+    stageVal = stageEl ? stageEl.value : '';
+
+    clients.forEach(function(c) {
+      if (c.id === id) {
+        c.lastContact = todayISO();
+        c.notes = notesVal;
+        c.pipelineStage = stageVal;
+      }
+    });
+    save('rc_clients', clients);
+
+    if (!convLogs[id]) convLogs[id] = [];
+    convLogs[id].push({date: todayISO(), note: 'Contact logged'});
+    save('rc_conv', convLogs);
+
+  } else if (type === 'lead') {
+    noteEl = document.getElementById('modal-notes-' + id);
+    stageEl = document.getElementById('modal-stage-' + id);
+    var emailEl = document.getElementById('modal-email-status-' + id);
+    notesVal = noteEl ? noteEl.value : '';
+    stageVal = stageEl ? stageEl.value : '';
+    var emailVal = emailEl ? emailEl.value : '';
+
+    leads.forEach(function(l) {
+      if (l.id === id) {
+        l.lastContact = todayISO();
+        l.notes = notesVal;
+        l.pipelineStage = stageVal;
+        if (emailVal) l.emailStatus = emailVal;
+      }
+    });
+    save('rc_leads', leads);
+
+    if (!convLogs[id]) convLogs[id] = [];
+    convLogs[id].push({date: todayISO(), note: 'Contact logged'});
+    save('rc_conv', convLogs);
+  }
+
+  closeModal();
+  toast('Contact logged!');
+
+  if (currentPage === 'clients') renderClients();
+  else if (currentPage === 'leads') renderLeads();
+  else if (currentPage === 'dashboard') renderDashboard();
 }
 
-function logContactFull(id, type) {
-  const today=todayISO();
-  if(type==='client'){const c=clients.find(x=>x.id===id);if(c){c.lastContact=today;addConvLog(id,'Contact logged');save('rami_clients',clients);}}
-  else{const l=leads.find(x=>x.id===id);if(l){l.lastContact=today;addConvLog(id,'Contact logged');save('rami_leads',leads);}}
-  toast('Contact logged');
-  closeModal('modal-client');
-  closeModal('modal-lead');
-}
-
-function addLog(id, type) {
-  const el=document.getElementById('new-log-'+id);
-  if(!el||!el.value.trim()) return;
-  addConvLog(id, el.value.trim());
-  save('rami_clients',clients);save('rami_leads',leads);
-  el.value='';
-  const logEl=document.getElementById('conv-log-'+id);
-  const logs=convLogs[id]||[];
-  if(logEl){logEl.innerHTML=logs.map(e=>`<div class="conv-entry"><div class="conv-date">${e.date}</div><div class="conv-text">${e.text}</div></div>`).join('');logEl.scrollTop=logEl.scrollHeight;}
-  toast('Entry saved');
-}
-
-function addConvLog(id, text) {
-  if(!convLogs[id]) convLogs[id]=[];
-  convLogs[id].unshift({date:new Date().toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}),text});
-  save('rami_conv',convLogs);
-}
-
-// ═══════════════════════════════════════════════════════════
+// ============================================================
 // LEADS
-// ═══════════════════════════════════════════════════════════
-let leadFilter = 'all';
-let leadSearch = '';
-
+// ============================================================
 function renderLeads() {
-  const el = document.getElementById('page-leads');
-  const counts = {
-    all: leads.length,
-    hot: leads.filter(l=>l.priority==='hot').length,
-    warm: leads.filter(l=>l.priority==='warm').length,
-    cold: leads.filter(l=>l.priority==='cold').length,
-    followup: leads.filter(l=>{const d=daysSince(l.lastContact);return d>=5;}).length
-  };
-  const filtered = leads.filter(l => {
-    if(leadFilter==='hot') return l.priority==='hot';
-    if(leadFilter==='warm') return l.priority==='warm';
-    if(leadFilter==='cold') return l.priority==='cold';
-    if(leadFilter==='followup'){const d=daysSince(l.lastContact);return d>=5;}
-    return true;
-  }).filter(l => {
-    if(!leadSearch) return true;
-    const q=leadSearch.toLowerCase();
-    return (l.name||'').toLowerCase().includes(q)||(l.company||'').toLowerCase().includes(q)||(l.email||'').toLowerCase().includes(q);
+  var el = document.getElementById('page-leads');
+
+  var filtered = leads.filter(function(l) {
+    if (leadFilter === 'all') return true;
+    return l.priority === leadFilter;
   });
 
-  const priorityColor={'hot':'var(--hot)','warm':'var(--followup)','cold':'var(--cold)'};
-  const stageLabels={'new':'New Lead','contacted':'Contacted','discussion':'In Discussion','negotiation':'Negotiation','won':'Closed Won','lost':'Closed Lost'};
+  var filters = ['all','hot','warm','cold'];
+  var filterLabels = {all:'All',hot:'Hot',warm:'Warm',cold:'Cold'};
 
-  el.innerHTML = `
-    <div class="top-bar"><span class="brand">RAMIGEM</span><div class="top-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
-    <div class="hero-section">
-      <div class="hero-img" style="background-image:url('https://meirharush10-blip.github.io/ramigem-catalogues/media/necklace_images/image1.jpeg'),linear-gradient(160deg,#1C3829,#2A5240)">
-        <div class="hero-overlay"></div>
-        <div class="hero-text">
-          <div class="hero-label">SALES PIPELINE</div>
-          <div class="hero-title">New Leads &amp;<br>Opportunities</div>
-        </div>
-      </div>
-    </div>
-    <div class="page-content">
-      <div class="search-row">
-        <input class="search-input" placeholder="Search leads…" value="${leadSearch}" oninput="leadSearch=this.value;renderLeads()">
-      </div>
-      <div class="tab-row">
-        ${['all','hot','warm','cold','followup'].map(t=>`<button class="tab ${leadFilter===t?'active':''}" onclick="leadFilter='${t}';renderLeads()">${t==='followup'?'Follow-Up':t.charAt(0).toUpperCase()+t.slice(1)}${t!=='followup'?' ('+counts[t]+')':''}</button>`).join('')}
-      </div>
-      <div class="section-header"><div class="section-label">CONTACTS</div></div>
-      <div class="contact-list">
-        ${filtered.length===0?'<div style="padding:32px 20px;text-align:center;color:var(--text-muted);font-size:13px">No leads found</div>':
-          filtered.map(l=>`
-            <div class="contact-row" onclick="openLeadModal('${l.id}')">
-              <div class="contact-main">
-                <div class="contact-name">${l.name}</div>
-                <div class="contact-company">${l.company||''}</div>
-                <div class="contact-meta">${l.email||''}</div>
-              </div>
-              <div class="contact-right">
-                <span class="status-dot" style="background:${priorityColor[l.priority]||'#999'}"></span>
-                <div class="contact-days">${daysSince(l.lastContact)}d</div>
-                <div class="view-arrow">→</div>
-              </div>
-            </div>`).join('')}
-      </div>
-      <div style="padding:20px">
-        <button class="btn btn-primary btn-full" onclick="openNewLeadModal()">+ ADD NEW LEAD</button>
-      </div>
-    </div>`;
+  var ftabs = filters.map(function(f) {
+    return '<button class="ftab' + (leadFilter === f ? ' active' : '') + '" onclick="setLeadFilter(\'' + f + '\')">' + filterLabels[f] + '</button>';
+  }).join('');
+
+  var rows = '';
+  if (filtered.length === 0) {
+    rows = '<div class="empty-state">No leads found</div>';
+  } else {
+    filtered.forEach(function(l) {
+      var ds = daysSince(l.lastContact);
+      var daysStr = ds === 999 ? 'Never' : ds + 'd ago';
+      rows += '<div class="row-item" onclick="openLeadModal(\'' + esc(l.id) + '\')">' +
+        '<div class="dot ' + statusDotClass(l.priority) + '"></div>' +
+        '<div class="client-left">' +
+        '<div class="client-name">' + esc(l.name) + '</div>' +
+        '<div class="client-company">' + esc(l.company) + ' · ' + esc(stageName(l.pipelineStage)) + '</div>' +
+        '</div>' +
+        '<div class="client-right">' +
+        '<div class="days-txt">' + daysStr + '</div>' +
+        emailBadge(l.emailStatus) +
+        '</div>' +
+        '</div>';
+    });
+  }
+
+  el.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">' +
+    '<div class="filter-tabs" style="margin-bottom:0;flex:1;">' + ftabs + '</div>' +
+    '<button style="background:#1C3829;color:#fff;border:none;border-radius:3px;padding:8px 12px;font-size:12px;font-family:Inter,sans-serif;cursor:pointer;flex-shrink:0;margin-left:8px;" onclick="openAddLeadModal()">+ Lead</button>' +
+    '</div>' +
+    rows;
+}
+
+function setLeadFilter(f) {
+  leadFilter = f;
+  renderLeads();
 }
 
 function openLeadModal(id) {
-  const l = leads.find(x=>x.id===id);
-  if(!l) return;
-  const logs = convLogs[id]||[];
-  const stageLabels={'new':'New Lead','contacted':'Contacted','discussion':'In Discussion','negotiation':'Negotiation','won':'Closed Won','lost':'Closed Lost'};
-  const stages = ['new','contacted','discussion','negotiation','won','lost'];
+  var l = leads.find(function(x) { return x.id === id; });
+  if (!l) return;
 
-  document.getElementById('modal-lead-title').textContent = l.name;
-  document.getElementById('modal-lead-body').innerHTML = `
-    <div class="modal-meta-row">
-      <span class="status-pill priority-${l.priority}">${l.priority.toUpperCase()}</span>
-      <span class="status-pill">${stageLabels[l.pipelineStage]||l.pipelineStage}</span>
-      <span class="status-pill">${l.emailStatus||'Not Sent'}</span>
-    </div>
-    <div class="grid-2">
-      <div class="field-group"><div class="field-label">Company</div><div class="field-value">${l.company||'—'}</div></div>
-      <div class="field-group"><div class="field-label">Role</div><div class="field-value">${l.role||'—'}</div></div>
-    </div>
-    <div class="grid-2">
-      <div class="field-group"><div class="field-label">Email</div><a href="mailto:${l.email}" class="field-link">${l.email||'—'}</a></div>
-      <div class="field-group"><div class="field-label">Phone</div><a href="tel:${l.phone}" class="field-link">${l.phone||'—'}</a></div>
-    </div>
-    <div class="field-group">
-      <div class="field-label">Pipeline Stage</div>
-      <select class="field-input" onchange="updateLead('${id}','pipelineStage',this.value)">
-        ${stages.map(s=>`<option value="${s}" ${l.pipelineStage===s?'selected':''}>${stageLabels[s]}</option>`).join('')}
-      </select>
-    </div>
-    <div class="field-group">
-      <div class="field-label">Priority</div>
-      <select class="field-input" onchange="updateLead('${id}','priority',this.value)">
-        ${['hot','warm','cold'].map(p=>`<option value="${p}" ${l.priority===p?'selected':''}>${p.charAt(0).toUpperCase()+p.slice(1)}</option>`).join('')}
-      </select>
-    </div>
-    <div class="field-group">
-      <div class="field-label">Email Status</div>
-      <select class="field-input" onchange="updateLead('${id}','emailStatus',this.value)">
-        ${['Not Sent','Sent','Opened','No Reply','Replied','Bounced'].map(s=>`<option ${l.emailStatus===s?'selected':''}>${s}</option>`).join('')}
-      </select>
-    </div>
-    <div class="field-group">
-      <div class="field-label">Last Contact</div>
-      <input type="date" class="field-input" value="${l.lastContact||''}" onchange="updateLead('${id}','lastContact',this.value)">
-    </div>
-    <div class="field-group">
-      <div class="field-label">Notes</div>
-      <textarea class="field-textarea" onchange="updateLead('${id}','notes',this.value)">${l.notes||''}</textarea>
-    </div>
-    <div class="field-group">
-      <div class="field-label">Conversation Log</div>
-      <div class="conv-log" id="conv-log-${id}">
-        ${logs.length===0?'<div class="conv-text" style="color:var(--text-muted);padding:8px 0">No entries yet</div>':logs.map(e=>`<div class="conv-entry"><div class="conv-date">${e.date}</div><div class="conv-text">${e.text}</div></div>`).join('')}
-      </div>
-      <textarea class="field-textarea" id="new-log-${id}" placeholder="Add a note…" style="margin-top:10px;min-height:56px"></textarea>
-      <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="addLog('${id}','lead')">Add Entry</button>
-    </div>
-    <div style="margin-top:16px;display:flex;gap:10px">
-      <button class="btn btn-primary" style="flex:1" onclick="logContactFull('${id}','lead')">Log Contact</button>
-      <button class="btn btn-ghost" style="flex:1;border-color:#8B2020;color:#8B2020" onclick="markBounced('${id}')">Mark Bounced</button>
-    </div>`;
-  openModal('modal-lead');
+  var logs = convLogs[id] || [];
+  var logsHtml = '';
+  if (logs.length === 0) {
+    logsHtml = '<div style="color:#bbb;font-size:12px;padding:8px 0;">No contact logged yet</div>';
+  } else {
+    var recent = logs.slice(-5).reverse();
+    recent.forEach(function(entry) {
+      logsHtml += '<div class="log-entry"><span class="log-date">' + esc(entry.date) + '</span> — ' + esc(entry.note) + '</div>';
+    });
+  }
+
+  var html =
+    '<div class="modal-header">' +
+    '<div>' +
+    '<div class="modal-title">' + esc(l.name) + '</div>' +
+    '<div style="font-size:12px;color:#999;margin-top:2px;">' + esc(l.company) + '</div>' +
+    '</div>' +
+    '<button class="modal-close" onclick="closeModal()">×</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+
+    priorityBadge(l.priority) + '&nbsp;' + emailBadge(l.emailStatus) +
+
+    '<div style="margin-top:14px;">' +
+    '<div class="detail-row"><span class="detail-label">Email</span><span class="detail-value"><a href="mailto:' + esc(l.email) + '">' + esc(l.email || '—') + '</a></span></div>' +
+    '<div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value"><a href="tel:' + esc(l.phone) + '">' + esc(l.phone || '—') + '</a></span></div>' +
+    '<div class="detail-row"><span class="detail-label">Location</span><span class="detail-value">' + esc(l.city) + ', ' + esc(l.country) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Source</span><span class="detail-value">' + esc(l.source) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Deal Value</span><span class="detail-value" style="color:#C9A84C;font-weight:500;">' + fmtMoney(l.dealValue) + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Last Contact</span><span class="detail-value">' + fmtDate(l.lastContact) + ' (' + daysSince(l.lastContact) + 'd ago)</span></div>' +
+    '</div>' +
+
+    '<div class="section-label">Notes</div>' +
+    '<textarea class="notes-area" id="modal-notes-' + esc(l.id) + '" placeholder="Add notes...">' + esc(l.notes) + '</textarea>' +
+
+    '<div class="section-label" style="margin-top:14px;">Pipeline Stage</div>' +
+    '<select class="stage-select" id="modal-stage-' + esc(l.id) + '">' +
+    ['new','contacted','discussion','negotiation','won','lost'].map(function(s) {
+      return '<option value="' + s + '"' + (l.pipelineStage === s ? ' selected' : '') + '>' + stageName(s) + '</option>';
+    }).join('') +
+    '</select>' +
+
+    '<div class="section-label" style="margin-top:14px;">Email Status</div>' +
+    '<select class="stage-select" id="modal-email-status-' + esc(l.id) + '">' +
+    ['Not Sent','Replied','No Reply'].map(function(s) {
+      return '<option value="' + s + '"' + (l.emailStatus === s ? ' selected' : '') + '>' + s + '</option>';
+    }).join('') +
+    '</select>' +
+
+    '<button class="btn-primary" onclick="logContactAndSave(\'' + esc(l.id) + '\',\'lead\')">✓ Log Contact Today</button>' +
+
+    '<div class="section-label" style="margin-top:14px;">Contact History</div>' +
+    '<div style="background:#fff;border:1px solid #E8E3D8;border-radius:3px;padding:0 14px;">' + logsHtml + '</div>' +
+
+    '<button class="btn-danger" onclick="deleteLead(\'' + esc(l.id) + '\')">Delete Lead</button>' +
+
+    '</div>';
+
+  showModal(html);
 }
 
-function updateLead(id, field, value) {
-  const l=leads.find(x=>x.id===id);
-  if(l){l[field]=value;save('rami_leads',leads);}
-}
-
-function markBounced(id) {
-  updateLead(id,'emailStatus','Bounced');
-  updateLead(id,'pipelineStage','lost');
-  toast('Marked as bounced');
-  closeModal('modal-lead');
-  renderLeads();
-}
-
-function openNewLeadModal() {
-  document.getElementById('modal-newlead-body').innerHTML = `
-    <div class="field-group"><div class="field-label">Name *</div><input class="field-input" id="nl-name" placeholder="Full name"></div>
-    <div class="field-group"><div class="field-label">Company</div><input class="field-input" id="nl-company" placeholder="Company name"></div>
-    <div class="field-group"><div class="field-label">Email</div><input class="field-input" id="nl-email" type="email" placeholder="email@company.com"></div>
-    <div class="field-group"><div class="field-label">Phone</div><input class="field-input" id="nl-phone" placeholder="+1 212..."></div>
-    <div class="field-group"><div class="field-label">City</div><input class="field-input" id="nl-city" placeholder="New York"></div>
-    <div class="field-group"><div class="field-label">Country</div><input class="field-input" id="nl-country" placeholder="USA"></div>
-    <div class="field-group"><div class="field-label">Priority</div>
-      <select class="field-input" id="nl-priority"><option value="warm">Warm</option><option value="hot">Hot</option><option value="cold">Cold</option></select>
-    </div>
-    <div class="field-group"><div class="field-label">Notes</div><textarea class="field-textarea" id="nl-notes" placeholder="How did you meet? What do they need?"></textarea></div>
-    <div style="margin-top:16px">
-      <button class="btn btn-primary btn-full" onclick="saveNewLead()">SAVE LEAD</button>
-    </div>`;
-  openModal('modal-newlead');
+function openAddLeadModal() {
+  var html =
+    '<div class="modal-header">' +
+    '<div class="modal-title">New Lead</div>' +
+    '<button class="modal-close" onclick="closeModal()">×</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+    '<div class="form-group"><label class="form-label">Name *</label><input class="form-input" id="nl-name" placeholder="Contact name"></div>' +
+    '<div class="form-group"><label class="form-label">Company</label><input class="form-input" id="nl-company" placeholder="Company name"></div>' +
+    '<div class="form-group"><label class="form-label">Email</label><input class="form-input" id="nl-email" type="email" placeholder="email@company.com"></div>' +
+    '<div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="nl-phone" type="tel" placeholder="+1 ..."></div>' +
+    '<div class="form-group"><label class="form-label">City</label><input class="form-input" id="nl-city" placeholder="City"></div>' +
+    '<div class="form-group"><label class="form-label">Country</label><input class="form-input" id="nl-country" placeholder="Country"></div>' +
+    '<div class="form-group"><label class="form-label">Priority</label><select class="form-select" id="nl-priority"><option value="hot">Hot</option><option value="warm" selected>Warm</option><option value="cold">Cold</option></select></div>' +
+    '<div class="form-group"><label class="form-label">Source</label><input class="form-input" id="nl-source" placeholder="Campaign 1, Referral..."></div>' +
+    '<div class="form-group"><label class="form-label">Deal Value ($)</label><input class="form-input" id="nl-value" type="number" placeholder="0"></div>' +
+    '<div class="form-group"><label class="form-label">Notes</label><textarea class="notes-area" id="nl-notes" placeholder="Initial notes..."></textarea></div>' +
+    '<button class="btn-primary" onclick="saveNewLead()">Add Lead</button>' +
+    '</div>';
+  showModal(html);
 }
 
 function saveNewLead() {
-  const name=document.getElementById('nl-name').value.trim();
-  if(!name){toast('Name is required');return;}
-  const newLead = {
-    id:'lead-'+Date.now(),
-    name,
-    company:document.getElementById('nl-company').value.trim(),
-    email:document.getElementById('nl-email').value.trim(),
-    phone:document.getElementById('nl-phone').value.trim(),
-    city:document.getElementById('nl-city').value.trim(),
-    country:document.getElementById('nl-country').value.trim(),
-    priority:document.getElementById('nl-priority').value,
-    notes:document.getElementById('nl-notes').value.trim(),
-    pipelineStage:'new',
-    emailStatus:'Not Sent',
-    lastContact:todayISO(),
-    source:'Manual Entry'
+  var name = document.getElementById('nl-name').value.trim();
+  if (!name) { toast('Name is required'); return; }
+  var lead = {
+    id: uniqueId('l'),
+    name: name,
+    company: document.getElementById('nl-company').value.trim(),
+    email: document.getElementById('nl-email').value.trim(),
+    phone: document.getElementById('nl-phone').value.trim(),
+    city: document.getElementById('nl-city').value.trim(),
+    country: document.getElementById('nl-country').value.trim(),
+    priority: document.getElementById('nl-priority').value,
+    pipelineStage: 'new',
+    emailStatus: 'Not Sent',
+    lastContact: todayISO(),
+    notes: document.getElementById('nl-notes').value.trim(),
+    source: document.getElementById('nl-source').value.trim(),
+    dealValue: parseInt(document.getElementById('nl-value').value) || 0
   };
-  leads.unshift(newLead);
-  save('rami_leads',leads);
-  closeModal('modal-newlead');
+  leads.push(lead);
+  save('rc_leads', leads);
+  closeModal();
+  toast('Lead added!');
   renderLeads();
-  toast('Lead saved');
 }
 
-// ═══════════════════════════════════════════════════════════
+function deleteLead(id) {
+  if (!confirm('Delete this lead?')) return;
+  leads = leads.filter(function(l) { return l.id !== id; });
+  save('rc_leads', leads);
+  closeModal();
+  toast('Lead deleted');
+  renderLeads();
+}
+
+// ============================================================
 // PIPELINE
-// ═══════════════════════════════════════════════════════════
+// ============================================================
 function renderPipeline() {
-  const el=document.getElementById('page-pipeline');
-  const stages=[
-    {id:'new',label:'New Lead'},
-    {id:'contacted',label:'Contacted'},
-    {id:'discussion',label:'In Discussion'},
-    {id:'negotiation',label:'Negotiation'},
-    {id:'won',label:'Closed Won'},
-    {id:'lost',label:'Closed Lost'}
-  ];
-  const all=[...clients.map(c=>({...c,_type:'client'})),...leads.map(l=>({...l,_type:'lead'}))];
+  var el = document.getElementById('page-pipeline');
 
-  el.innerHTML=`
-    <div class="top-bar"><span class="brand">RAMIGEM</span></div>
-    <div class="hero-section">
-      <div class="hero-img" style="background-image:url('https://meirharush10-blip.github.io/ramigem-catalogues/media/ring_images/image3.jpeg'),linear-gradient(160deg,#1C3829,#2A5240)">
-        <div class="hero-overlay"></div>
-        <div class="hero-text">
-          <div class="hero-label">SALES OVERVIEW</div>
-          <div class="hero-title">Pipeline<br>Tracker</div>
-        </div>
-      </div>
-    </div>
-    <div class="page-content">
-      ${stages.map(s=>{
-        const items=all.filter(x=>x.pipelineStage===s.id);
-        const val=items.reduce((a,x)=>a+(x.dealValue||0),0);
-        return `<div class="pipeline-stage">
-          <div class="pipeline-header">
-            <span class="section-label">${s.label}</span>
-            <span style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--gold)">${items.length} · ${fmtMoney(val)}</span>
-          </div>
-          ${items.length===0?'<div style="color:var(--text-muted);font-size:12px;padding:8px 0;letter-spacing:0.08em">—</div>':
-            items.map(x=>`<div class="pipeline-card" onclick="x._type==='client'?openClientModal('${x.id}'):openLeadModal('${x.id}')">
-              <div style="font-family:'Cormorant Garamond',serif;font-size:17px">${x.name}</div>
-              <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.08em;margin-top:2px">${x.company||''}</div>
-            </div>`).join('')}
-        </div>`;
-      }).join('')}
-    </div>`;
+  var stages = ['new','contacted','discussion','negotiation','won','lost'];
+  var allItems = clients.map(function(c) { return {name:c.name,company:c.company,stage:c.pipelineStage,value:c.dealValue,type:'client'}; })
+    .concat(leads.map(function(l) { return {name:l.name,company:l.company,stage:l.pipelineStage,value:l.dealValue,type:'lead'}; }));
+
+  var html = '';
+  stages.forEach(function(stage, idx) {
+    var items = allItems.filter(function(x) { return x.stage === stage; });
+    var stageColor = stage === 'won' ? '#2E7D52' : stage === 'lost' ? '#8B2020' : '#1C3829';
+
+    html += '<div class="pipeline-stage">';
+    html += '<div class="pipeline-stage-header">';
+    html += '<div class="pipeline-stage-name" style="color:' + stageColor + ';">' + stageName(stage) + '</div>';
+    html += '<div class="pipeline-count">' + items.length + '</div>';
+    html += '</div>';
+
+    if (items.length === 0) {
+      html += '<div style="color:#bbb;font-size:12px;padding:6px 0 4px;">—</div>';
+    } else {
+      items.forEach(function(item) {
+        html += '<div class="pipeline-item">' +
+          '<div class="pipeline-item-name">' + esc(item.name) + '</div>' +
+          '<div class="pipeline-item-meta">' + esc(item.company) + ' · ' + (item.type === 'lead' ? 'Lead' : 'Client') + '</div>' +
+          (item.value ? '<div class="pipeline-item-value">' + fmtMoney(item.value) + '</div>' : '') +
+          '</div>';
+      });
+    }
+
+    html += '</div>';
+    if (idx < stages.length - 1) {
+      html += '<div class="pipeline-connector"></div>';
+    }
+  });
+
+  // Total pipeline value
+  var totalVal = allItems.filter(function(x) { return x.stage !== 'lost'; }).reduce(function(sum, x) { return sum + (x.value || 0); }, 0);
+  html += '<hr class="divider"><div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0 8px;">' +
+    '<span style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#999;">Total Pipeline</span>' +
+    '<span style="font-size:16px;font-weight:500;color:#C9A84C;">' + fmtMoney(totalVal) + '</span>' +
+    '</div>';
+
+  el.innerHTML = html;
 }
 
-// ═══════════════════════════════════════════════════════════
+// ============================================================
 // SETTINGS
-// ═══════════════════════════════════════════════════════════
+// ============================================================
 function renderSettings() {
-  const el=document.getElementById('page-settings');
-  el.innerHTML=`
-    <div class="top-bar"><span class="brand">RAMIGEM</span></div>
-    <div class="page-content" style="padding-top:40px">
-      <div class="section-header"><div class="section-label">DATA MANAGEMENT</div></div>
-      <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px">
-        <button class="btn btn-primary btn-full" onclick="exportData()">EXPORT ALL DATA (JSON)</button>
-        <button class="btn btn-ghost btn-full" onclick="document.getElementById('import-file').click()">IMPORT DATA (JSON)</button>
-        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
-        <button class="btn btn-ghost btn-full" style="border-color:#8B2020;color:#8B2020" onclick="confirmClear()">CLEAR ALL DATA</button>
-      </div>
-      <div class="section-header" style="margin-top:40px"><div class="section-label">APP INFO</div></div>
-      <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
-        <div class="field-group"><div class="field-label">Version</div><div class="field-value">2.0 · Graff Edition</div></div>
-        <div class="field-group"><div class="field-label">Clients Loaded</div><div class="field-value" style="font-family:'Cormorant Garamond',serif;font-size:20px">${clients.length}</div></div>
-        <div class="field-group"><div class="field-label">Leads Loaded</div><div class="field-value" style="font-family:'Cormorant Garamond',serif;font-size:20px">${leads.length}</div></div>
-        <div class="field-group"><div class="field-label">Built for</div><div class="field-value">Meir Harush · Ramigem NY</div></div>
-      </div>
-    </div>`;
+  var el = document.getElementById('page-settings');
+  el.innerHTML =
+    '<div style="padding-top:8px;">' +
+    '<div class="section-label">Data</div>' +
+    '<div class="settings-section">' +
+    '<button class="settings-btn" onclick="exportData()"><span class="icon">📤</span>Export All Data (JSON)</button>' +
+    '<button class="settings-btn" onclick="importData()"><span class="icon">📥</span>Import Data (JSON)</button>' +
+    '<button class="settings-btn danger" onclick="clearData()"><span class="icon">🗑️</span>Clear All Data</button>' +
+    '</div>' +
+
+    '<div class="section-label">About</div>' +
+    '<div class="card">' +
+    '<div class="detail-row"><span class="detail-label">App</span><span class="detail-value">Ramigem CRM</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Version</span><span class="detail-value">3.0</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Built for</span><span class="detail-value">Meir Harush</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Clients</span><span class="detail-value">' + clients.length + '</span></div>' +
+    '<div class="detail-row"><span class="detail-label">Leads</span><span class="detail-value">' + leads.length + '</span></div>' +
+    '</div>' +
+
+    '<div class="version-text">RAMIGEM · COLOMBIAN EMERALDS · NYC</div>' +
+    '</div>';
 }
 
 function exportData() {
-  const data={clients,leads,tasks,convLogs,exportedAt:new Date().toISOString()};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download='ramigem-crm-export.json';a.click();
-  URL.revokeObjectURL(url);
-  toast('Data exported');
-}
-
-function importData(input) {
-  const file=input.files[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    try{
-      const data=JSON.parse(e.target.result);
-      if(data.clients) {clients=data.clients;save('rami_clients',clients);}
-      if(data.leads) {leads=data.leads;save('rami_leads',leads);}
-      if(data.tasks) {tasks=data.tasks;save('rami_tasks',tasks);}
-      if(data.convLogs) {convLogs=data.convLogs;save('rami_conv',convLogs);}
-      toast('Data imported successfully');
-      showPage('dashboard');
-    }catch(err){toast('Invalid JSON file');}
+  var data = {
+    version: 3,
+    exported: new Date().toISOString(),
+    clients: clients,
+    leads: leads,
+    tasks: tasks,
+    convLogs: convLogs
   };
-  reader.readAsText(file);
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'ramigem-crm-backup-' + todayISO() + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Data exported!');
 }
 
-function confirmClear() {
-  if(confirm('Clear all data? This cannot be undone.')) {
-    localStorage.removeItem('rami_clients');
-    localStorage.removeItem('rami_leads');
-    localStorage.removeItem('rami_tasks');
-    localStorage.removeItem('rami_conv');
-    location.reload();
-  }
+function importData() {
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        var data = JSON.parse(ev.target.result);
+        if (data.clients) { clients = data.clients; save('rc_clients', clients); }
+        if (data.leads) { leads = data.leads; save('rc_leads', leads); }
+        if (data.tasks) { tasks = data.tasks; save('rc_tasks', tasks); }
+        if (data.convLogs) { convLogs = data.convLogs; save('rc_conv', convLogs); }
+        toast('Data imported!');
+        renderSettings();
+      } catch(err) {
+        toast('Invalid file');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
 }
 
-// ═══════════════════════════════════════════════════════════
+function clearData() {
+  if (!confirm('Clear ALL data? This cannot be undone.')) return;
+  clients = JSON.parse(JSON.stringify(DEFAULT_CLIENTS));
+  leads = JSON.parse(JSON.stringify(DEFAULT_LEADS));
+  tasks = [{id:'t1',text:'Follow up Artcurial Paris — finished jewelry angle',done:false,priority:'high'},{id:'t2',text:'Call hottest contacts this week',done:false,priority:'high'}];
+  convLogs = {};
+  meetings = 3;
+  save('rc_clients', clients);
+  save('rc_leads', leads);
+  save('rc_tasks', tasks);
+  save('rc_conv', convLogs);
+  save('rc_meetings', meetings);
+  toast('Data reset to defaults');
+  renderSettings();
+}
+
+// ============================================================
 // INIT
-// ═══════════════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  // Boot — render dashboard first, then show it
-  renderDashboard();
-  const dashEl = document.getElementById('page-dashboard');
-  dashEl.classList.add('active');
-  setTimeout(() => dashEl.classList.add('visible'), 30);
-  // PWA install prompt
-  window.addEventListener('beforeinstallprompt', e => { window._deferredPrompt = e; });
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  goTo('dashboard');
 });
 </script>
 </body>

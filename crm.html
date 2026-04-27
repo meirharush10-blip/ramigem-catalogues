@@ -1998,7 +1998,7 @@ function renderLeads() {
     hot: leads.filter(l=>l.priority==='hot').length,
     warm: leads.filter(l=>l.priority==='warm').length,
     cold: leads.filter(l=>l.priority==='cold').length,
-    followup: leads.filter(l=>{const d=daysSince(l.lastContact);return d>=5;}}).length
+    followup: leads.filter(l=>{const d=daysSince(l.lastContact);return d>=5;}).length
   };
   const filtered = leads.filter(l => {
     if(leadFilter==='hot') return l.priority==='hot';

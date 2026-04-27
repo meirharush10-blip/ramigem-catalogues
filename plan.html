@@ -3,113 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RAMIGEM — 30-Day Sales Attack Plan</title>
+<title>RAMIGEM — 30-Day Sales Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --cream:#ede5db;
-  --brown:#2b2118;
-  --light:#f7f2ec;
-  --border:#d6c9b8;
-  --accent:#5c3d1e;
-  --green:#2d5a27;
-  --red:#8a2020;
-  --gold:#b8860b;
-}
+:root{--cream:#ede5db;--brown:#2b2118;--light:#f7f2ec;--border:#d6c9b8;--green:#2d5a27;--red:#8a2020;--gold:#b8860b;}
 body{background:var(--cream);color:var(--brown);font-family:'Montserrat',sans-serif;line-height:1.6;}
 
-/* NAV */
 .nav{position:fixed;top:0;left:0;right:0;background:var(--brown);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:56px;}
 .nav-brand{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);letter-spacing:0.2em;font-weight:300;}
-.nav-links{display:flex;gap:28px;}
-.nav-links a{color:rgba(237,229,219,0.6);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:color 0.2s;}
+.nav-links{display:flex;gap:24px;}
+.nav-links a{color:rgba(237,229,219,0.55);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:color 0.2s;}
 .nav-links a:hover{color:var(--cream);}
 
-/* SLIDES */
 .slide{min-height:100vh;padding:100px 60px 60px;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--border);}
-.slide:nth-child(even){background:var(--light);}
+.slide.light{background:var(--light);}
+.slide.dark{background:var(--brown);color:var(--cream);}
 
-/* HERO */
-.hero{text-align:center;background:var(--brown) !important;color:var(--cream);}
-.hero .eyebrow{font-size:10px;letter-spacing:0.4em;text-transform:uppercase;opacity:0.5;margin-bottom:20px;}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:300;letter-spacing:0.1em;line-height:1.1;margin-bottom:16px;}
-.hero h1 em{font-style:italic;opacity:0.7;}
-.hero .sub{font-size:13px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;margin-bottom:48px;}
-.hero .urgency{display:inline-block;border:1px solid rgba(237,229,219,0.3);padding:12px 28px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.8;}
+.eyebrow{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;opacity:0.45;margin-bottom:14px;}
+.big-title{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;letter-spacing:0.06em;line-height:1.1;margin-bottom:16px;}
+.big-title em{font-style:italic;opacity:0.6;}
+.sub-title{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.45;margin-bottom:40px;}
+.divider{width:50px;height:1px;background:currentColor;opacity:0.2;margin:20px 0 40px;}
 
-/* SECTION TITLE */
-.section-label{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;opacity:0.4;margin-bottom:12px;}
-.section-title{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;letter-spacing:0.05em;margin-bottom:8px;line-height:1.15;}
+.section-label{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;opacity:0.4;margin-bottom:10px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;line-height:1.15;margin-bottom:8px;}
 .section-title span{font-style:italic;opacity:0.6;}
-.section-divider{width:50px;height:1px;background:var(--brown);opacity:0.2;margin:20px 0 40px;}
+
+/* HERO BADGE */
+.badge{display:inline-block;border:1px solid rgba(237,229,219,0.3);padding:12px 28px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.75;margin-top:16px;}
 
 /* STAT GRID */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:40px;}
-.stat-card{background:var(--cream);border:1px solid var(--border);padding:28px 24px;}
-.stat-card.dark{background:var(--brown);color:var(--cream);}
-.stat-number{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;line-height:1;margin-bottom:8px;}
-.stat-label{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.55;}
-.stat-sub{font-size:11px;opacity:0.6;margin-top:6px;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:8px;}
+.stat{border:1px solid var(--border);padding:24px 20px;background:var(--cream);}
+.stat.inv{background:var(--brown);color:var(--cream);}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;line-height:1;margin-bottom:6px;}
+.stat-l{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;}
+.stat-s{font-size:10px;opacity:0.55;margin-top:5px;}
 
-/* PROBLEM CARDS */
-.problem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
-.problem-card{border:1px solid var(--border);padding:24px;background:var(--cream);}
-.problem-card .num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;opacity:0.2;line-height:1;margin-bottom:8px;}
-.problem-card h3{font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;font-weight:600;}
-.problem-card p{font-size:12px;opacity:0.7;line-height:1.6;}
-.tag{display:inline-block;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;padding:3px 10px;border-radius:1px;margin-top:10px;}
-.tag.red{background:rgba(138,32,32,0.1);color:var(--red);}
-.tag.green{background:rgba(45,90,39,0.1);color:var(--green);}
-.tag.gold{background:rgba(184,134,11,0.1);color:var(--gold);}
-
-/* WEEK TIMELINE */
-.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;}
-.week{border:1px solid var(--border);padding:28px 24px;border-right:none;}
-.week:last-child{border-right:1px solid var(--border);}
-.week-label{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;opacity:0.45;margin-bottom:6px;}
-.week-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:16px;}
-.week-actions{list-style:none;}
-.week-actions li{font-size:11px;padding:6px 0;border-bottom:1px solid rgba(43,33,24,0.07);display:flex;align-items:flex-start;gap:8px;}
-.week-actions li:last-child{border-bottom:none;}
-.week-actions li::before{content:"→";opacity:0.4;flex-shrink:0;margin-top:1px;}
-.week-focus{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;opacity:0.5;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+/* PROBLEM LIST */
+.prob-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+.prob{border:1px solid var(--border);padding:22px;background:var(--cream);}
+.prob-n{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;opacity:0.18;line-height:1;margin-bottom:8px;}
+.prob h3{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+.prob p{font-size:11px;opacity:0.65;line-height:1.55;}
+.tag{display:inline-block;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:3px 9px;margin-top:10px;border-radius:1px;}
+.tag.r{background:rgba(138,32,32,0.1);color:var(--red);}
+.tag.g{background:rgba(45,90,39,0.1);color:var(--green);}
+.tag.y{background:rgba(184,134,11,0.1);color:var(--gold);}
 
 /* TARGET TABLE */
-.target-table{width:100%;border-collapse:collapse;margin-top:8px;}
-.target-table th{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:10px 16px;text-align:left;background:var(--brown);color:var(--cream);font-weight:400;}
-.target-table td{font-size:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
-.target-table tr:nth-child(even) td{background:rgba(43,33,24,0.03);}
-.priority{display:inline-block;font-size:9px;letter-spacing:0.1em;padding:2px 8px;border-radius:1px;}
-.priority.hot{background:rgba(138,32,32,0.12);color:var(--red);}
-.priority.warm{background:rgba(184,134,11,0.12);color:var(--gold);}
-.priority.cold{background:rgba(43,33,24,0.08);color:var(--brown);}
+.t-table{width:100%;border-collapse:collapse;margin-top:6px;}
+.t-table th{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:10px 14px;text-align:left;background:var(--brown);color:var(--cream);font-weight:400;}
+.t-table td{font-size:12px;padding:11px 14px;border-bottom:1px solid var(--border);}
+.t-table tr:nth-child(even) td{background:rgba(43,33,24,0.03);}
+.hot{display:inline-block;font-size:9px;letter-spacing:0.1em;padding:2px 7px;background:rgba(138,32,32,0.1);color:var(--red);}
+.warm{display:inline-block;font-size:9px;letter-spacing:0.1em;padding:2px 7px;background:rgba(184,134,11,0.1);color:var(--gold);}
 
-/* CHANNEL CARDS */
-.channel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
-.channel-card{border:1px solid var(--border);padding:24px;background:var(--cream);}
-.channel-icon{font-size:28px;margin-bottom:12px;}
-.channel-name{font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
-.channel-desc{font-size:11px;opacity:0.65;margin-bottom:12px;line-height:1.55;}
-.channel-effort{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;opacity:0.45;}
+/* WEEK GRID */
+.weeks{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.week{border:1px solid var(--border);padding:28px 22px;border-right:none;}
+.week:last-child{border-right:1px solid var(--border);}
+.week.active{background:var(--brown);color:var(--cream);border-color:var(--brown);}
+.wk-lbl{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;opacity:0.45;margin-bottom:6px;}
+.wk-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:16px;}
+.wk-list{list-style:none;}
+.wk-list li{font-size:11px;padding:5px 0;border-bottom:1px solid rgba(43,33,24,0.07);display:flex;gap:7px;align-items:flex-start;}
+.week.active .wk-list li{border-color:rgba(237,229,219,0.1);}
+.wk-list li::before{content:"→";opacity:0.35;flex-shrink:0;}
+.wk-focus{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;opacity:0.45;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+.week.active .wk-focus{border-color:rgba(237,229,219,0.2);}
 
-/* RULES */
-.rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;}
-.rule{display:flex;gap:16px;align-items:flex-start;padding:16px;border:1px solid var(--border);background:var(--cream);}
-.rule-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;opacity:0.2;flex-shrink:0;line-height:1;}
-.rule-text h4{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;font-weight:600;}
-.rule-text p{font-size:11px;opacity:0.65;line-height:1.5;}
+/* CHANNELS */
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+.ch{border:1px solid var(--border);padding:22px;background:var(--cream);}
+.ch-icon{font-size:26px;margin-bottom:10px;}
+.ch-name{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:7px;}
+.ch-desc{font-size:11px;opacity:0.62;line-height:1.5;margin-bottom:10px;}
+.ch-cost{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.4;}
 
-/* CTA SLIDE */
-.cta-slide{background:var(--brown) !important;color:var(--cream);text-align:center;}
-.cta-slide h2{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;letter-spacing:0.08em;margin-bottom:16px;}
-.cta-slide p{font-size:12px;letter-spacing:0.15em;text-transform:uppercase;opacity:0.5;margin-bottom:48px;}
-.action-list{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;max-width:700px;margin:0 auto;}
-.action-item{border:1px solid rgba(237,229,219,0.2);padding:16px 24px;font-size:11px;letter-spacing:0.1em;text-align:left;min-width:200px;}
-.action-item strong{display:block;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;opacity:0.5;margin-bottom:6px;}
+/* SCRIPTS */
+.scripts{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.script-box{border:1px solid var(--border);padding:28px;background:var(--light);}
+.script-lbl{font-size:9px;letter-spacing:0.25em;text-transform:uppercase;opacity:0.4;margin-bottom:14px;}
+.script-text{font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.7;font-style:italic;}
+.script-rules{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.script-rules li{font-size:11px;opacity:0.6;padding:3px 0;list-style:none;}
+.script-rules li::before{content:"→ ";opacity:0.5;}
 
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
-@media(max-width:700px){.two-col{grid-template-columns:1fr;}.hero h1{font-size:42px;}.section-title{font-size:36px;}.slide{padding:80px 24px 40px;}.nav{padding:0 20px;}.timeline{grid-template-columns:1fr;}.week{border-right:1px solid var(--border);border-bottom:none;}.week:last-child{border-bottom:1px solid var(--border);}}</style>
+/* RULES GRID */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;}
+.rule{display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid var(--border);background:var(--cream);}
+.rule-n{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;opacity:0.18;flex-shrink:0;line-height:1;}
+.rule h4{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;margin-bottom:4px;}
+.rule p{font-size:11px;opacity:0.62;line-height:1.5;}
+
+/* CTA */
+.action-grid{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;max-width:800px;margin:0 auto 48px;}
+.action{border:1px solid rgba(237,229,219,0.2);padding:16px 22px;min-width:200px;text-align:left;}
+.action strong{display:block;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;opacity:0.45;margin-bottom:7px;}
+.action span{font-size:12px;line-height:1.5;}
+
+@media(max-width:768px){
+  .slide{padding:80px 24px 40px;}
+  .nav{padding:0 20px;}
+  .big-title{font-size:40px;}
+  .section-title{font-size:34px;}
+  .weeks{grid-template-columns:1fr;}
+  .week{border-right:1px solid var(--border);border-bottom:none;}
+  .week:last-child{border-bottom:1px solid var(--border);}
+  .scripts{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+}
+</style>
 </head>
 <body>
 
@@ -117,383 +123,360 @@ body{background:var(--cream);color:var(--brown);font-family:'Montserrat',sans-se
   <div class="nav-brand">RAMIGEM</div>
   <div class="nav-links">
     <a href="#situation">Situation</a>
+    <a href="#problem">Problem</a>
     <a href="#targets">Targets</a>
-    <a href="#plan">30-Day Plan</a>
+    <a href="#plan">Plan</a>
     <a href="#channels">Channels</a>
     <a href="#rules">Rules</a>
     <a href="#action">Action</a>
   </div>
 </nav>
 
-<!-- SLIDE 1: HERO -->
-<div class="slide hero" id="home">
-  <div class="eyebrow">Confidential · Meir Harush · April 2026</div>
-  <h1>30-Day <em>Sales Attack</em><br>Plan</h1>
-  <div class="sub">RAMIGEM · Colombian Emeralds · New York</div>
-  <div class="urgency">⚡ One Month. Real Clients. Real Deals.</div>
+<!-- 1. HERO -->
+<div class="slide dark" id="home" style="text-align:center;align-items:center;">
+  <div class="eyebrow" style="color:rgba(237,229,219,0.4);">Confidential · Meir Harush · April 2026</div>
+  <div class="big-title" style="color:var(--cream);">30-Day <em>Sales</em><br>Attack Plan</div>
+  <div class="sub-title" style="color:rgba(237,229,219,0.4);">RAMIGEM · Colombian Emeralds · New York</div>
+  <div class="badge">⚡ One Month. Right Targets. Real Deals.</div>
 </div>
 
-<!-- SLIDE 2: WHERE WE STAND -->
+<!-- 2. SITUATION -->
 <div class="slide" id="situation">
-  <div class="section-label">Situation Assessment</div>
-  <div class="section-title">Where We <span>Stand Today</span></div>
-  <div class="section-divider"></div>
+  <div class="section-label">Where We Stand</div>
+  <div class="section-title">The <span>Real Numbers</span></div>
+  <div class="divider"></div>
   <div class="stat-grid">
-    <div class="stat-card dark">
-      <div class="stat-number">$180M</div>
-      <div class="stat-label">Inventory Value</div>
-      <div class="stat-sub">Muzo Colombian Emeralds</div>
+    <div class="stat inv">
+      <div class="stat-n">$180M</div>
+      <div class="stat-l">Total Inventory</div>
+      <div class="stat-s">Muzo Colombian Emeralds</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-number">1,551</div>
-      <div class="stat-label">Stones in Living List</div>
-      <div class="stat-sub">$30 – $150,000 per stone</div>
+    <div class="stat">
+      <div class="stat-n">1,551</div>
+      <div class="stat-l">Stones — Living List</div>
+      <div class="stat-s">$30 – $150,000 per stone</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-number">68</div>
-      <div class="stat-label">Warm Contacts</div>
-      <div class="stat-sub">7 Hot · 24 Active · 37 Cold</div>
+    <div class="stat">
+      <div class="stat-n">2×</div>
+      <div class="stat-l">HK Shows / Year</div>
+      <div class="stat-s">Main client touchpoints</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-number">2×</div>
-      <div class="stat-label">HK Shows / Year</div>
-      <div class="stat-sub">Main client touchpoint</div>
+    <div class="stat inv">
+      <div class="stat-n">1</div>
+      <div class="stat-l">Reply / 200 Emails</div>
+      <div class="stat-s">Campaign 1 — April 2026</div>
     </div>
-    <div class="stat-card dark">
-      <div class="stat-number">1</div>
-      <div class="stat-label">Reply from 200 Emails</div>
-      <div class="stat-sub">Campaign 1 — April 2026</div>
+    <div class="stat">
+      <div class="stat-n">$7.2M</div>
+      <div class="stat-l">Active Ask Value</div>
+      <div class="stat-s">Priced & ready to sell</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-number">$7.2M</div>
-      <div class="stat-label">Active Inventory (Ask)</div>
-      <div class="stat-sub">Priced & ready to sell</div>
+    <div class="stat">
+      <div class="stat-n">NYC</div>
+      <div class="stat-l">Local Show — Worked</div>
+      <div class="stat-s">In-person = new leads</div>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 3: WHAT WENT WRONG -->
-<div class="slide" id="problems">
+<!-- 3. PROBLEM -->
+<div class="slide light" id="problem">
   <div class="section-label">Diagnosis</div>
   <div class="section-title">What <span>Went Wrong</span></div>
-  <div class="section-divider"></div>
-  <div class="problem-grid">
-    <div class="problem-card">
-      <div class="num">01</div>
+  <div class="divider"></div>
+  <div class="prob-list">
+    <div class="prob">
+      <div class="prob-n">01</div>
       <h3>Wrong Targets</h3>
-      <p>Campaign 1 targeted mega-brands (Chopard, Harry Winston, Bergdorf). These companies don't buy from cold email. They have their own supply chains.</p>
-      <span class="tag red">Critical Error</span>
+      <p>Campaign 1 went to mega-brands — Chopard, Harry Winston, Bergdorf. They don't buy from cold email. They have their own supply chains. Total mismatch.</p>
+      <span class="tag r">Critical Error</span>
     </div>
-    <div class="problem-card">
-      <div class="num">02</div>
-      <h3>Shotgun Approach</h3>
-      <p>200 emails sent blindly. No personalization. No follow-up strategy. No phone calls. Email alone does not close deals in luxury gems.</p>
-      <span class="tag red">Wrong Method</span>
+    <div class="prob">
+      <div class="prob-n">02</div>
+      <h3>Shotgun, Not Sniper</h3>
+      <p>200 emails, no personalization, no strategy. In the luxury gem world, volume means nothing. One right conversation beats 200 wrong emails every time.</p>
+      <span class="tag r">Wrong Method</span>
     </div>
-    <div class="problem-card">
-      <div class="num">03</div>
+    <div class="prob">
+      <div class="prob-n">03</div>
       <h3>No Physical Presence</h3>
-      <p>The NYC show worked. Walking into Diamond District works. Showing stones in person closes deals. Digital outreach alone doesn't.</p>
-      <span class="tag gold">Fixable</span>
+      <p>The NYC show worked. Walking in with stones works. Gems sell when held — not when described in an email. Not enough in-person activity.</p>
+      <span class="tag y">Fixable Now</span>
     </div>
-    <div class="problem-card">
-      <div class="num">04</div>
-      <h3>68 Warm Contacts Idle</h3>
-      <p>You have existing relationships sitting cold. No systematic follow-up. These are the highest-probability deals — not new cold leads.</p>
-      <span class="tag red">Biggest Opportunity</span>
-    </div>
-    <div class="problem-card">
-      <div class="num">05</div>
-      <h3>No Organized System</h3>
-      <p>Inventory is not organized in one place. No CRM to track follow-ups. No pipeline visibility. Running blind costs deals.</p>
-      <span class="tag gold">Fixable</span>
-    </div>
-    <div class="problem-card">
-      <div class="num">06</div>
+    <div class="prob">
+      <div class="prob-n">04</div>
       <h3>Instagram = Wrong ROI</h3>
-      <p>Expensive. Reaches consumers, not B2B gem buyers. Luxury gem deals happen person-to-person, not through social media ads.</p>
-      <span class="tag gold">Reduce Budget</span>
+      <p>Expensive ads reaching consumers, not B2B gem buyers. Deals in this business happen person-to-person — not through social media feeds.</p>
+      <span class="tag y">Reduce Budget</span>
+    </div>
+    <div class="prob">
+      <div class="prob-n">05</div>
+      <h3>No Follow-Up System</h3>
+      <p>No CRM. No pipeline tracking. No reminder system. Without a system, warm leads go cold and nothing gets closed. Every dealer needs a follow-up structure.</p>
+      <span class="tag y">Fixable</span>
+    </div>
+    <div class="prob">
+      <div class="prob-n">06</div>
+      <h3>Inventory Not Organized</h3>
+      <p>The Living List exists but it's not searchable or shareable in a client-ready way. Hard to show the right stone to the right buyer at the right moment.</p>
+      <span class="tag y">In Progress</span>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 4: RIGHT TARGETS -->
+<!-- 4. TARGETS -->
 <div class="slide" id="targets">
   <div class="section-label">Sniper Approach</div>
   <div class="section-title">The Right <span>Targets</span></div>
-  <div class="section-divider"></div>
-  <div class="two-col">
-    <div>
-      <p style="font-size:12px;opacity:0.65;margin-bottom:24px;">Stop shooting everywhere. These are the buyer types who actually purchase loose emeralds from a dealer like Ramigem.</p>
-      <table class="target-table">
-        <thead><tr><th>Buyer Type</th><th>Why They Buy</th><th>Priority</th></tr></thead>
-        <tbody>
-          <tr><td>Independent jewelry designers</td><td>Need unique stones for custom pieces</td><td><span class="priority hot">HOT</span></td></tr>
-          <tr><td>Boutique fine jewelry stores</td><td>Carry colored stones, need direct suppliers</td><td><span class="priority hot">HOT</span></td></tr>
-          <tr><td>Colored stone wholesalers</td><td>Buy to resell — volume buyers</td><td><span class="priority hot">HOT</span></td></tr>
-          <tr><td>Gem dealers (47th St + trade shows)</td><td>Know the product, buy on quality</td><td><span class="priority hot">HOT</span></td></tr>
-          <tr><td>Auction houses (small-mid)</td><td>Need certified stones for consignment</td><td><span class="priority warm">WARM</span></td></tr>
-          <tr><td>Your 68 existing contacts</td><td>Already know Ramigem — easiest close</td><td><span class="priority hot">HOT</span></td></tr>
-          <tr><td>Artcurial Paris (replied)</td><td>Interested — sells set jewelry</td><td><span class="priority hot">HOT</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div>
-      <div style="border:1px solid var(--border);padding:28px;background:var(--cream);">
-        <div style="font-size:9px;letter-spacing:0.25em;text-transform:uppercase;opacity:0.45;margin-bottom:16px;">DO NOT Target</div>
-        <ul style="list-style:none;">
-          <li style="font-size:12px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.6;">❌ Chopard, Harry Winston, Tiffany — corporate chains</li>
-          <li style="font-size:12px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.6;">❌ Bergdorf Goodman, department stores</li>
-          <li style="font-size:12px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.6;">❌ Watch dealers (Rolex, Patek dealers)</li>
-          <li style="font-size:12px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.6;">❌ Generic info@ / shop@ emails</li>
-          <li style="font-size:12px;padding:8px 0;opacity:0.6;">❌ Instagram consumer audience</li>
-        </ul>
-        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);">
-          <div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.45;margin-bottom:10px;">The Rule</div>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;line-height:1.4;font-style:italic;">"Sniper, not shotgun. 20 perfect targets beat 200 random emails every time."</p>
-        </div>
-      </div>
-    </div>
+  <div class="divider"></div>
+  <table class="t-table">
+    <thead>
+      <tr><th>Buyer Type</th><th>Why They Buy From You</th><th>How to Reach</th><th>Priority</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Independent jewelry designers</strong></td><td>Need unique stones for custom pieces — can't get Muzo quality anywhere</td><td>Email + LinkedIn + shows</td><td><span class="hot">HOT</span></td></tr>
+      <tr><td><strong>Boutique fine jewelry stores</strong></td><td>Carry colored stones, need direct sourcing, open to exclusives</td><td>Walk-in + phone</td><td><span class="hot">HOT</span></td></tr>
+      <tr><td><strong>Colored stone dealers (47th St)</strong></td><td>Know the product, buy on quality, fast decisions</td><td>In-person visit</td><td><span class="hot">HOT</span></td></tr>
+      <tr><td><strong>Gem wholesalers</strong></td><td>Buy volume to resell — steady repeat buyers</td><td>Phone + trade shows</td><td><span class="hot">HOT</span></td></tr>
+      <tr><td><strong>Artcurial Paris (replied to you)</strong></td><td>Already showed interest — sells set jewelry, needs stones</td><td>Follow up now</td><td><span class="hot">HOT</span></td></tr>
+      <tr><td><strong>NYC show contacts (this month)</strong></td><td>Met in person — warm, remember your face</td><td>WhatsApp + call</td><td><span class="hot">HOT</span></td></tr>
+      <tr><td><strong>Mid-size auction houses</strong></td><td>Need certified stones for consignment, pay well</td><td>Email + meeting</td><td><span class="warm">WARM</span></td></tr>
+      <tr><td><strong>Miami / LA colored stone dealers</strong></td><td>Active market, less competition than NYC</td><td>Phone + visit trip</td><td><span class="warm">WARM</span></td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:24px;padding:20px;border:1px solid var(--border);background:var(--light);display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+    <div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.4;flex-shrink:0;">Never Target</div>
+    <div style="font-size:11px;opacity:0.6;">❌ Chopard / Harry Winston / Tiffany &nbsp;&nbsp; ❌ Department stores &nbsp;&nbsp; ❌ Watch dealers &nbsp;&nbsp; ❌ Generic info@ emails &nbsp;&nbsp; ❌ Instagram consumer traffic</div>
   </div>
 </div>
 
-<!-- SLIDE 5: 30-DAY PLAN -->
-<div class="slide" id="plan">
+<!-- 5. 30-DAY PLAN -->
+<div class="slide light" id="plan">
   <div class="section-label">Execution</div>
-  <div class="section-title">The 30-Day <span>Attack Plan</span></div>
-  <div class="section-divider"></div>
-  <div class="timeline">
-    <div class="week" style="background:var(--brown);color:var(--cream);border-color:var(--brown);">
-      <div class="week-label" style="opacity:0.5;">Week 1 · Now</div>
-      <div class="week-title" style="color:var(--cream);">Activate<br>What You Have</div>
-      <ul class="week-actions">
-        <li style="border-color:rgba(237,229,219,0.1);color:rgba(237,229,219,0.85);">Call your 7 HOT contacts today</li>
-        <li style="border-color:rgba(237,229,219,0.1);color:rgba(237,229,219,0.85);">Contact NYC show leads — before they forget you</li>
-        <li style="border-color:rgba(237,229,219,0.1);color:rgba(237,229,219,0.85);">Follow up Artcurial Paris with set jewelry angle</li>
-        <li style="border-color:rgba(237,229,219,0.1);color:rgba(237,229,219,0.85);">Revive 12 Follow-Up contacts with personal message</li>
-        <li style="border-color:rgba(237,229,219,0.1);color:rgba(237,229,219,0.85);">Goal: 5 meetings scheduled this week</li>
+  <div class="section-title">The 30-Day <span>Plan</span></div>
+  <div class="divider"></div>
+  <div class="weeks">
+    <div class="week active">
+      <div class="wk-lbl">Week 1 · Now</div>
+      <div class="wk-title" style="color:var(--cream);">Activate What<br>You Already Have</div>
+      <ul class="wk-list">
+        <li style="color:rgba(237,229,219,0.82);">Call your hottest contacts — phone, not email</li>
+        <li style="color:rgba(237,229,219,0.82);">Message NYC show contacts today on WhatsApp</li>
+        <li style="color:rgba(237,229,219,0.82);">Follow up Artcurial Paris — set jewelry angle</li>
+        <li style="color:rgba(237,229,219,0.82);">Log every call result in new CRM</li>
+        <li style="color:rgba(237,229,219,0.82);font-weight:600;">Goal: 5 meetings booked</li>
       </ul>
-      <div class="week-focus" style="border-color:rgba(237,229,219,0.2);color:rgba(237,229,219,0.5);">Focus: Phone + Personal outreach</div>
+      <div class="wk-focus" style="border-color:rgba(237,229,219,0.2);color:rgba(237,229,219,0.45);">Phone · WhatsApp · Zero cost</div>
     </div>
     <div class="week">
-      <div class="week-label">Week 2 · May 5</div>
-      <div class="week-title">Hit the<br>Diamond District</div>
-      <ul class="week-actions">
-        <li>Build list of 20 dealers on 47th Street</li>
-        <li>Walk in with 5-6 stones in a case</li>
-        <li>Script: "5 mins to see Muzo stones?"</li>
-        <li>Target: gem dealers, colored stone buyers</li>
-        <li>Goal: 3-5 new dealer relationships</li>
+      <div class="wk-lbl">Week 2 · May 5</div>
+      <div class="wk-title">Hit the<br>Diamond District</div>
+      <ul class="wk-list">
+        <li>Research 20 colored stone dealers on 47th St</li>
+        <li>Walk in with 5–6 stones in a case</li>
+        <li>Bring business card + catalogue QR code</li>
+        <li>Bring certificates (CDL / GIA)</li>
+        <li style="font-weight:600;">Goal: 3–5 new dealer relationships</li>
       </ul>
-      <div class="week-focus">Focus: In-person · No cold email</div>
+      <div class="wk-focus">In-person · No cold email</div>
     </div>
     <div class="week">
-      <div class="week-label">Week 3 · May 12</div>
-      <div class="week-title">Campaign 2<br>Sniper</div>
-      <ul class="week-actions">
-        <li>30 verified targets (designers + boutiques)</li>
-        <li>Personal first line for each email</li>
-        <li>No PDF attachment on first email</li>
-        <li>Goal: phone call, not a sale</li>
-        <li>Test email to Meirharush10@gmail.com FIRST</li>
+      <div class="wk-lbl">Week 3 · May 12</div>
+      <div class="wk-title">Campaign 2<br>Sniper</div>
+      <ul class="wk-list">
+        <li>30 verified targets — designers + boutiques</li>
+        <li>Personal first line for every email</li>
+        <li>No PDF attachment on first contact</li>
+        <li>Test email first — confirm before send</li>
+        <li style="font-weight:600;">Goal: Phone calls, not sales yet</li>
       </ul>
-      <div class="week-focus">Focus: Quality over quantity</div>
+      <div class="wk-focus">Quality over quantity</div>
     </div>
     <div class="week">
-      <div class="week-label">Week 4 · May 19</div>
-      <div class="week-title">Close &<br>Systematize</div>
-      <ul class="week-actions">
-        <li>Follow up on all Week 1-3 conversations</li>
-        <li>Push pipeline: In Discussion → Negotiation</li>
+      <div class="wk-lbl">Week 4 · May 19</div>
+      <div class="wk-title">Close &<br>Build System</div>
+      <ul class="wk-list">
+        <li>Follow up all Week 1–3 conversations</li>
+        <li>Push pipeline: Discussion → Negotiation</li>
         <li>LinkedIn profile optimization</li>
-        <li>Build CRM 2.0 with full client database</li>
-        <li>Plan June: trade show or Miami visit?</li>
+        <li>CRM fully loaded with all contacts</li>
+        <li style="font-weight:600;">Goal: First deal closed</li>
       </ul>
-      <div class="week-focus">Focus: Close + Build for next month</div>
+      <div class="wk-focus">Close + Systematize</div>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 6: CHANNELS -->
+<!-- 6. CHANNELS -->
 <div class="slide" id="channels">
   <div class="section-label">Strategy</div>
   <div class="section-title">What <span>Actually Works</span></div>
-  <div class="section-divider"></div>
-  <div class="channel-grid">
-    <div class="channel-card">
-      <div class="channel-icon">📞</div>
-      <div class="channel-name">Phone Calls</div>
-      <div class="channel-desc">In luxury gems, the phone call is king. 5 calls to warm contacts > 200 cold emails. "I have a stone you'd love — can I show you?"</div>
-      <div class="channel-effort">💰 Cost: $0 &nbsp;·&nbsp; ⚡ Start: Today</div>
-      <span class="tag green" style="margin-top:12px;">Highest ROI</span>
+  <div class="divider"></div>
+  <div class="ch-grid">
+    <div class="ch">
+      <div class="ch-icon">📞</div>
+      <div class="ch-name">Phone Calls</div>
+      <div class="ch-desc">5 calls to warm contacts > 200 cold emails. In luxury gems, the phone call is how deals start. Personal, fast, human.</div>
+      <div class="ch-cost">Cost: $0 &nbsp;·&nbsp; Start: Today</div>
+      <span class="tag g" style="margin-top:10px;">Highest ROI</span>
     </div>
-    <div class="channel-card">
-      <div class="channel-icon">🤝</div>
-      <div class="channel-name">In-Person Visits</div>
-      <div class="channel-desc">Diamond District, local shows, showroom visits. You showed up at the NYC show — it worked. Do more of this. Stones sell themselves when held.</div>
-      <div class="channel-effort">💰 Cost: Low &nbsp;·&nbsp; ⚡ Start: Week 2</div>
-      <span class="tag green" style="margin-top:12px;">Closes Deals</span>
+    <div class="ch">
+      <div class="ch-icon">🤝</div>
+      <div class="ch-name">In-Person</div>
+      <div class="ch-desc">Diamond District walk-ins. Local shows. Showroom visits. Stones sell themselves when held. The NYC show proved this works.</div>
+      <div class="ch-cost">Cost: Low &nbsp;·&nbsp; Start: Week 2</div>
+      <span class="tag g" style="margin-top:10px;">Closes Deals</span>
     </div>
-    <div class="channel-card">
-      <div class="channel-icon">✉️</div>
-      <div class="channel-name">Email (Sniper)</div>
-      <div class="channel-desc">Not 200 blasts — 30 targeted, personal emails to the right people. Goal is a phone call, not a sale. No PDF on first contact.</div>
-      <div class="channel-effort">💰 Cost: $0 &nbsp;·&nbsp; ⚡ Start: Week 3</div>
-      <span class="tag gold" style="margin-top:12px;">Good if Targeted</span>
+    <div class="ch">
+      <div class="ch-icon">✉️</div>
+      <div class="ch-name">Email — Sniper</div>
+      <div class="ch-desc">Not 200 blasts. 30 targeted, personal emails to verified buyers. Goal is a phone call — not a sale. No PDF on first email.</div>
+      <div class="ch-cost">Cost: $0 &nbsp;·&nbsp; Start: Week 3</div>
+      <span class="tag y" style="margin-top:10px;">Good if Targeted</span>
     </div>
-    <div class="channel-card">
-      <div class="channel-icon">💼</div>
-      <div class="channel-name">LinkedIn</div>
-      <div class="channel-desc">Your professional presence matters. Gem dealers and designers use LinkedIn. Optimize your profile. Connect with buyers directly. Free and powerful for B2B.</div>
-      <div class="channel-effort">💰 Cost: $0 &nbsp;·&nbsp; ⚡ Start: Week 4</div>
-      <span class="tag gold" style="margin-top:12px;">Long-Term Asset</span>
+    <div class="ch">
+      <div class="ch-icon">💼</div>
+      <div class="ch-name">LinkedIn</div>
+      <div class="ch-desc">Gem dealers and designers use LinkedIn. Your professional presence matters. Free and powerful for B2B. Long-term asset.</div>
+      <div class="ch-cost">Cost: $0 &nbsp;·&nbsp; Start: Week 4</div>
+      <span class="tag y" style="margin-top:10px;">Long-Term</span>
     </div>
-    <div class="channel-card">
-      <div class="channel-icon">🌐</div>
-      <div class="channel-name">Digital Catalogue</div>
-      <div class="channel-desc">Done ✅ — ramigem-catalogues on GitHub. Send the link instead of a PDF. Professional, always current, works on mobile.</div>
-      <div class="channel-effort">💰 Cost: $0 &nbsp;·&nbsp; ⚡ Ready Now</div>
-      <span class="tag green" style="margin-top:12px;">Already Built</span>
+    <div class="ch">
+      <div class="ch-icon">🌐</div>
+      <div class="ch-name">Digital Catalogue</div>
+      <div class="ch-desc">Already live ✅ — send the link instead of a PDF. Works on mobile, always current, no attachment issues.</div>
+      <div class="ch-cost">Cost: $0 &nbsp;·&nbsp; Ready Now</div>
+      <span class="tag g" style="margin-top:10px;">Already Built</span>
     </div>
-    <div class="channel-card">
-      <div class="channel-icon">📸</div>
-      <div class="channel-name">Instagram</div>
-      <div class="channel-desc">Organic posting = good for brand. Paid ads = wrong audience. Luxury gem buyers are not on Instagram feeds. Reduce ad spend, keep organic.</div>
-      <div class="channel-effort">💰 Cost: Reduce ad budget &nbsp;·&nbsp; Keep organic</div>
-      <span class="tag red" style="margin-top:12px;">Wrong for B2B Deals</span>
+    <div class="ch">
+      <div class="ch-icon">📸</div>
+      <div class="ch-name">Instagram</div>
+      <div class="ch-desc">Keep organic posting for brand. Stop paid ads — wrong audience. Luxury gem buyers are not on Instagram feeds.</div>
+      <div class="ch-cost">Action: Cut ad spend</div>
+      <span class="tag r" style="margin-top:10px;">Wrong for B2B</span>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 7: THE CALL SCRIPT -->
-<div class="slide">
+<!-- 7. CALL SCRIPTS -->
+<div class="slide light">
   <div class="section-label">Tools</div>
-  <div class="section-title">The Call <span>Script</span></div>
-  <div class="section-divider"></div>
-  <div class="two-col">
-    <div>
-      <div style="border:1px solid var(--border);padding:32px;background:var(--cream);">
-        <div style="font-size:9px;letter-spacing:0.25em;text-transform:uppercase;opacity:0.45;margin-bottom:20px;">For Warm Contacts (68 existing)</div>
-        <p style="font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.7;font-style:italic;color:var(--brown);">
-          "Hi [Name], it's Meir from Ramigem. We met in Hong Kong — how are you?<br><br>
-          I'm calling because we just got some beautiful new Muzo stones — EC cut, exceptional quality, Cedarwood. The kind you don't see often.<br><br>
-          Are you in the market right now? I'd love to show you — even just a photo."
-        </p>
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
-          <div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.45;margin-bottom:8px;">Rules</div>
-          <ul style="font-size:11px;opacity:0.65;list-style:none;">
-            <li style="padding:4px 0;">→ One call per contact per day</li>
-            <li style="padding:4px 0;">→ Call in the morning (9–11am)</li>
-            <li style="padding:4px 0;">→ Log result before next call</li>
-            <li style="padding:4px 0;">→ If no answer: WhatsApp message, not voicemail</li>
-          </ul>
-        </div>
+  <div class="section-title">The <span>Call Scripts</span></div>
+  <div class="divider"></div>
+  <div class="scripts">
+    <div class="script-box">
+      <div class="script-lbl">For Warm Contacts (existing relationships)</div>
+      <div class="script-text">
+        "Hi [Name], it's Meir from Ramigem. We met in Hong Kong — how are you?<br><br>
+        I'm calling because we have some exceptional new Muzo stones — EC cut, really special quality. The kind that doesn't come around often.<br><br>
+        Are you in the market right now? I'd love to show you — even just send you a photo."
       </div>
+      <ul class="script-rules">
+        <li>One call per contact per day</li>
+        <li>Morning only — 9–11am their timezone</li>
+        <li>If no answer: WhatsApp text, not voicemail</li>
+        <li>Log result immediately in CRM</li>
+      </ul>
     </div>
-    <div>
-      <div style="border:1px solid var(--border);padding:32px;background:var(--cream);">
-        <div style="font-size:9px;letter-spacing:0.25em;text-transform:uppercase;opacity:0.45;margin-bottom:20px;">For Diamond District Walk-Ins</div>
-        <p style="font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.7;font-style:italic;color:var(--brown);">
-          "Hi, I'm Meir from Ramigem — we're at 18 E 48th Street, Colombian emerald specialists, Muzo mine.<br><br>
-          Do you have 5 minutes? I have a few stones in my case I'd love to show you. No pressure — just let them speak for themselves."
-        </p>
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
-          <div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.45;margin-bottom:8px;">Bring with You</div>
-          <ul style="font-size:11px;opacity:0.65;list-style:none;">
-            <li style="padding:4px 0;">→ 5-6 stones in a presentation case</li>
-            <li style="padding:4px 0;">→ Business cards + catalogue link (QR)</li>
-            <li style="padding:4px 0;">→ GIA or CDL certificates</li>
-            <li style="padding:4px 0;">→ Phone with catalogue ready to show</li>
-          </ul>
-        </div>
+    <div class="script-box">
+      <div class="script-lbl">For Diamond District Walk-Ins (cold)</div>
+      <div class="script-text">
+        "Hi — I'm Meir from Ramigem, we're at 18 E 48th Street. We deal in Colombian emeralds exclusively, direct from the Muzo mine.<br><br>
+        Do you have 5 minutes? I have a few stones in my case — I'd love to show you. No pressure at all — just let them speak for themselves."
       </div>
+      <ul class="script-rules">
+        <li>Bring 5–6 stones in a presentation case</li>
+        <li>Bring business cards + catalogue QR code</li>
+        <li>Bring CDL / GIA certificates</li>
+        <li>Best time: Tuesday–Thursday, 10am–2pm</li>
+      </ul>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 8: RULES -->
+<!-- 8. RULES -->
 <div class="slide" id="rules">
-  <div class="section-label">Operating Rules</div>
-  <div class="section-title">Non-Negotiable <span>Rules</span></div>
-  <div class="section-divider"></div>
-  <div class="rules-grid">
+  <div class="section-label">Non-Negotiable</div>
+  <div class="section-title">The <span>Rules</span></div>
+  <div class="divider"></div>
+  <div class="rules">
     <div class="rule">
-      <div class="rule-num">01</div>
-      <div class="rule-text">
-        <h4>Verify Before You Send</h4>
-        <p>Every email gets a test to Meirharush10@gmail.com first. Confirmed perfect → send. No exceptions. Ever.</p>
+      <div class="rule-n">01</div>
+      <div>
+        <h4>Test Before Every Send</h4>
+        <p>Every email batch gets a test to Meirharush10@gmail.com first. You confirm it's perfect. Only then it goes out. No exceptions — ever.</p>
       </div>
     </div>
     <div class="rule">
-      <div class="rule-num">02</div>
-      <div class="rule-text">
+      <div class="rule-n">02</div>
+      <div>
         <h4>One Call Per Day Per Contact</h4>
-        <p>Morning only (9–11am). Log the result. If no answer: WhatsApp text. Never call the same number twice in one day.</p>
+        <p>Morning only (9–11am). Log the result before moving to the next call. No answer = WhatsApp message, not a second call same day.</p>
       </div>
     </div>
     <div class="rule">
-      <div class="rule-num">03</div>
-      <div class="rule-text">
-        <h4>Clean Lead Lists</h4>
-        <p>Before any outreach: remove bounced addresses, verify emails, deduplicate by phone. No watch/clock stores. No corporate chains.</p>
+      <div class="rule-n">03</div>
+      <div>
+        <h4>Clean Lists Only</h4>
+        <p>Before any outreach: verify emails, remove bounced addresses, deduplicate. No watch stores. No corporate chains. No info@ addresses.</p>
       </div>
     </div>
     <div class="rule">
-      <div class="rule-num">04</div>
-      <div class="rule-text">
+      <div class="rule-n">04</div>
+      <div>
         <h4>No PDF on First Email</h4>
-        <p>First email goal = phone call. Send the catalogue link only after they express interest. PDFs in cold email go to spam.</p>
+        <p>First email goal = get a phone call. Send the catalogue link only after they express interest. Attachments in cold email go straight to spam.</p>
       </div>
     </div>
     <div class="rule">
-      <div class="rule-num">05</div>
-      <div class="rule-text">
-        <h4>Log Everything in CRM</h4>
-        <p>Every call, every email, every meeting goes in the CRM the same day. No memory = no pipeline = no deals.</p>
+      <div class="rule-n">05</div>
+      <div>
+        <h4>Log Everything, Same Day</h4>
+        <p>Every call, email, and meeting goes in the CRM the day it happens. No memory = no pipeline = no closed deals. The system only works if you feed it.</p>
       </div>
     </div>
     <div class="rule">
-      <div class="rule-num">06</div>
-      <div class="rule-text">
-        <h4>Meir Approves Before Anything Goes Out</h4>
-        <p>Nothing gets sent, posted, or shared without your explicit "go ahead." You are in full control of every client touchpoint.</p>
+      <div class="rule-n">06</div>
+      <div>
+        <h4>You Approve Before Anything Goes Out</h4>
+        <p>Nothing gets sent, posted, or shared without your explicit go-ahead. Every client touchpoint is under your control. No surprises.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 9: CTA -->
-<div class="slide cta-slide" id="action">
-  <div class="eyebrow" style="font-size:10px;letter-spacing:0.4em;text-transform:uppercase;opacity:0.4;margin-bottom:20px;">This Week · Right Now</div>
-  <h2>Start Today.<br>Not Tomorrow.</h2>
-  <p>Every day without action is a deal that didn't happen.</p>
-  <div class="action-list">
-    <div class="action-item">
+<!-- 9. ACTION -->
+<div class="slide dark" id="action" style="align-items:center;text-align:center;">
+  <div class="eyebrow" style="color:rgba(237,229,219,0.4);">This Week · Start Now</div>
+  <div class="big-title" style="color:var(--cream);">Start Today.<br><em>Not Tomorrow.</em></div>
+  <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.4;margin-bottom:44px;">Every day without action is a deal that didn't happen</div>
+  <div class="action-grid">
+    <div class="action">
       <strong>Today</strong>
-      Call 3 HOT contacts from your list
+      <span>Call your 3 hottest contacts — phone, not email</span>
     </div>
-    <div class="action-item">
+    <div class="action">
       <strong>Today</strong>
-      Message NYC show contacts on WhatsApp
+      <span>WhatsApp the NYC show contacts while they remember you</span>
     </div>
-    <div class="action-item">
+    <div class="action">
       <strong>This Week</strong>
-      Send Artcurial Paris a specific follow-up
+      <span>Send Artcurial Paris a specific set-jewelry follow-up</span>
     </div>
-    <div class="action-item">
+    <div class="action">
       <strong>This Week</strong>
-      Share your 68-contact list → I build the priority call sheet
+      <span>Build your new CRM — every contact in one place</span>
     </div>
-    <div class="action-item">
+    <div class="action">
       <strong>Week 2</strong>
-      Walk 47th Street with 5 stones in hand
+      <span>Walk 47th Street with 5 stones and business cards</span>
     </div>
-    <div class="action-item">
+    <div class="action">
       <strong>Week 3</strong>
-      Campaign 2 — 30 perfect targets, personal emails
+      <span>Campaign 2 — 30 perfect targets, personal emails</span>
     </div>
   </div>
-  <div style="margin-top:60px;font-size:10px;letter-spacing:0.15em;opacity:0.3;">RAMIGEM · 18 E 48th St, 18th Floor, New York, NY · (212) 433-1818 · ramigem.com</div>
+  <div style="font-size:10px;letter-spacing:0.12em;opacity:0.25;margin-top:20px;">RAMIGEM · 18 E 48th St, 18th Floor, New York, NY · (212) 433-1818 · ramigem.com</div>
 </div>
 
 </body>

@@ -1361,13 +1361,21 @@ html, body {
   document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
 
   if ('serviceWorker' in navigator) {
+    // Unregister ALL old service workers to clear stale cache
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(r => r.unregister());
+    });
+    // Clear all caches
+    if ('caches' in window) {
+      caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+    }
     const swCode = `
-      const CACHE = 'ramigem-crm-v3';
-      self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/']))); });
-      self.addEventListener('activate', e => e.waitUntil(clients.claim()));
-      self.addEventListener('fetch', e => {
-        e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).catch(() => new Response('Offline', {status:503}))));
-      });
+      const CACHE = 'ramigem-crm-v5';
+      self.addEventListener('install', e => { self.skipWaiting(); });
+      self.addEventListener('activate', e => e.waitUntil(
+        caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).then(() => clients.claim())
+      ));
+      self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });
     `;
     navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], {type:'application/javascript'}))).catch(()=>{});
   }

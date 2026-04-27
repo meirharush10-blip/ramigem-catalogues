@@ -1302,6 +1302,16 @@ html, body {
 </div>
 
 <!-- MODAL: Lead Detail -->
+<div id="modal-newlead" class="modal-overlay" onclick="handleOverlayClick(event,'modal-newlead')">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <span class="modal-heading">New Lead</span>
+      <button class="modal-close" onclick="closeModal('modal-newlead')">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="modal-newlead-body"></div>
+  </div>
+</div>
+
 <div id="modal-lead" class="modal-overlay" onclick="handleOverlayClick(event,'modal-lead')">
   <div class="modal">
     <div class="modal-handle"></div>

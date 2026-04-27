@@ -2287,20 +2287,14 @@ function confirmClear() {
 // INIT
 // ═══════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  // Bottom nav
-  document.querySelectorAll('.nav-item').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const page = btn.dataset.page;
-      if(page) showPage(page);
-    });
-  });
-  // Start on dashboard
-  showPage('dashboard');
+  // Boot the dashboard
+  const dashEl = document.getElementById('page-dashboard');
+  dashEl.classList.add('active');
+  requestAnimationFrame(() => requestAnimationFrame(() => dashEl.classList.add('visible')));
+  renderDashboard();
   // PWA install prompt
   let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', e => {
-    deferredPrompt = e;
-  });
+  window.addEventListener('beforeinstallprompt', e => { deferredPrompt = e; });
 });
 </script>
 </body>

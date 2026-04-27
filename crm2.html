@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Ramigem CRM</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ramigem">
+<meta name="theme-color" content="#1C3829">
+<link rel="apple-touch-icon" href="https://meirharush10-blip.github.io/ramigem-catalogues/media/hero/cushion.jpg">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Ramigem+CRM%22%2C%22short_name%22%3A%22Ramigem%22%2C%22start_url%22%3A%22https%3A%2F%2Fmeirharush10-blip.github.io%2Framigem-catalogues%2Fcrm2.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23FAFAF7%22%2C%22theme_color%22%3A%22%231C3829%22%7D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -460,7 +466,7 @@ function renderDashboard() {
   var IMG_BASE = 'https://meirharush10-blip.github.io/ramigem-catalogues/media';
 
   el.innerHTML =
-    '<div style="width:100%;height:220px;background-image:url('+IMG_BASE+'/hero/cushion.jpg);background-size:cover;background-position:center;position:relative;">' +
+    '<div style="width:100%;height:220px;background-image:url('+IMG_BASE+'/hero/ring-pink.jpg);background-size:cover;background-position:center top;position:relative;">' +
     '<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.55));"></div>' +
     '<div style="position:absolute;bottom:20px;left:20px;color:#fff;">' +
     '<div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-family:Inter,sans-serif;opacity:0.85;margin-bottom:6px;">Ramigem · Colombian Emeralds</div>' +
@@ -729,7 +735,7 @@ function renderLeads() {
 
   var IMG_BASE = 'https://meirharush10-blip.github.io/ramigem-catalogues/media';
   el.innerHTML =
-    '<div style="width:100%;height:160px;background-image:url('+IMG_BASE+'/hero/cushion.jpg);background-size:cover;background-position:center;position:relative;">' +
+    '<div style="width:100%;height:160px;background-image:url('+IMG_BASE+'/hero/earring.jpg);background-size:cover;background-position:center;position:relative;">' +
     '<div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);"></div>' +
     '<div style="position:absolute;bottom:16px;left:20px;color:#fff;font-family:Cormorant Garamond,serif;font-size:24px;font-weight:300;">Leads</div>' +
     '</div>' +
@@ -928,8 +934,19 @@ function renderPipeline() {
 // ============================================================
 function renderSettings() {
   var el = document.getElementById('page-settings');
+  var IMG_BASE = 'https://meirharush10-blip.github.io/ramigem-catalogues/media';
+  var installBtn = window._deferredPrompt
+    ? '<button class="settings-btn" onclick="installPWA()" style="background:#1C3829;color:#fff;border:none;"><span class="icon">📲</span>Install App on Phone</button>'
+    : '<div style="font-size:12px;color:#999;padding:10px 0;">To install: tap Share → "Add to Home Screen" in Safari</div>';
   el.innerHTML =
-    '<div style="padding-top:8px;">' +
+    '<div style="width:100%;height:160px;background-image:url('+IMG_BASE+'/hero/cushion.jpg);background-size:cover;background-position:center;position:relative;">' +
+    '<div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);"></div>' +
+    '<div style="position:absolute;bottom:16px;left:20px;color:#fff;font-family:Cormorant Garamond,serif;font-size:24px;font-weight:300;">Settings</div>' +
+    '</div>' +
+    '<div style="padding:16px;">' +
+    '<div class="section-label">Install App</div>' +
+    '<div class="settings-section">' + installBtn + '</div>' +
+    '<div class="section-label">Data</div>' +
     '<div class="section-label">Data</div>' +
     '<div class="settings-section">' +
     '<button class="settings-btn" onclick="exportData()"><span class="icon">📤</span>Export All Data (JSON)</button>' +
@@ -947,7 +964,7 @@ function renderSettings() {
     '</div>' +
 
     '<div class="version-text">RAMIGEM · COLOMBIAN EMERALDS · NYC</div>' +
-    '</div>';
+    '</div></div>';
 }
 
 function exportData() {
@@ -1011,6 +1028,20 @@ function clearData() {
   save('rc_meetings', meetings);
   toast('Data reset to defaults');
   renderSettings();
+}
+
+// ============================================================
+// PWA INSTALL
+// ============================================================
+window._deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  window._deferredPrompt = e;
+});
+function installPWA() {
+  if (!window._deferredPrompt) { toast('Use Safari: Share → Add to Home Screen'); return; }
+  window._deferredPrompt.prompt();
+  window._deferredPrompt.userChoice.then(function() { window._deferredPrompt = null; renderSettings(); });
 }
 
 // ============================================================

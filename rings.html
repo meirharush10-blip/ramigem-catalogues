@@ -424,6 +424,88 @@
     border-radius: 2px;
   }
 
+
+  /* ADMIN MODE — hidden by default */
+  body:not(.admin-mode) .btn-del { display: none !important; }
+  body:not(.admin-mode) .photo-replace-btn { display: none !important; }
+  body:not(.admin-mode) .add-section { display: none !important; }
+  body:not(.admin-mode) .edit-replace-btn { display: none !important; }
+  body:not(.admin-mode) .edit-save-btn { display: none !important; }
+  body:not(.admin-mode) .edit-fields input:not([readonly]),
+  body:not(.admin-mode) .edit-fields textarea { 
+    pointer-events: none; 
+    opacity: 0.75;
+    background: #ede5db;
+  }
+  body:not(.admin-mode) .edit-cancel-btn { display: none !important; }
+  body:not(.admin-mode) #editModal .edit-modal-footer .edit-close-btn { display: block !important; }
+
+  /* Admin lock button */
+  .admin-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(43,33,24,0.08);
+    border: 1px solid #d6c9b8;
+    color: #9a8878;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    z-index: 500;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .admin-btn:hover { background: rgba(43,33,24,0.14); }
+  .admin-btn.active { color: #2b2118; border-color: #2b2118; }
+
+  /* Password modal */
+  .pass-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(43,33,24,0.55);
+    z-index: 950;
+  }
+  .pass-overlay.active { display: flex; align-items: center; justify-content: center; }
+  .pass-box {
+    background: #f5ede3;
+    border: 1px solid #d6c9b8;
+    padding: 32px 28px;
+    width: 300px;
+    text-align: center;
+    border-radius: 2px;
+  }
+  .pass-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400;
+    margin-bottom: 18px; letter-spacing: 0.08em;
+  }
+  .pass-box input {
+    width: 100%; padding: 9px 12px;
+    border: 1px solid #d6c9b8;
+    background: #ede5db;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px; color: #2b2118;
+    margin-bottom: 12px;
+    border-radius: 2px;
+    text-align: center; letter-spacing: 0.1em;
+  }
+  .pass-box input:focus { outline: none; border-color: #2b2118; }
+  .pass-submit {
+    width: 100%;
+    background: #2b2118; color: #ede5db;
+    border: none; padding: 9px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px; letter-spacing: 0.15em;
+    cursor: pointer; border-radius: 2px; margin-bottom: 8px;
+  }
+  .pass-cancel {
+    background: none; border: none;
+    font-size: 10px; color: #9a8878;
+    cursor: pointer; letter-spacing: 0.1em;
+  }
+  .pass-error { color: #8a2020; font-size: 11px; margin-top: 6px; display: none; }
+
 </style>
 </head>
 <body>
@@ -534,6 +616,7 @@
   </div>
   <div class="edit-modal-footer">
     <button class="edit-cancel-btn" onclick="closeEditModal()">Cancel</button>
+    <button class="edit-close-btn" onclick="closeEditModal()" style="display:none;background:#2b2118;border:none;color:#ede5db;font-size:11px;letter-spacing:0.1em;padding:8px 20px;cursor:pointer;border-radius:2px;">Close</button>
     <button class="edit-save-btn" onclick="saveEditModal()">Save Changes</button>
   </div>
 </div>
@@ -730,6 +813,62 @@ function replaceHeaderImg(input) {
 
 // Init
 renderTable();
+
+
+// === ADMIN MODE ===
+const ADMIN_PASS = "Ramigem";
+let adminMode = false;
+
+function toggleAdminMode() {
+  if (adminMode) {
+    // Lock
+    adminMode = false;
+    document.body.classList.remove('admin-mode');
+    document.getElementById('adminBtn').textContent = '🔒 Admin';
+    document.getElementById('adminBtn').classList.remove('active');
+  } else {
+    document.getElementById('passOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('passInput').focus(), 100);
+  }
+}
+
+function submitPass() {
+  const val = document.getElementById('passInput').value;
+  if (val === ADMIN_PASS) {
+    adminMode = true;
+    document.body.classList.add('admin-mode');
+    document.getElementById('adminBtn').textContent = '🔓 Admin';
+    document.getElementById('adminBtn').classList.add('active');
+    closePassModal();
+  } else {
+    document.getElementById('passError').style.display = 'block';
+    document.getElementById('passInput').value = '';
+    document.getElementById('passInput').focus();
+  }
+}
+
+function closePassModal() {
+  document.getElementById('passOverlay').classList.remove('active');
+  document.getElementById('passInput').value = '';
+  document.getElementById('passError').style.display = 'none';
+}
+
+// Also update edit modal footer to have close-only button for non-admin
 </script>
+
+<!-- ADMIN BUTTON -->
+<button class="admin-btn" id="adminBtn" onclick="toggleAdminMode()" title="Admin access">🔒 Admin</button>
+
+<!-- PASSWORD MODAL -->
+<div class="pass-overlay" id="passOverlay">
+  <div class="pass-box">
+    <h3>Admin Access</h3>
+    <input type="password" id="passInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')submitPass()">
+    <button class="pass-submit" onclick="submitPass()">UNLOCK</button>
+    <button class="pass-cancel" onclick="closePassModal()">Cancel</button>
+    <div class="pass-error" id="passError">Incorrect password</div>
+  </div>
+</div>
+
 </body>
 </html>

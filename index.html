@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAMIGEM — Catalogues</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #ede5db;
+    color: #2b2118;
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px 40px;
+  }
+  .brand { font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 300; letter-spacing: 0.18em; margin-bottom: 8px; }
+  .subtitle { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.6; margin-bottom: 60px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; width: 100%; max-width: 1000px; }
+  .card {
+    background: #f7f2ec;
+    border: 1px solid #d6c9b8;
+    padding: 36px 28px;
+    text-align: center;
+    text-decoration: none;
+    color: #2b2118;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(43,33,24,0.10); }
+  .card-icon { font-size: 36px; margin-bottom: 16px; }
+  .card-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .card-sub { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.55; }
+  .footer { margin-top: 60px; font-size: 11px; opacity: 0.45; letter-spacing: 0.1em; text-align: center; line-height: 1.8; }
+</style>
+</head>
+<body>
+  <div class="brand">RAMIGEM</div>
+  <div class="subtitle">Colombian Emerald Collections · New York</div>
+  <div class="grid">
+    <a class="card" href="rings.html">
+      <div class="card-icon">💍</div>
+      <div class="card-title">Rings</div>
+      <div class="card-sub">April 2026</div>
+    </a>
+    <a class="card" href="necklaces.html">
+      <div class="card-icon">📿</div>
+      <div class="card-title">Necklaces</div>
+      <div class="card-sub">January 2026</div>
+    </a>
+    <a class="card" href="earrings.html">
+      <div class="card-icon">✨</div>
+      <div class="card-title">Earrings</div>
+      <div class="card-sub">January 2026</div>
+    </a>
+    <a class="card" href="bracelets.html">
+      <div class="card-icon">⌚</div>
+      <div class="card-title">Bracelets</div>
+      <div class="card-sub">January 2026</div>
+    </a>
+  </div>
+  <div class="footer">
+    18 E 48th St, 18th Floor, New York, NY · (212) 433-1818 · ramigem.com
+  </div>
+</body>
+</html>

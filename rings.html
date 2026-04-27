@@ -349,6 +349,81 @@
     .table-wrap { padding: 0 16px 16px; }
     tbody tr:hover { background: inherit; }
   }
+
+  /* EDIT MODAL */
+  .edit-modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(43,33,24,0.55);
+    z-index: 900;
+  }
+  .edit-modal-overlay.active { display: block; }
+  .edit-modal {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #f5ede3;
+    border: 1px solid #d6c9b8;
+    z-index: 901;
+    width: min(92vw, 700px);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(43,33,24,0.2);
+    border-radius: 2px;
+  }
+  .edit-modal.active { display: flex; flex-direction: column; }
+  .edit-modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #d6c9b8;
+  }
+  .edit-modal-body {
+    display: flex; flex-wrap: wrap; gap: 20px;
+    padding: 20px;
+  }
+  .edit-img-wrap { flex: 0 0 auto; width: min(100%, 280px); }
+  .edit-fields { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 10px; }
+  .edit-fields label {
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #7a6a5a; margin-bottom: -6px;
+  }
+  .edit-fields input, .edit-fields textarea {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #2b2118;
+    background: #ede5db;
+    border: 1px solid #d6c9b8;
+    padding: 8px 10px;
+    border-radius: 2px;
+    resize: vertical;
+  }
+  .edit-fields input:focus, .edit-fields textarea:focus {
+    outline: none; border-color: #2b2118;
+  }
+  .edit-modal-footer {
+    display: flex; justify-content: flex-end; gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid #d6c9b8;
+  }
+  .edit-cancel-btn {
+    background: none; border: 1px solid #d6c9b8;
+    color: #7a6a5a; font-size: 11px; letter-spacing: 0.1em;
+    padding: 8px 18px; cursor: pointer; border-radius: 2px;
+  }
+  .edit-save-btn {
+    background: #2b2118; border: none;
+    color: #ede5db; font-size: 11px; letter-spacing: 0.1em;
+    padding: 8px 20px; cursor: pointer; border-radius: 2px;
+  }
+  .edit-save-btn:hover { background: #3d3028; }
+  .edit-replace-btn {
+    font-size: 11px; letter-spacing: 0.05em;
+    background: none; border: 1px solid #d6c9b8;
+    color: #5a4a3a; padding: 5px 12px; cursor: pointer;
+    border-radius: 2px;
+  }
+
 </style>
 </head>
 <body>
@@ -431,6 +506,38 @@
   </div>
 </div>
 
+
+<!-- EDIT MODAL -->
+<div class="edit-modal-overlay" id="editModalOverlay" onclick="closeEditModal()"></div>
+<div class="edit-modal" id="editModal">
+  <div class="edit-modal-header">
+    <span id="editModalTitle" style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;"></span>
+    <button onclick="closeEditModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#2b2118;padding:0 4px;">×</button>
+  </div>
+  <div class="edit-modal-body">
+    <div class="edit-img-wrap">
+      <img id="editModalImg" src="" alt="" style="max-width:100%;max-height:340px;object-fit:contain;display:block;margin:0 auto;cursor:pointer;" onclick="openLightbox(document.getElementById('editModalImg').src)" title="Click to enlarge">
+      <div style="margin-top:8px;text-align:center;">
+        <button class="edit-replace-btn" onclick="replaceEditPhoto()">📷 Replace Photo</button>
+      </div>
+    </div>
+    <div class="edit-fields">
+      <label>Item No.</label>
+      <input type="text" id="editItemNo" readonly style="opacity:0.6;cursor:not-allowed;">
+      <label>Weight (cts)</label>
+      <input type="text" id="editWeight" placeholder="e.g. 1.50">
+      <label>Description</label>
+      <textarea id="editDesc" rows="3" placeholder="Description..."></textarea>
+      <label>Price</label>
+      <input type="text" id="editPrice" placeholder="e.g. $25,000">
+    </div>
+  </div>
+  <div class="edit-modal-footer">
+    <button class="edit-cancel-btn" onclick="closeEditModal()">Cancel</button>
+    <button class="edit-save-btn" onclick="saveEditModal()">Save Changes</button>
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">×</button>
@@ -463,27 +570,30 @@ function renderTable() {
   tbody.innerHTML = '';
   items.forEach((item, idx) => {
     const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.title = 'Click to view / edit';
     tr.innerHTML = `
       <td class="photo-cell center">
         <div class="photo-wrap">
           <img class="item-photo" src="${item.img || ''}" alt="${item.item_no}"
-            onclick="openLightbox('${item.img || ''}')" 
             onerror="this.style.display='none'">
           <button class="photo-replace-btn" onclick="replaceItemPhoto(${idx}, event)">Replace</button>
         </div>
       </td>
       <td><span class="item-no">${item.item_no}</span></td>
-      <td class="center">${item.qty || 1}</td>
       <td class="center"><span class="weight-val">${item.weight}</span><br><span class="weight-unit">cts</span></td>
       <td><div class="desc-text">${item.desc}</div></td>
       <td class="right"><span class="ask-price">${item.ask}</span></td>
-      <td class="center"><button class="btn-del" onclick="deleteItem(${idx})" title="Remove">✕</button></td>
+      <td class="center"><button class="btn-del" onclick="deleteItem(${idx}, event)" title="Remove">✕</button></td>
     `;
+    tr.onclick = function() { openEditModal(idx); };
     tbody.appendChild(tr);
   });
 }
 
-function deleteItem(idx) {
+
+function deleteItem(idx, e) {
+  if (e) e.stopPropagation();
   if (!confirm('Remove ' + items[idx].item_no + ' from catalogue?')) return;
   items.splice(idx, 1);
   saveData(items);
@@ -550,6 +660,58 @@ function openLightbox(src) {
   if (!src) return;
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').classList.add('active');
+}
+
+let _editIdx = null;
+let _editNewImg = null;
+
+function openEditModal(idx) {
+  const item = items[idx];
+  _editIdx = idx;
+  _editNewImg = null;
+  document.getElementById('editModalTitle').textContent = item.item_no;
+  document.getElementById('editModalImg').src = item.img || '';
+  document.getElementById('editModalImg').style.display = item.img ? 'block' : 'none';
+  document.getElementById('editItemNo').value = item.item_no;
+  document.getElementById('editWeight').value = item.weight;
+  document.getElementById('editDesc').value = item.desc;
+  document.getElementById('editPrice').value = item.ask;
+  document.getElementById('editModalOverlay').classList.add('active');
+  document.getElementById('editModal').classList.add('active');
+}
+
+function closeEditModal() {
+  document.getElementById('editModalOverlay').classList.remove('active');
+  document.getElementById('editModal').classList.remove('active');
+  _editIdx = null;
+  _editNewImg = null;
+}
+
+function replaceEditPhoto() {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = 'image/*';
+  input.onchange = function() {
+    const file = this.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      _editNewImg = ev.target.result;
+      document.getElementById('editModalImg').src = _editNewImg;
+      document.getElementById('editModalImg').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+
+function saveEditModal() {
+  if (_editIdx === null) return;
+  items[_editIdx].weight = document.getElementById('editWeight').value.trim();
+  items[_editIdx].desc = document.getElementById('editDesc').value.trim();
+  items[_editIdx].ask = document.getElementById('editPrice').value.trim();
+  if (_editNewImg) items[_editIdx].img = _editNewImg;
+  saveData(items);
+  renderTable();
+  closeEditModal();
 }
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('active');

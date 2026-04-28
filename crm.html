@@ -18,7 +18,7 @@ html,body{height:100%;background:#F2EDE4;font-family:'Inter',sans-serif;color:#1
 
 /* ── LAYOUT ── */
 #app{display:flex;height:100%;max-width:480px;margin:0 auto;position:relative;}
-#sidebar{width:260px;background:#2D5A3D;flex-shrink:0;display:flex;flex-direction:column;padding:20px 16px 32px;transform:translateX(-260px);transition:transform 0.25s ease;position:absolute;left:0;top:0;bottom:0;z-index:200;}
+#sidebar{width:240px;background:#2D5A3D;flex-shrink:0;display:flex;flex-direction:column;padding:20px 16px 32px;transform:translateX(240px);transition:transform 0.25s ease;position:absolute;right:0;top:0;bottom:0;z-index:200;}
 #sidebar.open{transform:translateX(0);}
 #sidebar-overlay{display:none;position:absolute;inset:0;background:rgba(0,0,0,0.4);z-index:199;}
 #sidebar-overlay.show{display:block;}
@@ -26,7 +26,7 @@ html,body{height:100%;background:#F2EDE4;font-family:'Inter',sans-serif;color:#1
 
 /* ── TOPBAR ── */
 #topbar{background:#F2EDE4;padding:14px 16px 10px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:1px solid #DDD6C8;}
-.menu-btn{background:none;border:1px solid #DDD6C8;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.menu-btn{background:none;border:1px solid #DDD6C8;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-left:auto;}
 .menu-btn svg{width:18px;height:18px;stroke:#2D5A3D;fill:none;stroke-width:1.8;stroke-linecap:round;}
 .topbar-title{flex:1;}
 .topbar-label{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#8A7E6E;font-weight:500;}
@@ -276,13 +276,13 @@ html,body{height:100%;background:#F2EDE4;font-family:'Inter',sans-serif;color:#1
   <!-- MAIN -->
   <div id="main">
     <div id="topbar">
-      <button class="menu-btn" onclick="toggleSidebar()">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
       <div class="topbar-title">
         <div class="topbar-label">RAMIGEM</div>
         <div class="topbar-page" id="topbar-page-name">Home</div>
       </div>
+      <button class="menu-btn" onclick="toggleSidebar()">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
     </div>
 
     <div id="content">
@@ -516,19 +516,13 @@ function renderHome(){
 
   el.innerHTML=
     '<div class="home-pad">'+
-    // Hero
-    '<div class="hero-card">'+
-    '<div class="hero-gem"><div class="hero-gem-inner">💎</div></div>'+
-    '<div class="hero-tagline">RAMIGEM · MUZO MINE · COLOMBIAN EMERALDS</div>'+
-    '</div>'+
-
     // Global Search
     '<div class="section-card" onclick="openSearch()">'+
-    '<div class="section-card-label">Global Search</div>'+
-    '<div class="section-card-title">Find clients and leads instantly</div>'+
+    '<div class="section-card-label">RAMIGEM · COLOMBIAN EMERALDS</div>'+
+    '<div class="section-card-title">Good morning, Meir</div>'+
     '<div class="search-box">'+
     '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'+
-    '<span>Search across all clients and leads</span>'+
+    '<span>Search clients and leads...</span>'+
     '</div>'+
     '</div>'+
 
@@ -874,36 +868,59 @@ function saveNewLead(){
 function renderPipeline(){
   var el=document.getElementById('page-pipeline');
   var stageOrder=['contacted','discussion','negotiation','won'];
-  var stageColors={contacted:'#9A8E7E',discussion:'#C07820',negotiation:'#B8860B',won:'#2D5A3D',lost:'#8B2020'};
-  var allItems=clients.map(function(c){return{name:c.name,stage:c.pipelineStage,value:c.dealValue,id:c.id,type:'client'};})
-    .concat(leads.filter(function(l){return l.pipelineStage!=='new';}).map(function(l){return{name:l.name,stage:l.pipelineStage,value:l.dealValue,id:l.id,type:'lead'};}));
-  var totalActive=allItems.filter(function(x){return x.stage!=='lost'&&x.stage!=='new';}).reduce(function(s,x){return s+(x.value||0);},0);
-  var totalNeg=allItems.filter(function(x){return x.stage==='negotiation';}).reduce(function(s,x){return s+(x.value||0);},0);
+  var stageColors={contacted:'#9A8E7E',discussion:'#C07820',negotiation:'#B8860B',won:'#2D5A3D'};
+  var allItems=clients.map(function(c){return{name:c.name,stage:c.pipelineStage,id:c.id,type:'client'};})
+    .concat(leads.filter(function(l){return l.pipelineStage!=='new';}).map(function(l){return{name:l.name,stage:l.pipelineStage,id:l.id,type:'lead'};}));
+
+  var bounced=leads.filter(function(l){return l.emailStatus==='Bounced';});
+  var noReply=leads.filter(function(l){return l.emailStatus==='No Reply';});
+  var replied=leads.filter(function(l){return l.emailStatus==='Replied';});
+
+  var actionHtml='';
+  if(bounced.length>0){
+    actionHtml+='<div class="pipe-stage-card" style="border-left:3px solid #8B2020;">'+
+      '<div class="pipe-stage-header"><div class="pipe-stage-left">'+
+      '<div class="pipe-stage-dot" style="background:#8B2020;"></div>'+
+      '<div class="pipe-stage-name">Bounced — fix these</div>'+
+      '<span class="pipe-stage-count">'+bounced.length+'</span>'+
+      '</div></div>'+
+      '<div class="pipe-chips">'+bounced.map(function(l){return '<span class="pipe-chip" style="border-color:#f0d0d0;" onclick="openLeadModal(''+esc(l.id)+'')">'+esc(l.name)+'</span>';}).join('')+'</div>'+
+      '</div>';
+  }
+  if(noReply.length>0){
+    actionHtml+='<div class="pipe-stage-card" style="border-left:3px solid #C07820;">'+
+      '<div class="pipe-stage-header"><div class="pipe-stage-left">'+
+      '<div class="pipe-stage-dot" style="background:#C07820;"></div>'+
+      '<div class="pipe-stage-name">No reply — follow up</div>'+
+      '<span class="pipe-stage-count">'+noReply.length+'</span>'+
+      '</div></div>'+
+      '<div class="pipe-chips">'+noReply.map(function(l){return '<span class="pipe-chip" style="border-color:#E8C080;" onclick="openLeadModal(''+esc(l.id)+'')">'+esc(l.name)+'</span>';}).join('')+'</div>'+
+      '</div>';
+  }
 
   var stagesHtml=stageOrder.map(function(stage){
     var items=allItems.filter(function(x){return x.stage===stage;});
     if(items.length===0)return '';
-    var chips=items.map(function(item){return '<span class="pipe-chip" onclick="'+(item.type==='client'?'openClientModal':'openLeadModal')+'(\''+esc(item.id)+'\')">'+esc(item.name)+'</span>';}).join('');
-    var val=items.reduce(function(s,x){return s+(x.value||0);},0);
+    var chips=items.map(function(item){return '<span class="pipe-chip" onclick="'+(item.type==='client'?'openClientModal':'openLeadModal')+'(''+esc(item.id)+'')">'+esc(item.name)+'</span>';}).join('');
     return '<div class="pipe-stage-card">'+
       '<div class="pipe-stage-header">'+
       '<div class="pipe-stage-left">'+
       '<div class="pipe-stage-dot" style="background:'+stageColors[stage]+';"></div>'+
       '<div class="pipe-stage-name">'+stageName(stage)+'</div>'+
       '<span class="pipe-stage-count">'+items.length+'</span>'+
-      '</div>'+
-      '<div class="pipe-stage-val">'+fmtMoney(val)+'</div>'+
-      '</div>'+
+      '</div></div>'+
       '<div class="pipe-chips">'+chips+'</div>'+
       '</div>';
   }).join('');
 
+  var activeCount=allItems.filter(function(x){return x.stage!=='new'&&x.stage!=='lost';}).length;
   el.innerHTML='<div class="pipe-pad">'+
     '<div class="pipe-summary-card">'+
-    '<div class="pipe-summary-label">Active Pipeline Value</div>'+
-    '<div class="pipe-summary-val">'+fmtMoney(totalActive)+'</div>'+
-    '<div class="pipe-summary-sub">'+fmtMoney(totalNeg)+' in negotiation</div>'+
+    '<div class="pipe-summary-label">Pipeline Overview</div>'+
+    '<div class="pipe-summary-val">'+activeCount+' active contacts</div>'+
+    '<div class="pipe-summary-sub">'+replied.length+' lead replied · '+bounced.length+' bounced · '+noReply.length+' no reply</div>'+
     '</div>'+
+    actionHtml+
     stagesHtml+
     '</div>';
 }

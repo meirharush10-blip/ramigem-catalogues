@@ -1,6 +1,6 @@
 // Ramigem CRM Service Worker
 // Increment CACHE_VERSION on every deploy to force update
-const CACHE_VERSION = 'ramigem-v4.1';
+const CACHE_VERSION = 'ramigem-v4.2';
 const ASSETS = [
   '/ramigem-catalogues/crm.html',
   'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap'

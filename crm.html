@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ramigem">
 <meta name="theme-color" content="#2D5A3D">
+<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -944,7 +945,27 @@ function clearData(){
 }
 
 // ── INIT ──
-document.addEventListener('DOMContentLoaded',function(){goTo('home');});
+document.addEventListener('DOMContentLoaded',function(){
+  goTo('home');
+  // Register service worker for auto-updates
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').then(function(reg){
+      reg.addEventListener('updatefound',function(){
+        var newWorker=reg.installing;
+        newWorker.addEventListener('statechange',function(){
+          if(newWorker.state==='installed'&&navigator.serviceWorker.controller){
+            // New version available — silently activate
+            newWorker.postMessage({action:'skipWaiting'});
+          }
+        });
+      });
+    });
+    // When new SW takes control, reload to get fresh content
+    navigator.serviceWorker.addEventListener('controllerchange',function(){
+      window.location.reload();
+    });
+  }
+});
 </script>
 </body>
 </html>

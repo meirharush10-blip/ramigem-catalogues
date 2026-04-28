@@ -1,32 +1,54 @@
-const CACHE = 'ramigem-v1';
-const URLS = [
-  '/ramigem-catalogues/',
-  '/ramigem-catalogues/index.html',
-  '/ramigem-catalogues/rings.html',
-  '/ramigem-catalogues/necklaces.html',
-  '/ramigem-catalogues/earrings.html',
-  '/ramigem-catalogues/bracelets.html',
-  '/ramigem-catalogues/manifest.json',
+// Ramigem CRM Service Worker
+// Increment CACHE_VERSION on every deploy to force update
+const CACHE_VERSION = 'ramigem-v4.1';
+const ASSETS = [
+  '/ramigem-catalogues/crm.html',
+  'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap'
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(URLS)).then(() => self.skipWaiting()));
-});
-
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys =>
-    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-  ).then(() => self.clients.claim()));
-});
-
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request).then(response => {
-      if (response && response.status === 200 && response.type === 'basic') {
-        const clone = response.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
-      }
-      return response;
-    })).catch(() => caches.match('/ramigem-catalogues/'))
+self.addEventListener('install', function(e) {
+  e.waitUntil(
+    caches.open(CACHE_VERSION).then(function(cache) {
+      return cache.addAll(ASSETS);
+    })
   );
+});
+
+self.addEventListener('activate', function(e) {
+  e.waitUntil(
+    caches.keys().then(function(keys) {
+      return Promise.all(
+        keys.filter(function(k) { return k !== CACHE_VERSION; })
+            .map(function(k) { return caches.delete(k); })
+      );
+    })
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', function(e) {
+  // Network first for the CRM HTML (so updates land immediately)
+  if (e.request.url.includes('crm.html')) {
+    e.respondWith(
+      fetch(e.request).then(function(res) {
+        var clone = res.clone();
+        caches.open(CACHE_VERSION).then(function(cache) { cache.put(e.request, clone); });
+        return res;
+      }).catch(function() {
+        return caches.match(e.request);
+      })
+    );
+    return;
+  }
+  // Cache first for everything else (fonts etc)
+  e.respondWith(
+    caches.match(e.request).then(function(cached) {
+      return cached || fetch(e.request);
+    })
+  );
+});
+
+// Allow main thread to trigger skipWaiting
+self.addEventListener('message', function(e) {
+  if (e.data && e.data.action === 'skipWaiting') self.skipWaiting();
 });
